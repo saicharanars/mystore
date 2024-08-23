@@ -1,0 +1,28 @@
+services:
+  server:
+    build:
+      context: .
+    environment:
+      NODE_ENV: development
+    ports:
+      - '3000:3000'
+      - '3001:3001'
+    volumes:
+      - .:/usr/src/app  # Mount the current directory to /usr/src/app in the container
+      - /usr/src/app/node_modules  # Prevent overwriting node_modules with empty host directory
+    command: nx run-many --target=serve --all=true  # Use a dev command to enable live reloading
+
+# Uncomment and configure the database if needed
+#   db:
+#     image: postgres
+#     restart: always
+#     environment:
+#       POSTGRES_DB: example
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: example
+#     volumes:
+#       - db-data:/var/lib/postgresql/data
+#     ports:
+#       - '5432:5432'
+# volumes:
+#   db-data:

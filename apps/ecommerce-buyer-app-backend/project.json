@@ -1,0 +1,54 @@
+{
+  "name": "ecommerce-buyer-app-backend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/ecommerce-buyer-app-backend/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/ecommerce-buyer-app-backend",
+        "main": "apps/ecommerce-buyer-app-backend/src/main.ts",
+        "tsConfig": "apps/ecommerce-buyer-app-backend/tsconfig.app.json",
+        "assets": ["apps/ecommerce-buyer-app-backend/src/assets"],
+        "webpackConfig": "apps/ecommerce-buyer-app-backend/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "ecommerce-buyer-app-backend:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "ecommerce-buyer-app-backend:build:development"
+        },
+        "production": {
+          "buildTarget": "ecommerce-buyer-app-backend:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/ecommerce-buyer-app-backend/jest.config.ts"
+      }
+    }
+  }
+}
