@@ -1,7 +1,7 @@
 import * as React from "react"
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card"
 
-import { cn } from "@nx-next-shadcn-ui-starter/ui-kit/util"
+import { cn } from "@ecommerce/ui-kit/util"
 
 const HoverCard = HoverCardPrimitive.Root
 

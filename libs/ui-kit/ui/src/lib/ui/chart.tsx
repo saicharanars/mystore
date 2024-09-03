@@ -6,7 +6,7 @@ import {
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent"
 
-import { cn } from "@nx-next-shadcn-ui-starter/ui-kit/util"
+import { cn } from "@ecommerce/ui-kit/util"
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const

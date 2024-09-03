@@ -5,8 +5,8 @@ import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from 'embla-carousel-react';
 
-import { cn } from '@nx-next-shadcn-ui-starter/ui-kit/util';
-import { Button } from '@nx-next-shadcn-ui-starter/ui-kit/ui/lib/ui/button';
+import { cn } from '@ecommerce/ui-kit/util';
+import { Button } from '@ecommerce/ui-kit/ui/lib/ui/button';
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;

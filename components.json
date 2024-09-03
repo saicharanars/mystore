@@ -9,7 +9,7 @@
     "cssVariables": true
   },
   "aliases": {
-    "components": "@nx-next-shadcn-ui-starter/ui-kit/ui/lib",
-    "utils": "@nx-next-shadcn-ui-starter/ui-kit/util"
+    "components": "@ecommerce/ui-kit/ui/lib",
+    "utils": "@ecommerce/ui-kit/util"
   }
 }

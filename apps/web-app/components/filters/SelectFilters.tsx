@@ -7,7 +7,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@nx-next-shadcn-ui-starter/ui-kit/ui';
+} from '@ecommerce/ui-kit/ui';
 import { FC } from 'react';
 
 interface FilterValues {

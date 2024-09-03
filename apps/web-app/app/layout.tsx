@@ -1,5 +1,8 @@
+import { Provider } from 'react-redux';
 import Header from '../components/header/Header';
 import './global.css';
+import store from '../store/user/store';
+import { AuthProvider } from '../store/context/auth';
 
 export const metadata = {
   title: 'Welcome to web-app',
@@ -14,8 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Header />
-        <main className="mx-1 md:mx-8">{children}</main>
+        <AuthProvider>
+          <Header />
+          <main className="mx-1 md:mx-8">{children}</main>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -2,7 +2,7 @@ import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { Cross2Icon } from "@radix-ui/react-icons"
 
-import { cn } from "@nx-next-shadcn-ui-starter/ui-kit/util"
+import { cn } from "@ecommerce/ui-kit/util"
 
 const Dialog = DialogPrimitive.Root
 

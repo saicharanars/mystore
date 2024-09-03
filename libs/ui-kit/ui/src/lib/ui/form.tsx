@@ -11,8 +11,8 @@ import {
   useFormContext,
 } from 'react-hook-form';
 
-import { cn } from '@nx-next-shadcn-ui-starter/ui-kit/util';
-import { Label } from '@nx-next-shadcn-ui-starter/ui-kit/ui/lib/ui/label';
+import { cn } from '@ecommerce/ui-kit/util';
+import { Label } from '@ecommerce/ui-kit/ui/lib/ui/label';
 
 const Form = FormProvider;
 

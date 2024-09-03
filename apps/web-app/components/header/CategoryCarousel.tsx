@@ -1,11 +1,8 @@
 'use client';
 import React from 'react';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem as BaseCarouselItem,
-} from '@nx-next-shadcn-ui-starter/ui-kit/ui';
+
 import { LampFloor, Laptop, Shirt, Armchair } from 'lucide-react';
+import { Carousel, CarouselContent,CarouselItem as BaseCarouselItem  } from '@ecommerce/ui-kit/ui';
 
 interface CarouselItemProps {
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;

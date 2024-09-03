@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Drawer as DrawerPrimitive } from "vaul"
 
-import { cn } from "@nx-next-shadcn-ui-starter/ui-kit/util"
+import { cn } from "@ecommerce/ui-kit/util"
 
 const Drawer = ({
   shouldScaleBackground = true,

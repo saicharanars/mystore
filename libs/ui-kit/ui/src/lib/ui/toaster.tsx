@@ -5,8 +5,8 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "@nx-next-shadcn-ui-starter/ui-kit/ui/lib/ui/toast"
-import { useToast } from "@nx-next-shadcn-ui-starter/ui-kit/ui/lib/ui/use-toast"
+} from "@ecommerce/ui-kit/ui/lib/ui/toast"
+import { useToast } from "@ecommerce/ui-kit/ui/lib/ui/use-toast"
 
 export function Toaster() {
   const { toasts } = useToast()

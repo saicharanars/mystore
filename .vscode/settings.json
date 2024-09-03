@@ -1,0 +1,19 @@
+{
+  "files.maxMemoryForLargeFilesMB": 4096,
+  "editor.formatOnSave": true,
+  // File Exclusions
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.git": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/.vscode": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.git": true,
+    "**/dist": true,
+    "**/build": true
+  },
+  "typescript.tsserver.log": "verbose",
+}

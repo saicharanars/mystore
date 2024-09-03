@@ -16,6 +16,8 @@ const nextConfig = {
   images: {
     domains: ['www.mystore.in'],
   },
+  
+  
 };
 
 const plugins = [

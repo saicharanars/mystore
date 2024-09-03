@@ -1,5 +1,5 @@
 {
-  "name": "@nx-next-shadcn-ui-starter/ui-kit/util",
+  "name": "@ecommerce/ui-kit/util",
   "version": "0.0.1",
   "dependencies": {
     "@swc/helpers": "~0.5.2"

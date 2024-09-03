@@ -11,3 +11,4 @@ export type User = z.infer<typeof schema>;
 export function types(): string {
   return 'types';
 }
+export * from "./user"

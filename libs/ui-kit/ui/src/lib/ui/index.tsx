@@ -10,3 +10,6 @@ export * from './checkbox';
 export * from './slider';
 export * from './breadcrumb';
 export * from './carousel';
+export * from './dialog';
+export * from './dropdown-menu';
+export * from './avatar';

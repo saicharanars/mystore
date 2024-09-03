@@ -10,7 +10,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@nx-next-shadcn-ui-starter/ui-kit/ui';
+} from '@ecommerce/ui-kit/ui';
 import SelectFilters from '../../components/filters/SelectFilters';
 
 const filterOptions = {

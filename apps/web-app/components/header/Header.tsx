@@ -10,8 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
   Button,
-} from '@nx-next-shadcn-ui-starter/ui-kit/ui';
+} from '@ecommerce/ui-kit/ui';
 import { Sidebar } from './Sidebar';
+import Accountbutton from './Accountbutton';
 
 const Header = () => {
   return (
@@ -35,7 +36,8 @@ const Header = () => {
         <Button className="  rounded-lg   hidden md:block ">
           Sell on Mystore
         </Button>
-        <User2Icon />
+        <Accountbutton />
+
         <ShoppingCartIcon />
       </div>
       <div className="col-span-2 p-2 my-auto">

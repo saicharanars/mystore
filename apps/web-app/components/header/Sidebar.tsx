@@ -1,5 +1,5 @@
-import { Input, Button } from '@nx-next-shadcn-ui-starter/ui-kit/ui';
-import { Label } from '@nx-next-shadcn-ui-starter/ui-kit/ui/lib/ui/label';
+import { Input, Button } from '@ecommerce/ui-kit/ui';
+import { Label } from '@ecommerce/ui-kit/ui/lib/ui/label';
 import {
   SheetTrigger,
   SheetContent,
@@ -9,7 +9,7 @@ import {
   SheetFooter,
   SheetClose,
   Sheet,
-} from '@nx-next-shadcn-ui-starter/ui-kit/ui/lib/ui/sheet';
+} from '@ecommerce/ui-kit/ui/lib/ui/sheet';
 import { Menu } from 'lucide-react';
 
 export function Sidebar() {

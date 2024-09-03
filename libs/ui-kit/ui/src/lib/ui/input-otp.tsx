@@ -2,7 +2,7 @@ import * as React from "react"
 import { DashIcon } from "@radix-ui/react-icons"
 import { OTPInput, OTPInputContext } from "input-otp"
 
-import { cn } from "@nx-next-shadcn-ui-starter/ui-kit/util"
+import { cn } from "@ecommerce/ui-kit/util"
 
 const InputOTP = React.forwardRef<
   React.ElementRef<typeof OTPInput>,
