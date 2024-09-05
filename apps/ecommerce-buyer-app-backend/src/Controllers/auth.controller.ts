@@ -67,6 +67,7 @@ const signin = async (req: Request, res: Response) => {
     const token = await generateToken({
       id: user.id,
       email: user.email,
+      role: user.role,
     });
 
     res.status(StatusCodes.OK).json({

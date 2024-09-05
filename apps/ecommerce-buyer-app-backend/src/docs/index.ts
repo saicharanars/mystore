@@ -14,14 +14,17 @@ import {
   validationerrorSchema,
   errorschema,
   signinDto,
+  createProductDto,
+  productResponse,
+  editProductDto,
+  productFiltersDto,
 } from '@ecommerce/types';
 
 extendZodWithOpenApi(z);
 
-const authregistry = new OpenAPIRegistry();
+const mystoreregistry = new OpenAPIRegistry();
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const bearerAuth = authregistry.registerComponent(
+const bearerAuth = mystoreregistry.registerComponent(
   'securitySchemes',
   'bearerAuth',
   {
@@ -30,8 +33,7 @@ const bearerAuth = authregistry.registerComponent(
     bearerFormat: 'JWT',
   }
 );
-// Register paths with security
-authregistry.registerPath({
+mystoreregistry.registerPath({
   method: 'post',
   path: '/auth/signup',
   description: 'Signup a new user',
@@ -83,7 +85,7 @@ authregistry.registerPath({
     },
   },
 });
-authregistry.registerPath({
+mystoreregistry.registerPath({
   method: 'post',
   path: '/auth/signin',
   description: 'Sign in an existing user',
@@ -119,6 +121,7 @@ authregistry.registerPath({
         },
       },
     },
+
     408: {
       description: 'User does not exist or password is incorrect',
       content: {
@@ -132,8 +135,217 @@ authregistry.registerPath({
   },
 });
 
+// Create a new OpenAPI registry for product-related routes
+
+mystoreregistry.registerPath({
+  method: 'post',
+  path: '/products',
+  description: 'Create a new product',
+  summary: 'Create product route for sellers',
+  request: {
+    body: {
+      content: {
+        'application/json': {
+          schema: createProductDto,
+        },
+      },
+    },
+  },
+  responses: {
+    201: {
+      description: 'Product created successfully',
+      content: {
+        'application/json': {
+          schema: productResponse,
+        },
+      },
+    },
+    400: {
+      description: 'Validation error or bad request',
+      content: {
+        'application/json': {
+          schema: validationerrorSchema,
+        },
+      },
+    },
+    500: {
+      description: 'Internal server error',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Internal server error' }),
+          }),
+        },
+      },
+    },
+  },
+});
+
+mystoreregistry.registerPath({
+  method: 'delete',
+  path: '/products/{productId}',
+  description: 'Delete an existing product',
+  summary: 'Delete product route for sellers',
+
+  request: {
+    params: z.object({
+      procdutId: z.string().uuid().openapi({ example: 'mglb,figji1' }),
+    }),
+  },
+
+  responses: {
+    200: {
+      description: 'Product deleted successfully',
+      content: {
+        'application/json': {
+          schema: z.object({
+            data: productResponse,
+            message: z
+              .string()
+              .openapi({ example: 'Product deleted successfully' }),
+          }),
+        },
+      },
+    },
+    404: {
+      description: 'Product not found',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Product not found' }),
+          }),
+        },
+      },
+    },
+    400: {
+      description: 'Error occurred in body, params, or query',
+      content: {
+        'application/json': {
+          schema: validationerrorSchema,
+        },
+      },
+    },
+    500: {
+      description: 'Internal server error',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Internal server error' }),
+          }),
+        },
+      },
+    },
+  },
+});
+
+mystoreregistry.registerPath({
+  method: 'patch',
+  path: '/products/{productId}',
+  description: 'Update an existing product',
+  summary: 'Update product route for sellers',
+
+  request: {
+    params: z.object({
+      procdutId: z.string().uuid().openapi({ example: 'mglb,figji1' }),
+    }),
+    body: {
+      content: {
+        'application/json': {
+          schema: editProductDto,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: 'Product updated successfully',
+      content: {
+        'application/json': {
+          schema: z.object({
+            data: productResponse,
+            message: z
+              .string()
+              .openapi({ example: 'Product updated successfully' }),
+          }),
+        },
+      },
+    },
+    400: {
+      description: 'Error occurred in body, params, or query',
+      content: {
+        'application/json': {
+          schema: validationerrorSchema,
+        },
+      },
+    },
+    404: {
+      description: 'Product not found',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Product not found' }),
+          }),
+        },
+      },
+    },
+    500: {
+      description: 'Internal server error',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Internal server error' }),
+          }),
+        },
+      },
+    },
+  },
+});
+
+mystoreregistry.registerPath({
+  method: 'get',
+  path: '/products',
+  description: 'Retrieve all products',
+  summary: 'Get products route for buyers and sellers',
+  request: {
+    query: productFiltersDto,
+  },
+  responses: {
+    200: {
+      description: 'Products retrieved successfully',
+      content: {
+        'application/json': {
+          schema: z.object({
+            data: productResponse.array(),
+            message: z
+              .string()
+              .openapi({ example: 'Products retrieved successfully' }),
+          }),
+        },
+      },
+    },
+    400: {
+      description: 'Error occurred in body, params, or query',
+      content: {
+        'application/json': {
+          schema: validationerrorSchema,
+        },
+      },
+    },
+    500: {
+      description: 'Internal server error',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Internal server error' }),
+          }),
+        },
+      },
+    },
+  },
+});
+
 function getOpenApiDocumentation() {
-  const generator = new OpenApiGeneratorV3(authregistry.definitions);
+  const generator = new OpenApiGeneratorV3(mystoreregistry.definitions);
 
   return generator.generateDocument({
     openapi: '3.0.0',

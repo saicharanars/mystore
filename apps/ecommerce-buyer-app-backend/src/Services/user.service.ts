@@ -1,12 +1,24 @@
-import { User } from "@ecommerce/db-postgres";
-import { createuser } from "@ecommerce/types";
+import { Product, User } from '@ecommerce/db-postgres';
+import { createuser } from '@ecommerce/types';
 
 async function findUserByEmail(email: string) {
   try {
     return await User.findOne({
       where: {
-        email: email
-      }
+        email: email,
+      },
+    });
+  } catch (error) {
+    throw new Error(`Error finding user by email: ${error.message}`);
+  }
+}
+async function finduserbyId(id: string) {
+  try {
+    return await User.findOne({
+      where: {
+        id: id,
+      },
+      include: [Product],
     });
   } catch (error) {
     throw new Error(`Error finding user by email: ${error.message}`);
@@ -24,7 +36,9 @@ async function createUser(createUser: createuser) {
 async function removeUser({ id, email }: { id?: string; email?: string }) {
   try {
     if (!id && !email) {
-      throw new Error('You must provide either an id or email to delete a user.');
+      throw new Error(
+        'You must provide either an id or email to delete a user.'
+      );
     }
 
     // Construct the deletion criteria based on provided arguments
@@ -32,7 +46,7 @@ async function removeUser({ id, email }: { id?: string; email?: string }) {
 
     // Perform the deletion
     const result = await User.destroy({
-      where: deleteCriteria
+      where: deleteCriteria,
     });
 
     if (result === 0) {
@@ -46,4 +60,4 @@ async function removeUser({ id, email }: { id?: string; email?: string }) {
   }
 }
 
-export { findUserByEmail, createUser, removeUser };
+export { findUserByEmail, finduserbyId, createUser, removeUser };

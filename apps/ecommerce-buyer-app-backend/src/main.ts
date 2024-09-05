@@ -10,6 +10,7 @@ import swaggerUi from 'swagger-ui-express';
 import * as yaml from 'yaml';
 import * as fs from 'fs/promises';
 import cors from 'cors';
+import product from './Routes/product.route';
 // Use fs/promises for async/await
 const app = express();
 app.use(express.json());
@@ -25,79 +26,10 @@ app.use(cors(corsOptions));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.use('/auth', authroute);
+app.use('/product', product);
 
 const port = process.env.PORT || 3001;
 
-// async function createDummyData() {
-//   // Create users
-//   const user1 = await UserModel.create({
-//     name: 'John Doe',
-//     email: 'john.do@example.com',
-//     password: 'password123',
-//     role: 'customer',
-//   });
-
-//   const user2 = await UserModel.create({
-//     name: 'Jane Smith',
-//     email: 'jane.smh@example.com',
-//     password: 'password456',
-//     role: 'seller',
-//   });
-
-//   // Create locations
-//   const location1 = await LocationModel.create({
-//     address: '123 Main St',
-//     city: 'New York',
-//     state: 'NY',
-//     pincode: 10001,
-//   });
-
-//   const location2 = await LocationModel.create({
-//     address: '456 Elm St',
-//     city: 'Los Angeles',
-//     state: 'CA',
-//     pincode: 90001,
-//   });
-
-//   // Associate users with locations
-//   await UserLocationModel.create({
-//     userId: user1.id,
-//     locationId: location1.id,
-//   });
-
-//   await UserLocationModel.create({
-//     userId: user2.id,
-//     locationId: location2.id,
-//   });
-
-//   console.log('Dummy data created successfully');
-// }
-
-// async function performDummyQueries() {
-//   // Query all users
-//   const allUsers = await UserModel.findAll();
-//   console.log('All users:', allUsers.map(user => user.toJSON()));
-
-//   // Query user by email
-//   const userByEmail = await UserModel.findOne({ where: { email: 'john.doe@example.com' } });
-//   console.log('User by email:', userByEmail?.toJSON());
-
-//   // Query all locations
-//   const allLocations = await LocationModel.findAll();
-//   console.log('All locations:', allLocations.map(location => location.toJSON()));
-
-//   // Query users with their locations
-//   const usersWithLocations = await UserModel.findAll({
-//     include: [{ model: LocationModel, through: { attributes: [] } }],
-//   });
-//   console.log('Users with locations:', usersWithLocations.map(user => user.toJSON()));
-
-//   // Query locations with their users
-//   const locationsWithUsers = await LocationModel.findAll({
-//     include: [{ model: UserModel, through: { attributes: [] } }],
-//   });
-//   console.log('Locations with users:', locationsWithUsers.map(location => location.toJSON()));
-// }
 const outputPath = path.join(__dirname, 'openapi-docs.yaml');
 app.get('/api-docs/swagger.json', async (req, res) => {
   try {

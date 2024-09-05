@@ -19,17 +19,16 @@ const validateRequest = (schemas: ValidationSchemas) => {
       if (schemas.params) {
         schemas.params.parse(req.params);
       }
-      next(); // Proceed if validation passes
+      next();
     } catch (error) {
       if (error instanceof ZodError) {
-        // Simplify the error response here
         const simplifiedErrors = error.errors.map((err) => ({
           message: err.message,
-          path: err.path.join('.'), // Optional: format the path
+          path: err.path.join('.'),
         }));
         return res.status(400).json({ errors: simplifiedErrors });
       }
-      next(error); // Pass other errors to the error handler
+      next(error);
     }
   };
 };
