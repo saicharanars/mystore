@@ -1,6 +1,6 @@
 import React from 'react';
-import Productcarousel from './ProductCarousel';
-import { Button } from '@nx-next-shadcn-ui-starter/ui-kit/ui';
+import Productcarousel from './Productcarousel';
+import { Button } from '@ecommerce/ui-kit/ui';
 
 interface Featuredproductsprops {
   heading: string;

@@ -4,7 +4,7 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-} from '@nx-next-shadcn-ui-starter/ui-kit/ui';
+} from '@ecommerce/ui-kit/ui';
 import ProductCard from './ProductCard';
 
 const Productcarousel: React.FC = () => {

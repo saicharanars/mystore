@@ -5,11 +5,11 @@ import {
   CarouselContent,
   CarouselItem,
 
-} from '@nx-next-shadcn-ui-starter/ui-kit/ui';
+} from '@ecommerce/ui-kit/ui';
 import {
   Card,
   CardContent,
-} from '@nx-next-shadcn-ui-starter/ui-kit/ui/lib/ui/card';
+} from '@ecommerce/ui-kit/ui/lib/ui/card';
 import Image from 'next/image';
 
 const images = [

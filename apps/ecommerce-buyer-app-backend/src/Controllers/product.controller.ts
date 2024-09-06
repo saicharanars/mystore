@@ -106,15 +106,18 @@ const editproduct = async (req: Request, res: Response) => {
 const findallproducts = async (req: Request, res: Response) => {
   try {
     const filters: productsFiltersType = req.query;
-    const tags = filters.tags.split(',');
+    let tags;
+    if (filters && filters.tags) {
+      tags = filters.tags.split(',');
+    }
     const updatedfilters = { ...filters, tags };
     console.log(filters, tags);
     const result = await findAllProducts(updatedfilters);
     const safeUserData = productsResponse.parse(result);
 
-    res.status(StatusCodes.CREATED).json({
+    res.status(StatusCodes.OK).json({
       data: safeUserData,
-      message: getReasonPhrase(StatusCodes.CREATED),
+      message: getReasonPhrase(StatusCodes.OK),
     });
   } catch (error) {
     console.error('Signup error:', error); // Log error for debugging

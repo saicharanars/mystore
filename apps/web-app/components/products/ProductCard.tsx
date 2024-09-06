@@ -1,13 +1,14 @@
-import { Button } from '@nx-next-shadcn-ui-starter/ui-kit/ui';
+import { createProductType, productcardResponseType } from '@ecommerce/types';
+import { Button } from '@ecommerce/ui-kit/ui';
 import {
   Card,
   CardHeader,
   CardFooter,
   CardContent,
-} from '@nx-next-shadcn-ui-starter/ui-kit/ui/lib/ui/card';
+} from '@ecommerce/ui-kit/ui/lib/ui/card';
 import Image from 'next/image';
 
-const ProductCard = () => {
+const ProductCard: React.FC<productcardResponseType> = (createProductType) => {
   return (
     <Card className=" rounded-none shadow-lg">
       <CardHeader className="p-0 w-full">
@@ -23,17 +24,18 @@ const ProductCard = () => {
         />
       </CardHeader>
       <CardContent className="flex flex-col justify-start gap-2">
-        <p className="  text-lg text-balance line-clamp-2 p-0">
-          The BagMarket Decent school bag for Boys and girls Printed 34 Liter
-          Boys and girls Boys and girls
+        <p className="  text-lg text-balance line-clamp-1 p-0">
+          {createProductType.name}
         </p>
         <p className="font-sans text-sm font-normal tracking-normal text-muted-foreground">
-          bags
+          {createProductType.category}
         </p>
         <div className="flex  justify-between p-0  line-clamp-1 ">
-          <p className="  text-sm text-balance line-clamp-1 ">₹499</p>
           <p className="  text-sm text-balance line-clamp-1 ">
-            ₹1599
+            ₹{createProductType.price}
+          </p>
+          <p className="  text-sm text-balance line-clamp-1 ">
+            ₹{createProductType.compare_price}
             <span className=" text-xs font-normal line-clamp-1 text-green-300 tracking-normal text-muted-foreground">
               (67% off)
             </span>

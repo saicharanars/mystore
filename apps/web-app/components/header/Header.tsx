@@ -26,9 +26,9 @@ const Header = () => {
           alt="Mystore"
           title="Mystore"
           width={125}
-          height={32}
+          height={24}
           src="https://www.mystore.in/s/62ea2c599d1398fa16dbae0a/636c8d9521cd491a8c9a4723/mystore-logo-blue-200x80.png"
-          className="h-auto my-auto"
+          className="h-auto my-auto p-2 md:p-1"
           ms-data-valign="middle"
         />
       </div>

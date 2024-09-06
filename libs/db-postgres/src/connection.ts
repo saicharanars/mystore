@@ -1,8 +1,9 @@
 import { Sequelize } from 'sequelize-typescript';
-import "dotenv/config"
+import 'dotenv/config';
 import User from './models/user';
 import Location from './models/location';
 import UserLocation from './models/userLocation';
+import Product from './models/product';
 
 const {
   DB_NAME,
@@ -19,7 +20,7 @@ const connection = new Sequelize({
   password: DB_PASSWORD,
   host: DB_HOST,
   port: parseInt(DB_PORT, 10),
-  models: [User, Location, UserLocation], // Make sure all models are correctly imported
+  models: [User, Location, UserLocation, Product], // Make sure all models are correctly imported
   logging: console.log,
 });
 

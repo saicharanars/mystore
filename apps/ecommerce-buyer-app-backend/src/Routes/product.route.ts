@@ -32,7 +32,7 @@ product.delete(
   deleteproduct
 );
 product.patch(
-  '/update/:productId',
+  '/:productId',
   validateRequest({
     params: z.object({
       productId: z.string().uuid(),

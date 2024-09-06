@@ -2,9 +2,8 @@ import {
   createProductType,
   editProductType,
   productFiltersServiceType,
-  productsFiltersType,
 } from '@ecommerce/types';
-import { Product, User } from '@ecommerce/db-postgres';
+import { Product } from '@ecommerce/db-postgres';
 import { Op, WhereOptions } from 'sequelize';
 
 async function createProduct(createproduct: createProductType, userid: string) {
@@ -57,7 +56,7 @@ async function deleteProduct(productid: string, userid: string) {
 }
 
 async function findAllProducts(filters: productFiltersServiceType) {
-  const { category, tags, minprice, maxprice } = filters;
+  const { category, tags, minprice, maxprice, offset, limit } = filters;
 
   const whereClause: WhereOptions = {};
 
@@ -74,16 +73,21 @@ async function findAllProducts(filters: productFiltersServiceType) {
   if (minprice || maxprice) {
     whereClause.price = {};
     if (minprice) {
-      whereClause.price[Op.gte] = minprice;
+      whereClause.price[Op.gte] = parseInt(minprice);
     }
     if (maxprice) {
-      whereClause.price[Op.lte] = maxprice;
+      whereClause.price[Op.lte] = parseInt(maxprice);
     }
   }
 
-  return await Product.findAll({
+  const { count, rows } = await Product.findAndCountAll({
     where: whereClause,
+    offset: parseInt(offset) | 0,
+    limit: parseInt(limit) | 10,
   });
+  const res = { rows, count };
+  console.log(res);
+  return res;
 }
 async function findById(productId: string) {
   try {

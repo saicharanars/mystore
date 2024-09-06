@@ -3,6 +3,7 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { error } from 'console';
 import { access } from 'fs';
 extendZodWithOpenApi(z);
+const userRole = z.enum(['customer', 'seller']);
 const createuserDto = z.object({
   name: z.string().openapi({ example: 'myusername' }),
   email: z.string().email().openapi({ example: 'myuser@example.com' }),
@@ -14,7 +15,7 @@ const createuserDto = z.object({
     .regex(/[A-Z]/, 'Password must include at least one uppercase letter')
     .regex(/\d/, 'Password must include at least one number')
     .openapi({ example: 'Ghajvh12563' }),
-  role: z.enum(['customer', 'seller']),
+  role: userRole,
 });
 const signinDto = createuserDto.omit({ name: true, role: true });
 const signinresponseschema = z.object({
@@ -43,6 +44,12 @@ const validationerrorSchema = z
     ),
   })
   .openapi({ description: 'Validation error response' });
+
+const usertokendto = createuserResponse
+  .omit({ name: true })
+  .extend({ iat: z.number(), exp: z.number() });
+type usertokentype = z.infer<typeof usertokendto>;
+type userRoletype = z.infer<typeof userRole>;
 type errorschemaType = z.infer<typeof errorschema>;
 type signinresponseschemaType = z.infer<typeof signinresponseschema>;
 type validationerrorSchemaType = z.infer<typeof validationerrorSchema>;
@@ -53,6 +60,7 @@ export {
   createuser,
   createuserDto,
   errorschema,
+  userRoletype,
   errorschemaType,
   signinresponseschema,
   signinresponseschemaType,
@@ -61,5 +69,7 @@ export {
   validationerrorSchema,
   validationerrorSchemaType,
   signinuser,
+  usertokentype,
   signinDto,
+  userRole,
 };

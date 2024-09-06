@@ -1,41 +1,123 @@
-'use client';
-import React, { ReactNode, useState } from 'react';
-import { CaretSortIcon } from '@radix-ui/react-icons';
+import { productsFiltersType } from '@ecommerce/types';
 import {
   Button,
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@nx-next-shadcn-ui-starter/ui-kit/ui';
-import {
-  Card,
-  CardContent,
-} from '@nx-next-shadcn-ui-starter/ui-kit/ui/lib/ui/card';
+  Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@ecommerce/ui-kit/ui';
+import { Label } from '@ecommerce/ui-kit/ui/lib/ui/label';
+import { useState, FormEvent } from 'react';
 
-interface FiltersProps {
-  children: ReactNode;
+interface SidebarFiltersProps {
+  filterParams: productsFiltersType;
+  setFilterParams: (params: productsFiltersType) => void;
 }
-// Main Filters component
-const Filters: React.FC<FiltersProps> = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+
+const categories = [
+  'fashion',
+  'electronics',
+  'mobiles',
+  'grocery',
+  'food',
+  'home',
+  'kitchen',
+  'Beauty',
+];
+
+const Filters: React.FC<SidebarFiltersProps> = ({
+  filterParams,
+  setFilterParams,
+}) => {
+  const [category, setCategory] = useState(filterParams.category || 'all');
+  const [minPrice, setMinPrice] = useState<string | number>(
+    filterParams.minprice || ''
+  );
+  const [maxPrice, setMaxPrice] = useState<string | number>(
+    filterParams.maxprice || ''
+  );
+  const [tags, setTags] = useState(filterParams.tags || '');
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    const updatedFilters: productsFiltersType = {
+      ...filterParams,
+      category: category === 'all' ? undefined : category,
+    };
+
+    if (minPrice !== '') {
+      updatedFilters.minprice = String(minPrice);
+    } else {
+      delete updatedFilters.minprice;
+    }
+
+    if (maxPrice !== '') {
+      updatedFilters.maxprice = String(maxPrice);
+    } else {
+      delete updatedFilters.maxprice;
+    }
+
+    if (tags !== '') {
+      updatedFilters.tags = tags;
+    } else {
+      delete updatedFilters.tags;
+    }
+
+    setFilterParams(updatedFilters);
+  };
 
   return (
-    <Collapsible
-      open={isOpen}
-      onOpenChange={setIsOpen}
-      className="w-full space-y-2"
-    >
-      <div className="flex items-center justify-between space-x-4 px-4 ">
-        <h4 className="text-sm font-semibold">Filters</h4>
-        <CollapsibleTrigger asChild>
-          <Button variant="ghost" size="sm">
-            <CaretSortIcon className="h-4 w-4" />
-            <span className="sr-only">Toggle</span>
-          </Button>
-        </CollapsibleTrigger>
+    <form onSubmit={handleSubmit} className="space-y-4 p-4 gap-2">
+      <div>
+        <h1 className="text-xl font-semibold">Filters</h1>
+
+        <Label htmlFor="category">Category</Label>
+        <Select onValueChange={setCategory} value={category}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All categories</SelectItem>
+            {categories.map((item, index) => (
+              <SelectItem key={index} value={item}>
+                {item}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Label htmlFor="minprice">Min Price</Label>
+        <Input
+          type="number"
+          placeholder="Minimum price"
+          value={minPrice}
+          onChange={(e) => setMinPrice(e.target.value)}
+        />
+
+        <Label htmlFor="maxprice">Max Price</Label>
+        <Input
+          type="number"
+          placeholder="Maximum price"
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(e.target.value)}
+        />
+
+        <Label htmlFor="tags">Tags </Label>
+        <Input
+          type="text"
+          placeholder="Enter tags, e.g., trendy, new"
+          value={tags}
+          onChange={(e) => setTags(e.target.value)}
+        />
       </div>
-      <CollapsibleContent className="space-y-4">{children}</CollapsibleContent>
-    </Collapsible>
+
+      <Button type="submit" className="w-full bg-primary text-white">
+        Apply Filters
+      </Button>
+    </form>
   );
 };
 
