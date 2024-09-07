@@ -13,6 +13,7 @@ import {
   deleteProduct,
   editProduct,
   findAllProducts,
+  findById,
 } from '../Services/product.service';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 
@@ -128,5 +129,37 @@ const findallproducts = async (req: Request, res: Response) => {
     });
   }
 };
+const findProduct = async (req: Request, res: Response) => {
+  try {
+    const productId: string = req.params.productId;
 
-export { createproduct, editproduct, deleteproduct, findallproducts };
+    const result = await findById(productId);
+    if (result === null) {
+      return res.status(StatusCodes.NOT_FOUND).json({
+        message: 'Product not found',
+      });
+    }
+    console.log(result);
+    const safeUserData = productResponse.parse(result);
+
+    res.status(StatusCodes.OK).json({
+      data: safeUserData,
+      message: getReasonPhrase(StatusCodes.OK),
+    });
+  } catch (error) {
+    console.error('Signup error:', error); // Log error for debugging
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: {
+        message: 'An error occurred while processing your request.',
+      },
+    });
+  }
+};
+
+export {
+  createproduct,
+  editproduct,
+  deleteproduct,
+  findProduct,
+  findallproducts,
+};

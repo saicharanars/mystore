@@ -11,6 +11,7 @@ import {
   deleteproduct,
   editproduct,
   findallproducts,
+  findProduct,
 } from '../Controllers/product.controller';
 import { z } from 'zod';
 
@@ -49,4 +50,14 @@ product.get(
   }),
   findallproducts
 );
+product.get(
+  '/:productId',
+  validateRequest({
+    params: z.object({
+      productId: z.string().uuid(),
+    }),
+  }),
+  findProduct
+);
+
 export default product;

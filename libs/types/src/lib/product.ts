@@ -1,9 +1,8 @@
 import { z } from 'zod';
 
-const additionalPropertiesSchema = z.record(
-  z.string(),
-  z.union([z.string(), z.number()])
-);
+const additionalPropertiesSchema = z
+  .record(z.string(), z.union([z.string(), z.number()]))
+  .nullable();
 const createProductDto = z.object({
   name: z.string(),
   category: z.string(),
@@ -12,7 +11,7 @@ const createProductDto = z.object({
   compare_price: z.number(),
   inventory_quantity: z.number(),
   tags: z.array(z.string()),
-  additionalproperties: additionalPropertiesSchema.optional(),
+  additionproperties: additionalPropertiesSchema.optional(),
 });
 const productResponse = createProductDto.extend({
   id: z.string().uuid(),
@@ -21,7 +20,7 @@ const productcard = productResponse.omit({
   description: true,
   inventory_quantity: true,
   tags: true,
-  additionalproperties: true,
+  additionproperties: true,
 });
 const productsResponse = z.object({
   rows: z.array(productResponse),

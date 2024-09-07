@@ -92,6 +92,9 @@ async function findAllProducts(filters: productFiltersServiceType) {
 async function findById(productId: string) {
   try {
     const res = await Product.findByPk(productId);
+    if (!res) {
+      return null;
+    }
     return res;
   } catch (error) {
     throw new Error(`Error finding product: ${error.message}`);

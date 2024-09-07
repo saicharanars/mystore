@@ -23,6 +23,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@ecommerce/ui-kit/ui';
+import ProductCardSkeleton from './ProductCardSkelton';
 
 const filterOptions = {
   name: 'Fruits',
@@ -147,12 +148,13 @@ function Shop() {
           <div className="col-span-4 md:col-span-3 gap-2">
             <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-max justify-between gap-2">
               {isLoading ? (
-                <LoaderCircle
-                  strokeWidth="3"
-                  className="text-blue-700 h-8 w-8 m-auto animate-spin col-span-full"
-                />
+                Array.from({ length: 8 }).map((_, index) => (
+                  <ProductCardSkeleton key={index} />
+                ))
               ) : error ? (
-                <div className="col-span-full">Error loading products</div>
+                <div className="col-span-full">
+                  Error loading products{JSON.stringify(error)}
+                </div>
               ) : products && products.rows.length > 0 ? (
                 products.rows.map((item) => (
                   <ProductCard

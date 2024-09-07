@@ -52,7 +52,6 @@ export const userApi = createApi({
           typeof baseQueryReturnValue === 'object' &&
           'data' in baseQueryReturnValue
         ) {
-          // This is a FetchBaseQueryError
           const errorData = baseQueryReturnValue.data as
             | errorschemaType
             | validationerrorSchemaType;
@@ -63,7 +62,6 @@ export const userApi = createApi({
             return errorData.error;
           }
         } else {
-          // Return a default message if the error data is not in the expected format
           return { message: 'An unexpected error occurred' };
         }
       },
@@ -74,8 +72,6 @@ export const userApi = createApi({
         method: 'POST',
         body: user,
       }),
-
-      // The
 
       transformErrorResponse(
         baseQueryReturnValue: FetchBaseQueryError | SerializedError,
@@ -98,14 +94,11 @@ export const userApi = createApi({
             return errorData.error;
           }
         } else {
-          // Return a default message if the error data is not in the expected format
           return { message: 'An unexpected error occurred' };
         }
       },
     }),
   }),
 });
-
-// Centralized error transformation function
 
 export const { useSignUpMutation, useSignInMutation } = userApi;
