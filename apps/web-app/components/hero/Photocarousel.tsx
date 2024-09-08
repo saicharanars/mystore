@@ -1,15 +1,9 @@
 import * as React from 'react';
-
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-
+  CustomCarousel,
+  CustomCarouselContent,
+  CustomCarouselItem,
 } from '@ecommerce/ui-kit/ui';
-import {
-  Card,
-  CardContent,
-} from '@ecommerce/ui-kit/ui/lib/ui/card';
 import Image from 'next/image';
 
 const images = [
@@ -21,24 +15,24 @@ const images = [
 
 export function Photocarousel() {
   return (
-    <Carousel opts={{ loop: true }} className="w-full p-2">
-      <CarouselContent>
+    <CustomCarousel opts={{ loop: true }} className="w-full p-2">
+      <CustomCarouselContent>
         {images.map((item, index) => (
-          <CarouselItem key={index}>
-            <div className="p-1  md:p-4 mt-2 relative bg-slate-200 w-full h-24 md:h-52 lg:h-96">
+          <CustomCarouselItem key={index}>
+            <div className="p-1 md:p-4 mt-2 relative bg-slate-200 w-full h-24 md:h-52 lg:h-96">
               <Image
                 quality={40}
                 fill
                 style={{
-                  objectFit: 'scale-down',
+                  objectFit: 'fill',
                 }}
                 src={item}
-                alt={item}
+                alt={`Carousel image ${index + 1}`}
               />
             </div>
-          </CarouselItem>
+          </CustomCarouselItem>
         ))}
-      </CarouselContent>
-    </Carousel>
+      </CustomCarouselContent>
+    </CustomCarousel>
   );
 }

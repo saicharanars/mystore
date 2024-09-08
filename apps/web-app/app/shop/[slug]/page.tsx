@@ -71,7 +71,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
                         quality={40}
                         fill
                         style={{
-                          objectFit: 'scale-down',
+                          objectFit: 'contain',
                         }}
                         src="https://www.mystore.in/s/62ea2c599d1398fa16dbae0a/66bf4751f0eac800de9da40b/retailez-1920x1080.png"
                         alt="hello"
@@ -122,7 +122,13 @@ const page = async ({ params }: { params: { slug: string } }) => {
             <span className=" text-green-500">12% OFF</span>
           </p>
           <Separator className="my-4" />
-          <AddButton />
+          <AddButton
+            name={res.name}
+            id={res.id}
+            price={res.price}
+            quantity={0}
+            inventory_quantity={res.inventory_quantity}
+          />
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
               <AccordionTrigger className=" capitalize text-muted-foreground  text-lg">

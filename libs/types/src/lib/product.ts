@@ -22,6 +22,15 @@ const productcard = productResponse.omit({
   tags: true,
   additionproperties: true,
 });
+
+const cartproduct = productResponse
+  .pick({
+    id: true,
+    name: true,
+    price: true,
+    inventory_quantity: true,
+  })
+  .extend({ quantity: z.number() });
 const productsResponse = z.object({
   rows: z.array(productResponse),
   count: z.number(),
@@ -65,11 +74,14 @@ type productFiltersServiceType = z.infer<typeof productFiltersServiceDto>;
 type deleteproductResponseType = z.infer<typeof deleteproductResponse>;
 type productcardResponseType = z.infer<typeof productcard>;
 type productscardsResponseType = z.infer<typeof productcardsresponse>;
+type cartProductType = z.infer<typeof cartproduct>;
 export {
   createProductDto,
   editProductDto,
   createProductType,
   productcardsresponse,
+  cartProductType,
+  cartproduct,
   productscardsResponseType,
   editProductType,
   productResponse,

@@ -1,7 +1,8 @@
+'use client';
 import Image from 'next/image';
-import React from 'react';
+import React, { useContext } from 'react';
 
-import { Search, ShoppingCartIcon, User2Icon } from 'lucide-react';
+import { Search, ShoppingCart } from 'lucide-react';
 import {
   Input,
   Select,
@@ -13,8 +14,12 @@ import {
 } from '@ecommerce/ui-kit/ui';
 import { Sidebar } from './Sidebar';
 import Accountbutton from './Accountbutton';
+import Link from 'next/link';
+import CartContext from '../../store/context/cart';
 
 const Header = () => {
+  const { total_quantity } = useContext(CartContext);
+
   return (
     <div className="h-18 md:h-24 grid grid-cols-2 md:grid-cols-4 px-2 md:px-4 shadow-md">
       <div className="p-2  my-auto ml-3 flex justify-start gap-4">
@@ -37,8 +42,15 @@ const Header = () => {
           Sell on Mystore
         </Button>
         <Accountbutton />
-
-        <ShoppingCartIcon />
+        <Link href="/cart" className="relative inline-flex items-center p-2">
+          <span className="sr-only">Shopping Cart</span>
+          <ShoppingCart className="w-6 h-6" />
+          {total_quantity > 0 && (
+            <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-600 rounded-full">
+              {total_quantity}
+            </span>
+          )}
+        </Link>
       </div>
       <div className="col-span-2 p-2 my-auto">
         <div className="relative grid grid-cols-4 h-full rounded-full border-2  border-secondary">

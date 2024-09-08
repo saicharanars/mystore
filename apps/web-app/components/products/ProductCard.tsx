@@ -20,6 +20,9 @@ const ProductCard: React.FC<productcardResponseType> = (createProductType) => {
             title="Mystore"
             width={125}
             height={32}
+            style={{
+              objectFit: 'fill',
+            }}
             src="https://www.mystore.in/s/62ea2c599d1398fa16dbae0a/657f4354a5ffb6e03b970264/whatsapp-image-2023-12-02-at-15-36-13-420x420.jpeg"
             className="h-auto mx-auto"
             ms-data-valign="middle"

@@ -6,44 +6,47 @@ import useEmblaCarousel, {
 } from 'embla-carousel-react';
 
 import { cn } from '@ecommerce/ui-kit/util';
-import { Button } from '@ecommerce/ui-kit/ui/lib/ui/button';
+import { Button } from './button';
 
-type CarouselApi = UseEmblaCarouselType[1];
+type CustomCarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
 type CarouselOptions = UseCarouselParameters[0];
 type CarouselPlugin = UseCarouselParameters[1];
 
-type CarouselProps = {
+type CustomCarouselProps = {
   opts?: CarouselOptions;
   plugins?: CarouselPlugin;
   orientation?: 'horizontal' | 'vertical';
-  setApi?: (api: CarouselApi) => void;
+  setApi?: (api: CustomCarouselApi) => void;
 };
 
-type CarouselContextProps = {
+type CustomCarouselContextProps = {
   carouselRef: ReturnType<typeof useEmblaCarousel>[0];
   api: ReturnType<typeof useEmblaCarousel>[1];
   scrollPrev: () => void;
   scrollNext: () => void;
   canScrollPrev: boolean;
   canScrollNext: boolean;
-} & CarouselProps;
+} & CustomCarouselProps;
 
-const CarouselContext = React.createContext<CarouselContextProps | null>(null);
+const CustomCarouselContext =
+  React.createContext<CustomCarouselContextProps | null>(null);
 
-function useCarousel() {
-  const context = React.useContext(CarouselContext);
+function useCustomCarousel() {
+  const context = React.useContext(CustomCarouselContext);
 
   if (!context) {
-    throw new Error('useCarousel must be used within a <Carousel />');
+    throw new Error(
+      'useCustomCarousel must be used within a <CustomCarousel />'
+    );
   }
 
   return context;
 }
 
-const Carousel = React.forwardRef<
+const CustomCarousel = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & CarouselProps
+  React.HTMLAttributes<HTMLDivElement> & CustomCarouselProps
 >(
   (
     {
@@ -67,7 +70,7 @@ const Carousel = React.forwardRef<
     const [canScrollPrev, setCanScrollPrev] = React.useState(false);
     const [canScrollNext, setCanScrollNext] = React.useState(false);
 
-    const onSelect = React.useCallback((api: CarouselApi) => {
+    const onSelect = React.useCallback((api: CustomCarouselApi) => {
       if (!api) {
         return;
       }
@@ -120,7 +123,7 @@ const Carousel = React.forwardRef<
     }, [api, onSelect]);
 
     return (
-      <CarouselContext.Provider
+      <CustomCarouselContext.Provider
         value={{
           carouselRef,
           api: api,
@@ -143,17 +146,17 @@ const Carousel = React.forwardRef<
         >
           {children}
         </div>
-      </CarouselContext.Provider>
+      </CustomCarouselContext.Provider>
     );
   }
 );
-Carousel.displayName = 'Carousel';
+CustomCarousel.displayName = 'CustomCarousel';
 
-const CarouselContent = React.forwardRef<
+const CustomCarouselContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
-  const { carouselRef, orientation } = useCarousel();
+  const { carouselRef, orientation } = useCustomCarousel();
 
   return (
     <div ref={carouselRef} className="overflow-hidden">
@@ -169,13 +172,13 @@ const CarouselContent = React.forwardRef<
     </div>
   );
 });
-CarouselContent.displayName = 'CarouselContent';
+CustomCarouselContent.displayName = 'CustomCarouselContent';
 
-const CarouselItem = React.forwardRef<
+const CustomCarouselItem = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
-  const { orientation } = useCarousel();
+  const { orientation } = useCustomCarousel();
 
   return (
     <div
@@ -191,13 +194,13 @@ const CarouselItem = React.forwardRef<
     />
   );
 });
-CarouselItem.displayName = 'CarouselItem';
+CustomCarouselItem.displayName = 'CustomCarouselItem';
 
-const CarouselPrevious = React.forwardRef<
+const CustomCarouselPrevious = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, variant = 'outline', size = 'icon', ...props }, ref) => {
-  const { orientation, scrollPrev, canScrollPrev } = useCarousel();
+  const { orientation, scrollPrev, canScrollPrev } = useCustomCarousel();
 
   return (
     <Button
@@ -220,13 +223,13 @@ const CarouselPrevious = React.forwardRef<
     </Button>
   );
 });
-CarouselPrevious.displayName = 'CarouselPrevious';
+CustomCarouselPrevious.displayName = 'CustomCarouselPrevious';
 
-const CarouselNext = React.forwardRef<
+const CustomCarouselNext = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, variant = 'outline', size = 'icon', ...props }, ref) => {
-  const { orientation, scrollNext, canScrollNext } = useCarousel();
+  const { orientation, scrollNext, canScrollNext } = useCustomCarousel();
 
   return (
     <Button
@@ -249,13 +252,13 @@ const CarouselNext = React.forwardRef<
     </Button>
   );
 });
-CarouselNext.displayName = 'CarouselNext';
+CustomCarouselNext.displayName = 'CustomCarouselNext';
 
 export {
-  type CarouselApi,
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
+  type CustomCarouselApi,
+  CustomCarousel,
+  CustomCarouselContent,
+  CustomCarouselItem,
+  CustomCarouselPrevious,
+  CustomCarouselNext,
 };
