@@ -18,3 +18,5 @@ export * from './accordion';
 export * from './EmblaCarousel';
 export * from './skeleton';
 export * from './table';
+export * from './alert-dialog';
+export * from './alert';

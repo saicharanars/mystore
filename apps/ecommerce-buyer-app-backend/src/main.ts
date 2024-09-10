@@ -11,6 +11,7 @@ import * as yaml from 'yaml';
 import * as fs from 'fs/promises';
 import cors from 'cors';
 import product from './Routes/product.route';
+import order from './Routes/order.route';
 // Use fs/promises for async/await
 const app = express();
 app.use(express.json());
@@ -27,6 +28,7 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.use('/auth', authroute);
 app.use('/product', product);
+app.use('/order', order);
 
 const port = process.env.PORT || 3001;
 

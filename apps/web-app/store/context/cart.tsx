@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable no-case-declarations */
 'use client';
-
 import React, { createContext, useReducer, useCallback } from 'react';
 import { cartProductType } from '@ecommerce/types';
 
@@ -9,33 +8,39 @@ interface CartContextType {
   items: cartProductType[];
   totalOrderValue: number;
   total_quantity: number;
+  order_status: string;
   addItem: (product: cartProductType) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
+  updateOrderStatus: (status: string) => void;
 }
 
 const CartContext = createContext<CartContextType>({
   items: [],
   totalOrderValue: 0,
   total_quantity: 0,
+  order_status: '',
   addItem: () => {},
   removeItem: () => {},
   updateQuantity: () => {},
   clearCart: () => {},
+  updateOrderStatus: () => {},
 });
 
 type CartState = {
   items: cartProductType[];
   totalOrderValue: number;
   total_quantity: number;
+  order_status: string;
 };
 
 type CartAction =
   | { type: 'ADD_ITEM'; payload: cartProductType }
   | { type: 'REMOVE_ITEM'; payload: string }
   | { type: 'UPDATE_QUANTITY'; payload: { id: string; quantity: number } }
-  | { type: 'CLEAR_CART' };
+  | { type: 'CLEAR_CART' }
+  | { type: 'UPDATE_ORDER_STATUS'; payload: string };
 
 const cartReducer = (state: CartState, action: CartAction): CartState => {
   switch (action.type) {
@@ -95,6 +100,12 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
         items: [],
         totalOrderValue: 0,
         total_quantity: 0,
+        order_status: '',
+      };
+    case 'UPDATE_ORDER_STATUS':
+      return {
+        ...state,
+        order_status: action.payload,
       };
     default:
       return state;
@@ -108,6 +119,7 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({
     items: [],
     totalOrderValue: 0,
     total_quantity: 0,
+    order_status: '',
   });
 
   const addItem = useCallback((product: cartProductType) => {
@@ -126,12 +138,17 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({
     dispatch({ type: 'CLEAR_CART' });
   }, []);
 
+  const updateOrderStatus = useCallback((status: string) => {
+    dispatch({ type: 'UPDATE_ORDER_STATUS', payload: status });
+  }, []);
+
   const contextValue: CartContextType = {
     ...state,
     addItem,
     removeItem,
     updateQuantity,
     clearCart,
+    updateOrderStatus,
   };
 
   return (

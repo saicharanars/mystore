@@ -21,7 +21,7 @@ import { Separator } from '@ecommerce/ui-kit/ui/lib/ui/separator';
 import AddButton from '../../../components/cart/AddButton';
 import Image from 'next/image';
 import { BookMarked, CircleAlert } from 'lucide-react';
-const url = process.env.BACKEND_URL;
+const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 import { productResponseType } from '@ecommerce/types';
 
 async function getData(id: string) {

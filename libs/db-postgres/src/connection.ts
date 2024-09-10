@@ -4,6 +4,8 @@ import User from './models/user';
 import Location from './models/location';
 import UserLocation from './models/userLocation';
 import Product from './models/product';
+import Order from './models/order';
+import { OrderProduct } from './models';
 
 const {
   DB_NAME,
@@ -20,7 +22,7 @@ const connection = new Sequelize({
   password: DB_PASSWORD,
   host: DB_HOST,
   port: parseInt(DB_PORT, 10),
-  models: [User, Location, UserLocation, Product], // Make sure all models are correctly imported
+  models: [User, Location, UserLocation, OrderProduct, Order, Product], // Make sure all models are correctly imported
   logging: console.log,
 });
 

@@ -15,6 +15,7 @@ import {
 import Location from './location';
 import UserLocation from './userLocation';
 import Product from './product';
+import Order from './order';
 
 @Table({
   timestamps: true, // Enable auto timestamps for createdAt and updatedAt
@@ -58,6 +59,8 @@ class User extends Model<User> {
   locations?: Location[];
   @HasMany(() => Product)
   products: Product[];
+  @HasMany(() => Order)
+  orders: Order[];
   @CreatedAt
   creationDate: Date;
 

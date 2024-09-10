@@ -10,8 +10,11 @@ import {
   UpdatedAt,
   BelongsTo,
   ForeignKey,
+  BelongsToMany,
 } from 'sequelize-typescript';
 import User from './user';
+import Order from './order';
+import OrderProduct from './order_products';
 
 @Table({
   timestamps: true, // Enable auto timestamps for createdAt and updatedAt
@@ -80,6 +83,9 @@ class Product extends Model<Product> {
   })
   additionproperties: object;
 
+  @BelongsToMany(() => Order, () => OrderProduct)
+  orders: Order[];
+
   @CreatedAt
   creationDate: Date;
 
@@ -88,6 +94,7 @@ class Product extends Model<Product> {
 
   @DeletedAt
   deletionDate: Date;
+  OrderProduct: any;
 }
 
 export default Product;
