@@ -101,8 +101,30 @@ const Purchase: FC<Ipurchase> = ({ ordervalue, products }) => {
         email: 'saicharanars@gmail.com',
         contact: '8886330176',
       },
-      notes: {
-        address: 'India',
+      config: {
+        display: {
+          blocks: {
+            name: 'All Payment Options',
+            instruments: [
+              {
+                method: 'upi',
+              },
+              {
+                method: 'card',
+              },
+              {
+                method: 'wallet',
+              },
+              {
+                method: 'netbanking',
+              },
+            ],
+          },
+        },
+        sequence: ['block.banks'],
+        preferences: {
+          show_default_blocks: false,
+        },
       },
       theme: {
         color: '#7c3aed',

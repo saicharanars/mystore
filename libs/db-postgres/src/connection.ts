@@ -24,6 +24,7 @@ const connection = new Sequelize({
   port: parseInt(DB_PORT, 10),
   models: [User, Location, UserLocation, OrderProduct, Order, Product], // Make sure all models are correctly imported
   logging: console.log,
+  timezone: '+05:30',
 });
 
 export default connection;

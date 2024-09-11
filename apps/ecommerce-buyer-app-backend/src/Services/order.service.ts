@@ -91,4 +91,30 @@ async function editOrder(editOrder: editorderType, orderid: string) {
   }
 }
 
-export { createOrder, editOrder };
+async function userOrders(userId: string, offset: number, limit: number) {
+  try {
+    console.log(userId, offset, limit, '>>>>>>>>>>');
+    const { count, rows } = await Order.findAndCountAll({
+      where: { userId },
+      attributes: ['id', 'status', 'order_value', 'creationDate'],
+      include: [
+        {
+          attributes: ['id', 'name', 'price'],
+          model: Product,
+          through: {
+            attributes: ['quantity'],
+          },
+        },
+      ],
+      order: [['creationDate', 'DESC']], // Order by creationDate DESC
+      limit: limit,
+      offset: offset, // Limit orders
+    });
+    const items = rows;
+    return { count, items };
+  } catch (error) {
+    console.error('Error finding user with recent orders and products:', error);
+    throw new Error(`Error finding user: ${error.message}`);
+  }
+}
+export { createOrder, editOrder, userOrders };

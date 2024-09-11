@@ -20,3 +20,4 @@ export * from './skeleton';
 export * from './table';
 export * from './alert-dialog';
 export * from './alert';
+export * from './card';

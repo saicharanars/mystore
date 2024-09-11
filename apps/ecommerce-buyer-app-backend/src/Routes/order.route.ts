@@ -7,7 +7,7 @@ import {
 } from '../Controllers/order.controller';
 import { validateRequest } from '../middleware/validation';
 import { z } from 'zod';
-import { verifypaymentbody } from '@ecommerce/types';
+import { pagination, verifypaymentbody } from '@ecommerce/types';
 
 const order = Router();
 order.post(
@@ -34,5 +34,12 @@ order.post(
   }),
   verify
 );
-order.get('/user-orders', Authorization('customer'), getuserorders);
+order.get(
+  '/user-orders',
+  validateRequest({
+    query: pagination,
+  }),
+  Authorization('customer'),
+  getuserorders
+);
 export default order;

@@ -18,8 +18,13 @@ import {
   Alert,
   AlertDescription,
   AlertTitle,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
 } from '@ecommerce/ui-kit/ui';
-import { CheckCircle, Minus, Plus, Trash2, X } from 'lucide-react'; // Assuming you're using this for the icons
+import { CheckCircle, InfoIcon, Minus, Plus, Trash2, X } from 'lucide-react'; // Assuming you're using this for the icons
 import { cartProductType } from '@ecommerce/types';
 import Purchase from './Purchase';
 
@@ -73,20 +78,35 @@ const CartPage = () => {
         </Breadcrumb>
       </div>
       {order_status === 'SUCCESS' && (
-        <Alert>
-          <CheckCircle />
-          <AlertTitle>Success!</AlertTitle>
-          <AlertDescription>Your order was successful.</AlertDescription>
-        </Alert>
+        <Card>
+          <CardHeader>
+            <CardTitle>Order</CardTitle>
+            <CardDescription>Your Order status</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Alert>
+              <CheckCircle />
+              <AlertTitle>Success!</AlertTitle>
+              <AlertDescription>Your order was successful.</AlertDescription>
+            </Alert>
+          </CardContent>
+        </Card>
       )}
 
       {order_status === 'FAILURE' && (
-        <Alert>
-          <AlertTitle>Order Failed</AlertTitle>
-          <AlertDescription>
-            There was a problem processing your order.
-          </AlertDescription>
-        </Alert>
+        <Card>
+          <CardHeader>
+            <CardTitle>Order</CardTitle>
+            <CardDescription>Your Order status</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Alert variant={'destructive'}>
+              <InfoIcon />
+              <AlertTitle>FAILURE!</AlertTitle>
+              <AlertDescription>Your order was unsuccessful.</AlertDescription>
+            </Alert>
+          </CardContent>
+        </Card>
       )}
       {items.length > 0 ? (
         <div className="p-1 z-20 my-auto grid grid-cols-1 justify-center gap-2">

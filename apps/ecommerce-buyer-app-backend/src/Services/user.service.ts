@@ -41,10 +41,8 @@ async function removeUser({ id, email }: { id?: string; email?: string }) {
       );
     }
 
-    // Construct the deletion criteria based on provided arguments
     const deleteCriteria = id ? { id } : { email };
 
-    // Perform the deletion
     const result = await User.destroy({
       where: deleteCriteria,
     });

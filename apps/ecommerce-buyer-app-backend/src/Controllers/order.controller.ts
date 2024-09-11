@@ -10,7 +10,7 @@ import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 import Razorpay from 'razorpay';
 import 'dotenv/config';
 import { createOrder, editOrder } from '../Services/order.service';
-import { userOrders } from '../Services/user.service';
+import { userOrders } from '../Services/order.service';
 
 const createorder = async (req, res) => {
   try {
@@ -48,8 +48,12 @@ const createorder = async (req, res) => {
       message: getReasonPhrase(StatusCodes.CREATED),
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, error: error });
+    console.error('Signup error:', error); // Log error for debugging
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: {
+        message: 'An error occurred while processing your request.',
+      },
+    });
   }
 };
 const verify = async (req, res) => {
@@ -91,22 +95,45 @@ const verify = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).send({ err: error });
+    console.error('Signup error:', error); // Log error for debugging
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: {
+        message: 'An error occurred while processing your request.',
+      },
+    });
   }
 };
 const getuserorders = async (req, res) => {
   try {
-    const usertoken = req['user'];
-    const ordersData = await userOrders(usertoken.id);
-    const safeUserData = userordersresponse.parse(ordersData);
-    res.status(200).json({
-      ordersData,
-      safeUserData,
+    const usertoken = req.user;
+    const { offset, limit } = req.query;
+    console.log(offset, limit);
+    if (offset && limit) {
+      const result = await userOrders(
+        usertoken.id,
+        parseInt(offset),
+        parseInt(limit)
+      ); // Assuming you're using offset and limit in the query
+      const data = userordersresponse.parse(result);
+      return res
+        .status(StatusCodes.OK)
+        .json({ data, message: getReasonPhrase(StatusCodes.OK) });
+    }
+
+    const result = await userOrders(usertoken.id, 0, 5);
+    const data = userordersresponse.parse(result);
+    return res
+      .status(StatusCodes.OK)
+      .json({ data, message: getReasonPhrase(StatusCodes.OK) });
+  } catch (err) {
+    console.error('Signup error:', err); // Log error for debugging
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: {
+        message: 'An error occurred while processing your request.',
+        err,
+      },
     });
-  } catch (error) {
-    console.error(error);
-    res.status(403).json({ error: error, msg: 'Something went wrong' });
   }
 };
+
 export { createorder, verify, getuserorders };

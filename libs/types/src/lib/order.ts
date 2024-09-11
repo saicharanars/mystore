@@ -32,9 +32,7 @@ const orderresponse = z.object({
 });
 
 const userordersresponse = z.object({
-  name: z.string(),
-  id: z.string().uuid(),
-  orders: z.array(
+  items: z.array(
     createOrderDto
       .pick({
         status: true,
@@ -57,8 +55,16 @@ const userordersresponse = z.object({
         ),
       })
   ),
+  count: z.number(),
 });
-
+const pagination = z.object({
+  offset: z.string(),
+  limit: z.string(),
+});
+const authorization = z.object({
+  token: z.string(),
+});
+const userordersinput = pagination.merge(authorization);
 const editOrderdto = createOrderDto.partial();
 type createorderType = z.infer<typeof createOrderDto>;
 type editorderType = z.infer<typeof editOrderdto>;
@@ -67,9 +73,16 @@ type verifypaymentbodyType = z.infer<typeof verifypaymentbody>;
 type createOrderResponseType = z.infer<typeof createOrderResponse>;
 type userordersresponseType = z.infer<typeof userordersresponse>;
 type orderresponseType = z.infer<typeof orderresponse>;
+type paginationType = z.infer<typeof pagination>;
+type authorizationType = z.infer<typeof authorization>;
+type userordersinputtype = z.infer<typeof userordersinput>;
 export {
   createOrderDto,
   createorderType,
+  authorization,
+  authorizationType,
+  userordersinput,
+  userordersinputtype,
   createOrderResponse,
   createOrderResponseType,
   editOrderdto,
@@ -82,4 +95,6 @@ export {
   userordersresponseType,
   orderresponse,
   orderresponseType,
+  pagination,
+  paginationType,
 };
