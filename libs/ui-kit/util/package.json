@@ -2,7 +2,9 @@
   "name": "@ecommerce/ui-kit/util",
   "version": "0.0.1",
   "dependencies": {
-    "@swc/helpers": "~0.5.2"
+    "@swc/helpers": "~0.5.2",
+    "@nx/js": "19.5.6",
+    "@nx/devkit": "19.2.0"
   },
   "type": "commonjs",
   "main": "./src/index.js",

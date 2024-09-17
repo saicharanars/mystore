@@ -34,7 +34,8 @@ async function getData(id: string) {
   return res.json();
 }
 const page = async ({ params }: { params: { slug: string } }) => {
-  const data = await new Promise((resolve) =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const data: { data: any } = await new Promise((resolve) =>
     setTimeout(async () => {
       resolve(await getData(params.slug));
     }, 1000)

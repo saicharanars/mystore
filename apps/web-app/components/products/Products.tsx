@@ -60,10 +60,13 @@ const Shop: FC<productsFiltersType> = ({
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    setFilterParams((prev) => ({
-      ...prev,
-      offset: ((page - 1) * parseInt(prev.limit)).toString(),
-    }));
+    setFilterParams((prev) => {
+      const limit = parseInt(prev.limit || '0');
+      return {
+        ...prev,
+        offset: ((page - 1) * limit).toString(),
+      };
+    });
   };
 
   const handlePrevious = () => {

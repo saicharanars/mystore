@@ -24,13 +24,16 @@ type userlocationsType = z.infer<typeof userlocations>;
 type editLocationType = z.infer<typeof editLocation>;
 export {
   createLocationDto,
-  createLocationType,
   locationDto,
-  locationType,
   editLocation,
-  editLocationType,
   userlocations,
-  userlocationsType,
   locationsarray,
+};
+
+export type {
+  createLocationType,
+  locationType,
+  editLocationType,
+  userlocationsType,
   locationsarrayType,
 };

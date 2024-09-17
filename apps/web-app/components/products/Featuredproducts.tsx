@@ -18,7 +18,7 @@ const Featuredproducts: React.FC<Featuredproductsprops> = ({ heading }) => {
           {heading}
         </Button>
       </div>
-      <Productcarousel />
+      {/* <Productcarousel /> */}
     </>
   );
 };

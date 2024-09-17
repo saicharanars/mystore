@@ -12,7 +12,7 @@ import {
 } from '@ecommerce/types';
 import { SerializedError } from '@reduxjs/toolkit';
 
-const url = 'http://localhost:3001';
+const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 function isErrorSchemaType(data: unknown): data is errorschemaType {
   return (data as errorschemaType).error !== undefined;

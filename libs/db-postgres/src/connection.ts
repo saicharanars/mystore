@@ -7,13 +7,7 @@ import Product from './models/product';
 import Order from './models/order';
 import { OrderProduct } from './models';
 
-const {
-  DB_NAME,
-  DB_USER,
-  DB_PASSWORD,
-  DB_HOST = 'localhost',
-  DB_PORT = '5432',
-} = process.env;
+const { DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = process.env;
 
 const connection = new Sequelize({
   database: DB_NAME,
