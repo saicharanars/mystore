@@ -17,15 +17,15 @@ import Order from './order';
 import OrderProduct from './order_products';
 
 @Table({
-  timestamps: true, // Enable auto timestamps for createdAt and updatedAt
+  timestamps: true,
   paranoid: true,
   tableName: 'newproducts',
 })
 class Product extends Model<Product> {
-  @IsUUID(4) // Validate UUID v4 format
+  @IsUUID(4)
   @Column({
     type: DataType.UUID,
-    defaultValue: DataType.UUIDV4, // Generate UUID by default
+    defaultValue: DataType.UUIDV4,
     primaryKey: true,
   })
   id: string;
@@ -69,7 +69,7 @@ class Product extends Model<Product> {
 
   @ForeignKey(() => User)
   @Column({
-    type: DataType.UUID, // Ensure this is UUID to match the Users table
+    type: DataType.UUID,
     allowNull: false,
   })
   userId: string;

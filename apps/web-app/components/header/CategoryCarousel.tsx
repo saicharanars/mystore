@@ -24,7 +24,9 @@ const CarouselItem: React.FC<CarouselItemProps> = ({ Icon, label, link }) => {
           <div className="icon-cont rounded-full flex justify-center items-center mb-2">
             <Icon className="h-10 w-10 p-1 bg-accent rounded-full text-primary" />
           </div>
-          <p className="font-semibold text-primary">{label}</p>
+          <p className="font-normal line-clamp-1 text-sm md:text-md  text-card-foreground">
+            {label}
+          </p>
         </div>
       </a>
     </CustomCarouselItem>
@@ -33,48 +35,68 @@ const CarouselItem: React.FC<CarouselItemProps> = ({ Icon, label, link }) => {
 
 const CategoryCarousel: React.FC = () => {
   return (
-    <CustomCarousel opts={{ align: 'center' }} className="w-full">
+    <CustomCarousel opts={{ align: 'center' }} className="w-full p-3 mx-2">
       <CustomCarouselContent>
-        <CarouselItem Icon={LampFloor} label="Fashion" link="/browse/fashion" />
+        <CarouselItem
+          Icon={LampFloor}
+          label="Fashion"
+          link="/shop/category/fashion"
+        />
         <CarouselItem
           Icon={Laptop}
           label="Electronics"
-          link="/browse/electronics"
+          link="/shop/category/electronics"
         />
-        <CarouselItem Icon={Shirt} label="Clothing" link="/browse/clothing" />
+        <CarouselItem
+          Icon={Shirt}
+          label="Clothing"
+          link="/shop/category/clothing"
+        />
         <CarouselItem
           Icon={Armchair}
           label="Furniture"
-          link="/browse/furniture"
+          link="/shop/category/furniture"
         />
         <CarouselItem
           Icon={LampFloor}
           label="Lighting"
-          link="/browse/lighting"
+          link="/shop/category/lighting"
         />
         <CarouselItem
           Icon={Laptop}
           label="Computers"
-          link="/browse/computers"
+          link="/shop/category/computers"
         />
         <CarouselItem
           Icon={Shirt}
           label="Accessories"
-          link="/browse/accessories"
+          link="/shop/category/accessories"
         />
         <CarouselItem
           Icon={Armchair}
           label="Home Decor"
-          link="/browse/home-decor"
+          link="/shop/category/home-decor"
         />
-        <CarouselItem Icon={LampFloor} label="Outdoor" link="/browse/outdoor" />
-        <CarouselItem Icon={Laptop} label="Gadgets" link="/browse/gadgets" />
+        <CarouselItem
+          Icon={LampFloor}
+          label="Outdoor"
+          link="/shop/category/outdoor"
+        />
+        <CarouselItem
+          Icon={Laptop}
+          label="Gadgets"
+          link="/shop/category/gadgets"
+        />
         <CarouselItem
           Icon={Shirt}
           label="Sportswear"
-          link="/browse/sportswear"
+          link="/shop/category/sportswear"
         />
-        <CarouselItem Icon={Armchair} label="Office" link="/browse/office" />
+        <CarouselItem
+          Icon={Armchair}
+          label="Office"
+          link="/shop/category/office"
+        />
       </CustomCarouselContent>
     </CustomCarousel>
   );

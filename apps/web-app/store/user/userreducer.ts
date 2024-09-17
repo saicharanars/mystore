@@ -21,7 +21,7 @@ const UserSlice = createSlice({
     setUser: (state, action: PayloadAction<Token>) => {
       if (action.payload && action.payload.access_token) {
         state.token = action.payload.access_token;
-        state.loggedin = true; // Optionally set the logged-in state
+        state.loggedin = true;
       } else {
         console.error('No access token found in payload', action.payload);
       }

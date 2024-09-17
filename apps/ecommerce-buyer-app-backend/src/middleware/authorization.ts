@@ -9,25 +9,24 @@ interface AuthRequest extends Request {
   user?: jwt.JwtPayload | string;
 }
 
-const Authorization = (role: userRoletype) => {
+const Authorization = (role?: userRoletype) => {
   return async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       const authHeader = req.headers.authorization;
-      console.log(authHeader);
+      console.log(authHeader, '>>>>>>>');
       if (!authHeader) {
         return res.status(StatusCodes.UNAUTHORIZED).json({
           message: 'Authorization header is missing',
         });
       }
 
-      // Check if the authorization header starts with "Bearer"
       if (authHeader.split(' ')[0] !== 'Bearer') {
         return res.status(StatusCodes.UNAUTHORIZED).json({
           message: 'Authorization scheme is not Bearer',
         });
       }
 
-      const token = authHeader.split(' ')[1]; // Extract token
+      const token = authHeader.split(' ')[1];
       if (!token) {
         return res.status(StatusCodes.UNAUTHORIZED).json({
           message: 'Token is missing',
@@ -40,9 +39,9 @@ const Authorization = (role: userRoletype) => {
       }
 
       const decoded: usertokentype = jwt.verify(token, secret);
-      if (decoded.role !== role) {
+      if (role && decoded.role !== role) {
         return res.status(StatusCodes.UNAUTHORIZED).json({
-          message: 'You are not allwed in this protected route',
+          message: `You are not allowed in this protected route. Required role: ${role}`,
         });
       }
       req.user = decoded;
@@ -52,7 +51,7 @@ const Authorization = (role: userRoletype) => {
       if (error instanceof jwt.JsonWebTokenError) {
         return res.status(StatusCodes.UNAUTHORIZED).json({
           message: 'Invalid token',
-          error: error.message, // More specific error message
+          error: error.message,
         });
       }
       console.error('Authorization error:', error);

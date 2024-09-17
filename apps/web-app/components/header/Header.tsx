@@ -26,23 +26,30 @@ const Header = () => {
         <div className="p-1 md:p-2 md:hidden my-auto">
           <Sidebar />
         </div>
-        <Image
-          loading="lazy"
-          alt="Mystore"
-          title="Mystore"
-          width={125}
-          height={24}
-          src="https://www.mystore.in/s/62ea2c599d1398fa16dbae0a/636c8d9521cd491a8c9a4723/mystore-logo-blue-200x80.png"
-          className="h-auto my-auto p-2 md:p-1"
-          ms-data-valign="middle"
-        />
+        <Link href={'/'}>
+          <Image
+            loading="lazy"
+            alt="Mystore"
+            title="Mystore"
+            width={125}
+            height={24}
+            src="https://www.mystore.in/s/62ea2c599d1398fa16dbae0a/636c8d9521cd491a8c9a4723/mystore-logo-blue-200x80.png"
+            className="h-auto my-auto p-2 md:p-1"
+            ms-data-valign="middle"
+          />
+        </Link>
       </div>
       <div className="relative p-2 my-auto right-0  md:order-last flex flex-row justify-end gap-4">
         <Button className="  rounded-lg   hidden md:block ">
           Sell on Mystore
         </Button>
-        <Accountbutton />
-        <Link href="/cart" className="relative inline-flex items-center p-2">
+        <div className="p-2">
+          <Accountbutton />
+        </div>
+        <Link
+          href="/cart"
+          className="relative inline-flex items-center align-middle p-2"
+        >
           <span className="sr-only">Shopping Cart</span>
           <ShoppingCart className="w-6 h-6" />
           {total_quantity > 0 && (

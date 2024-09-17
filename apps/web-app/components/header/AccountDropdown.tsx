@@ -1,11 +1,9 @@
-import { AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuLabel,
   Button,
-  Avatar,
 } from '@ecommerce/ui-kit/ui';
 import { useContext } from 'react';
 import AuthContext from '../../store/context/auth';
@@ -25,7 +23,7 @@ const AcccountDropdown = () => {
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <User2Icon />
+          <User2Icon className="my-auto " />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-32 md:w-48 mr-5 md:mr-10 space-y-10 p-5">
           <DropdownMenuLabel className="text-xs md:text-xl">

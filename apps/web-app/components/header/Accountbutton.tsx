@@ -5,15 +5,11 @@ import React, { useContext, useEffect } from 'react';
 import { Dialog, DialogTrigger, DialogContent } from '@ecommerce/ui-kit/ui';
 import Login from '../auth/Login';
 import AcccountDropdown from './AccountDropdown';
-import { redirect } from 'next/navigation';
 
 const Accountbutton = () => {
   const { isLoggedIn } = useContext(AuthContext);
   useEffect(() => {
     console.log(isLoggedIn);
-    // if (isLoggedIn) {
-    //   redirect('/');
-    // }
   }, [isLoggedIn]);
   return (
     <>
@@ -25,7 +21,7 @@ const Accountbutton = () => {
         <>
           <Dialog>
             <DialogTrigger>
-              <User2Icon />
+              <User2Icon className="my-auto" />
             </DialogTrigger>
             <DialogContent className="p-4 ">
               <Login />

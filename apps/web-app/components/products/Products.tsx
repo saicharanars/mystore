@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { useGetProductsQuery } from '../../store/shop/api';
 import store from '../../store/shop/store';
@@ -7,7 +7,6 @@ import { productsFiltersType } from '@ecommerce/types';
 import ProductCard from '../../components/products/ProductCard';
 import Filters from '../../components/products/Filters';
 import SelectFilters from '../../components/filters/SelectFilters';
-import { LoaderCircle } from 'lucide-react';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -25,18 +24,18 @@ import {
 } from '@ecommerce/ui-kit/ui';
 import ProductCardSkeleton from './ProductCardSkelton';
 
-const filterOptions = {
-  name: 'Fruits',
-  values: ['C', 'Banana', 'Orange', 'Grapes'],
-};
-
-function Shop() {
+const Shop: FC<productsFiltersType> = ({
+  category,
+  maxprice,
+  minprice,
+  tags,
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filterParams, setFilterParams] = useState<productsFiltersType>({
-    category: undefined,
-    minprice: undefined,
-    maxprice: undefined,
-    tags: undefined,
+    category: category,
+    minprice: maxprice,
+    maxprice: minprice,
+    tags: tags,
     offset: '0',
     limit: '10',
   });
@@ -48,7 +47,9 @@ function Shop() {
   } = useGetProductsQuery(filterParams);
 
   const [totalPages, setTotalPages] = useState(1);
-
+  useEffect(() => {
+    console.log(filterParams);
+  }, []);
   useEffect(() => {
     if (products && filterParams.limit) {
       const limit = parseInt(filterParams.limit);
@@ -82,7 +83,7 @@ function Shop() {
     const maxVisiblePages = 5;
 
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
     if (endPage - startPage + 1 < maxVisiblePages) {
       startPage = Math.max(1, endPage - maxVisiblePages + 1);
@@ -112,7 +113,7 @@ function Shop() {
     <div className="h-full flex-1 flex-col space-y-8 md:flex mt-5">
       <div className="w-full h-20 md:h-36 bg-accent text-center flex flex-col gap-2 items-center justify-center m-0">
         <p className="text-primary text-3xl md:text-5xl font-bold capitalize">
-          Bags
+          {category ? category : 'shop'}
         </p>
         <Breadcrumb>
           <BreadcrumbList>
@@ -121,22 +122,18 @@ function Shop() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/products">Products</BreadcrumbLink>
+              <BreadcrumbLink href="/shop">Shop</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Bags</BreadcrumbPage>
+              <BreadcrumbPage>
+                {category ? category : 'products'}
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <div className="flex flex-row gap-2 p-1 justify-end">
-        <SelectFilters name="kgjv" values={filterOptions.values} />
-        <SelectFilters
-          name={filterOptions.name}
-          values={filterOptions.values}
-        />
-      </div>
+
       <div className="flex items-start justify-between space-y-2 p-2 md:p-4 gap-2">
         <div className="grid grid-cols-4 justify-start gap-2 w-full">
           <div className="p-2 bg-white shadow-lg border-2 rounded-sm border-solid hidden md:block">
@@ -205,12 +202,12 @@ function Shop() {
       </div>
     </div>
   );
-}
+};
 
-const Products: React.FC = () => {
+const Products: React.FC<productsFiltersType> = (props) => {
   return (
     <Provider store={store}>
-      <Shop />
+      <Shop {...props} />
     </Provider>
   );
 };

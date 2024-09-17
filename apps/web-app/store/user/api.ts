@@ -83,7 +83,6 @@ export const userApi = createApi({
           typeof baseQueryReturnValue === 'object' &&
           'data' in baseQueryReturnValue
         ) {
-          // This is a FetchBaseQueryError
           const errorData = baseQueryReturnValue.data as
             | errorschemaType
             | validationerrorSchemaType;

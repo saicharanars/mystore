@@ -2,6 +2,7 @@ import Header from '../components/header/Header';
 import './global.css';
 import { AuthProvider } from '../store/context/auth';
 import { CartProvider } from '../store/context/cart';
+import Footer from '../components/footer/Foooter';
 
 export const metadata = {
   title: 'Welcome to web-app',
@@ -20,6 +21,7 @@ export default function RootLayout({
           <CartProvider>
             <Header />
             <main className="mx-1 md:mx-8">{children}</main>
+            <Footer />
           </CartProvider>
         </AuthProvider>
       </body>

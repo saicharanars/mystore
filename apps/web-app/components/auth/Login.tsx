@@ -89,11 +89,8 @@ const LoginForm = () => {
   const handleSignin = async (values: signinuser) => {
     try {
       await signin({ user: values });
-
-      // Handle successful signin (e.g., redirect, store token)
     } catch (error) {
       console.log('Signin error:', error);
-      // Handle signin error (e.g., display error message)
     }
   };
 

@@ -24,11 +24,13 @@ import {
   CardDescription,
   CardContent,
 } from '@ecommerce/ui-kit/ui';
-import { CheckCircle, InfoIcon, Minus, Plus, Trash2, X } from 'lucide-react'; // Assuming you're using this for the icons
+import { CheckCircle, InfoIcon, Minus, Plus, Trash2, X } from 'lucide-react';
 import { cartProductType } from '@ecommerce/types';
-import Purchase from './Purchase';
+import Buynow from './Buynow';
+import { Provider } from 'react-redux';
+import store from '../../store/orders/store';
 
-const CartPage = () => {
+const Cart = () => {
   const {
     items,
     totalOrderValue,
@@ -155,7 +157,7 @@ const CartPage = () => {
                   <TableCell className="my-auto  text-md md:text-xl text-center">
                     ₹ {item.price}
                   </TableCell>
-                  <TableCell className="my-auto  text-md md:text-xltext-center">
+                  <TableCell className="my-auto  text-md md:text-xl text-center">
                     {item.quantity}
                   </TableCell>
                   <TableCell className="flex gap-2  text-md md:text-xlmy-auto text-center items-center justify-center">
@@ -163,7 +165,7 @@ const CartPage = () => {
                       variant="outline"
                       size="icon"
                       onClick={() => decrement(item)}
-                      disabled={item.quantity <= 1} // Disable when quantity is 1
+                      disabled={item.quantity <= 1}
                     >
                       <Minus className="h-4 w-4" />
                     </Button>
@@ -205,10 +207,11 @@ const CartPage = () => {
                   </p>
                 </TableCell>
                 <TableCell className="text-right">
-                  <Purchase
+                  {/* <Purchase
                     ordervalue={totalOrderValue}
                     products={productIds}
-                  />
+                  /> */}
+                  <Buynow ordervalue={totalOrderValue} products={productIds} />
                 </TableCell>
               </TableRow>
             </TableFooter>
@@ -223,4 +226,11 @@ const CartPage = () => {
   );
 };
 
+const CartPage = () => {
+  return (
+    <Provider store={store}>
+      <Cart />
+    </Provider>
+  );
+};
 export default CartPage;

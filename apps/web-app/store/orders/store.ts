@@ -1,9 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { orderApi } from './api';
-// import authreducer from './userreducer';
 
 const rootReducer = combineReducers({
-  //   user: authreducer,
   [orderApi.reducerPath]: orderApi.reducer,
 });
 

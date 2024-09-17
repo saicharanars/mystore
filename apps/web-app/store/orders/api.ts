@@ -5,6 +5,7 @@ import {
 } from '@reduxjs/toolkit/query/react';
 import {
   errorschemaType,
+  userlocationsType,
   userordersinputtype,
   userordersresponseType,
   validationerrorSchemaType,
@@ -70,7 +71,18 @@ export const orderApi = createApi({
         }
       },
     }),
+    getLocations: build.query<userlocationsType, string>({
+      query: (token) => ({
+        url: '/location/user/locations',
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      transformResponse: (response: { data: userlocationsType }) =>
+        response.data,
+    }),
   }),
 });
 
-export const { useGetOrdersQuery } = orderApi;
+export const { useGetOrdersQuery, useGetLocationsQuery } = orderApi;

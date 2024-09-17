@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 'use client';
 
 import React, { createContext, useState, useEffect, useCallback } from 'react';
 
-interface AuthContextType {
+export interface AuthContextType {
   token: string;
   isLoggedIn: boolean;
   login: (token: string) => void;
@@ -24,6 +25,7 @@ interface JWTPayload {
   [key: string]: unknown;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   children,
 }) => {
@@ -54,7 +56,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     (token: string): boolean => {
       const payload = decodeJWT(token);
       if (!payload) return false;
-      const expirationTime = payload.exp * 1000; // Convert to milliseconds
+      const expirationTime = payload.exp * 1000;
       return Date.now() < expirationTime;
     },
     [decodeJWT]

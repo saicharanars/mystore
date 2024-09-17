@@ -12,24 +12,34 @@ import * as fs from 'fs/promises';
 import cors from 'cors';
 import product from './Routes/product.route';
 import order from './Routes/order.route';
-// Use fs/promises for async/await
+import locationroute from './Routes/location.route';
+import { Request, Response } from 'express';
+import { ApiError } from './utils/apierrorclass';
+
 const app = express();
 app.use(express.json());
 const corsOptions = {
-  origin: '*', // Replace with your frontend URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Include OPTIONS method
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 };
 
-// Apply CORS middleware
 app.use(cors(corsOptions));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.use('/auth', authroute);
 app.use('/product', product);
 app.use('/order', order);
+app.use('/location', locationroute);
+app.use((err: ApiError, req: Request, res: Response, next: Function) => {
+  const statusCode = err.statusCode || 500;
 
+  res.status(statusCode).send({
+    success: false,
+    message: err.message,
+  });
+});
 const port = process.env.PORT || 3001;
 
 const outputPath = path.join(__dirname, 'openapi-docs.yaml');
@@ -47,13 +57,10 @@ app.get('/api-docs/swagger.json', async (req, res) => {
 
 async function setupSwagger() {
   try {
-    // Read the file asynchronously
     const file = await fs.readFile(outputPath, { encoding: 'utf-8' });
 
-    // Parse the YAML content
     const swaggerDocument = yaml.parse(file);
 
-    // Set up Swagger UI with the parsed document
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     console.log(
@@ -71,13 +78,8 @@ async function setupSwagger() {
 
     await connection.sync({ alter: false });
     console.log('Database synced');
-    // Write the OpenAPI documentation to the file
     writeDocumentation();
-    // Set up Swagger UI
     await setupSwagger();
-
-    // await createDummyData();
-    // await performDummyQueries();
 
     const server = app.listen(port, () => {
       console.log(`Listening at http://localhost:${port}/api`);

@@ -14,6 +14,7 @@ import {
 } from 'sequelize-typescript';
 import User from './user';
 import Product from './product';
+import Location from './location';
 import OrderProduct from './order_products';
 
 @Table({
@@ -62,6 +63,16 @@ class Order extends Model<Order> {
 
   @BelongsTo(() => User)
   owner: User;
+
+  @ForeignKey(() => Location)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  locationId: string;
+
+  @BelongsTo(() => Location)
+  location: Location;
 
   @BelongsToMany(() => Product, () => OrderProduct)
   products: Product[];

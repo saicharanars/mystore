@@ -70,6 +70,7 @@ export {
   validationerrorSchemaType,
   signinuser,
   usertokentype,
+  removepassword,
   signinDto,
   userRole,
 };

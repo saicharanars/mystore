@@ -140,6 +140,9 @@ importers:
       embla-carousel:
         specifier: ^8.2.1
         version: 8.2.1
+      embla-carousel-auto-scroll:
+        specifier: ^8.2.1
+        version: 8.2.1(embla-carousel@8.2.1)
       embla-carousel-react:
         specifier: ^8.1.8
         version: 8.1.8(react@18.3.1)
@@ -4603,6 +4606,11 @@ packages:
 
   electron-to-chromium@1.5.4:
     resolution: {integrity: sha512-orzA81VqLyIGUEA77YkVA1D+N+nNfl2isJVjjmOyrlxuooZ19ynb+dOlaDTqd/idKRS9lDCSBmtzM+kyCsMnkA==}
+
+  embla-carousel-auto-scroll@8.2.1:
+    resolution: {integrity: sha512-TAPuqO9S5juETlythxDXPvq8xMFwmKrA+Jcf/YU4pFn7BADpG99wcolVKl7DEpK2a+q/r5lYstQVQWGqr+V1zw==}
+    peerDependencies:
+      embla-carousel: 8.2.1
 
   embla-carousel-react@8.1.8:
     resolution: {integrity: sha512-b8DcmC+j1vqVWSM6rU/GYGyY6Kp9LX8OoikZPBKmV6qL8s94sSPGl6jtDLLUtV8TTIQGMYOlOKUgoMAt/0TwOQ==}
@@ -13710,6 +13718,10 @@ snapshots:
 
   electron-to-chromium@1.5.4: {}
 
+  embla-carousel-auto-scroll@8.2.1(embla-carousel@8.2.1):
+    dependencies:
+      embla-carousel: 8.2.1
+
   embla-carousel-react@8.1.8(react@18.3.1):
     dependencies:
       embla-carousel: 8.1.8
@@ -15622,7 +15634,7 @@ snapshots:
       escape-html: 1.0.3
       fresh: 0.5.2
       http-assert: 1.5.0
-      http-errors: 1.6.3
+      http-errors: 1.8.1
       is-generator-function: 1.0.10
       koa-compose: 4.1.0
       koa-convert: 1.2.0

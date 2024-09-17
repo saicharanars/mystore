@@ -18,13 +18,21 @@ interface product {
 interface Ipurchase {
   ordervalue: number;
   products: product[];
+  locationId: string;
+}
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Razorpay: any;
+  }
 }
 
-const Purchase: FC<Ipurchase> = ({ ordervalue, products }) => {
+const Purchase: FC<Ipurchase> = ({ ordervalue, products, locationId }) => {
   const authctx = useContext(AuthContext);
   const cartctx = useContext(CartContext);
   const amount = ordervalue;
   const token = 'Bearer ' + authctx.token;
+
   const api = process.env.NEXT_PUBLIC_BACKEND_URL;
   const orderPlace = async (verifypayment: verifypaymentbodyType) => {
     console.log('order placed', verifypayment);
@@ -68,13 +76,14 @@ const Purchase: FC<Ipurchase> = ({ ordervalue, products }) => {
       alert('Razorpay SDK failed to load. Are you online?');
       return;
     }
-    console.log(api, token);
+    console.log(api, token, locationId);
 
     const response = await axios.post(
       `${api}/order/create-order`,
       {
         amount,
         products,
+        locationId,
       },
       { headers: { Authorization: token } }
     );

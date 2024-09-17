@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { createProductDto, productResponse } from './product';
+import { productResponse } from './product';
 
 const createOrderDto = z.object({
   rzp_orderId: z.string(),
@@ -7,6 +7,7 @@ const createOrderDto = z.object({
   userId: z.string().uuid(),
   order_value: z.number(),
   paymentId: z.string().optional(),
+  locationId: z.string().uuid(),
   products: z.array(
     z.object({
       id: z.string().uuid(),

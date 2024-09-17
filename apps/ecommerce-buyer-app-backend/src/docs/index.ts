@@ -18,6 +18,15 @@ import {
   productResponse,
   editProductDto,
   productFiltersDto,
+  createOrderResponse,
+  verifypaymentbody,
+  orderresponse,
+  pagination,
+  userordersresponse,
+  createLocationDto,
+  editLocation,
+  locationDto,
+  userlocations,
 } from '@ecommerce/types';
 
 extendZodWithOpenApi(z);
@@ -134,8 +143,6 @@ mystoreregistry.registerPath({
     },
   },
 });
-
-// Create a new OpenAPI registry for product-related routes
 
 mystoreregistry.registerPath({
   method: 'post',
@@ -344,6 +351,482 @@ mystoreregistry.registerPath({
   },
 });
 
+mystoreregistry.registerPath({
+  method: 'post',
+  path: '/order/create-order',
+  description: 'Retrieve all products',
+  summary: 'Get products route  sdxhh for buyers and sellers',
+  request: {
+    body: {
+      content: {
+        'application/json': {
+          schema: z.object({
+            amount: z.number(),
+            products: z.array(
+              z.object({
+                id: z.string().uuid(),
+                quantity: z.number().int().positive(),
+              })
+            ),
+            locationId: z.string().uuid(),
+          }),
+        },
+      },
+    },
+  },
+  responses: {
+    201: {
+      description: 'Order successfully',
+      content: {
+        'application/json': {
+          schema: z.object({
+            data: createOrderResponse,
+            message: z
+              .string()
+              .openapi({ example: 'Order Created successfully' }),
+          }),
+        },
+      },
+    },
+    400: {
+      description: 'Error occurred in body, params, or query',
+      content: {
+        'application/json': {
+          schema: validationerrorSchema,
+        },
+      },
+    },
+    401: {
+      description: 'Unauthorized',
+      content: {
+        'application/json': {
+          schema: errorschema,
+        },
+      },
+    },
+    500: {
+      description: 'Internal server error',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({
+              example: 'Internal server error or Failed to create order',
+            }),
+          }),
+        },
+      },
+    },
+  },
+});
+
+mystoreregistry.registerPath({
+  method: 'post',
+  path: '/order/update-transaction-status',
+  description: 'Update transaction status',
+  summary: 'Update transaction status after payment process',
+  request: {
+    body: {
+      content: {
+        'application/json': {
+          schema: z.object({ verifypaymentbody }),
+        },
+      },
+    },
+  },
+  responses: {
+    201: {
+      description: 'Ordered successfully',
+      content: {
+        'application/json': {
+          schema: z.object({
+            data: orderresponse,
+            message: z
+              .string()
+              .openapi({ example: 'Order Created successfully' }),
+          }),
+        },
+      },
+    },
+    401: {
+      description: 'Unauthorized',
+      content: {
+        'application/json': {
+          schema: errorschema,
+        },
+      },
+    },
+    404: {
+      description: 'orderid for updating transaction rong or order not found',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'order not found' }),
+          }),
+        },
+      },
+    },
+    400: {
+      description: 'Error occurred in body, params, or query',
+      content: {
+        'application/json': {
+          schema: validationerrorSchema,
+        },
+      },
+    },
+    500: {
+      description: 'Internal server error',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({
+              example: 'Internal server error or Failed to create order',
+            }),
+          }),
+        },
+      },
+    },
+  },
+});
+mystoreregistry.registerPath({
+  method: 'post',
+  path: '/location/create',
+  description: 'Create a new location',
+  summary: 'Create a new location for the user',
+  request: {
+    body: {
+      content: {
+        'application/json': {
+          schema: createLocationDto,
+        },
+      },
+    },
+  },
+  responses: {
+    201: {
+      description: 'Location created successfully',
+      content: {
+        'application/json': {
+          schema: z.object({
+            data: z.object({
+              safelocation: locationDto,
+              userlocation: z.boolean(),
+            }),
+            message: z.string(),
+          }),
+        },
+      },
+    },
+    400: {
+      description: 'Error occurred in body, params, or query',
+      content: {
+        'application/json': {
+          schema: validationerrorSchema,
+        },
+      },
+    },
+    401: {
+      description: 'Unauthorized',
+      content: {
+        'application/json': {
+          schema: errorschema,
+        },
+      },
+    },
+    500: {
+      description: 'Internal server error',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Internal server error' }),
+          }),
+        },
+      },
+    },
+  },
+  security: [{ bearerAuth: [] }],
+});
+
+mystoreregistry.registerPath({
+  method: 'patch',
+  path: '/location/update/:locationId',
+  description: 'Update an existing location',
+  summary: 'Update an existing location for the user',
+  request: {
+    body: {
+      content: {
+        'application/json': {
+          schema: editLocation,
+        },
+      },
+    },
+    params: z.object({
+      locationId: z.string().uuid(),
+    }),
+  },
+  responses: {
+    200: {
+      description: 'Location updated successfully',
+      content: {
+        'application/json': {
+          schema: z.object({
+            data: locationDto,
+            message: z
+              .string()
+              .openapi({ example: 'Location updated successfully' }),
+          }),
+        },
+      },
+    },
+    400: {
+      description: 'Error occurred in body, params, or query',
+      content: {
+        'application/json': {
+          schema: validationerrorSchema,
+        },
+      },
+    },
+    404: {
+      description: 'Location not found',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Location not found' }),
+          }),
+        },
+      },
+    },
+    401: {
+      description: 'Unauthorized',
+      content: {
+        'application/json': {
+          schema: errorschema,
+        },
+      },
+    },
+    500: {
+      description: 'Internal server error',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Internal server error' }),
+          }),
+        },
+      },
+    },
+  },
+  security: [{ bearerAuth: [] }],
+});
+
+mystoreregistry.registerPath({
+  method: 'delete',
+  path: '/location/delete/:locationId',
+  description: 'Delete an existing location',
+  summary: 'Delete an existing location for the user',
+  request: {
+    params: z.object({
+      locationId: z.string().uuid(),
+    }),
+  },
+  responses: {
+    200: {
+      description: 'Location deleted successfully',
+      content: {
+        'application/json': {
+          schema: z.object({
+            data: z.boolean(),
+            message: z
+              .string()
+              .openapi({ example: 'Location deleted successfully' }),
+          }),
+        },
+      },
+    },
+
+    400: {
+      description: 'Error occurred in body, params, or query',
+      content: {
+        'application/json': {
+          schema: validationerrorSchema,
+        },
+      },
+    },
+    404: {
+      description: 'Location not found',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Location not found' }),
+          }),
+        },
+      },
+    },
+    401: {
+      description: 'Unauthorized',
+      content: {
+        'application/json': {
+          schema: errorschema,
+        },
+      },
+    },
+    500: {
+      description: 'Internal server error',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Internal server error' }),
+          }),
+        },
+      },
+    },
+  },
+  security: [{ bearerAuth: [] }],
+});
+
+mystoreregistry.registerPath({
+  method: 'get',
+  path: '/location/:locationId',
+  description: 'Retrieve a location',
+  summary: 'Get a specific location',
+  request: {
+    params: z.object({
+      locationId: z.string().uuid(),
+    }),
+  },
+  responses: {
+    200: {
+      description: 'Location retrieved successfully',
+      content: {
+        'application/json': {
+          schema: z.object({
+            data: locationDto,
+            message: z
+              .string()
+              .openapi({ example: 'Location retrieved successfully' }),
+          }),
+        },
+      },
+    },
+    400: {
+      description: 'Error occurred in body, params, or query',
+      content: {
+        'application/json': {
+          schema: validationerrorSchema,
+        },
+      },
+    },
+    404: {
+      description: 'Location not found',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Location not found' }),
+          }),
+        },
+      },
+    },
+    500: {
+      description: 'Internal server error',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Internal server error' }),
+          }),
+        },
+      },
+    },
+  },
+});
+mystoreregistry.registerPath({
+  method: 'get',
+  path: '/location/user/locations',
+  description: 'Retrieve all user locations',
+  summary: 'Get all user locations',
+  responses: {
+    200: {
+      description: 'Locations retrieved successfully',
+      content: {
+        'application/json': {
+          schema: z.object({
+            data: userlocations,
+            message: z
+              .string()
+              .openapi({ example: 'Locations retrieved successfully' }),
+          }),
+        },
+      },
+    },
+    400: {
+      description: 'Error occurred in body, params, or query',
+      content: {
+        'application/json': {
+          schema: validationerrorSchema,
+        },
+      },
+    },
+    401: {
+      description: 'Unauthorized',
+      content: {
+        'application/json': {
+          schema: errorschema,
+        },
+      },
+    },
+    500: {
+      description: 'Internal server error',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Internal server error' }),
+          }),
+        },
+      },
+    },
+  },
+  security: [{ bearerAuth: [] }],
+});
+mystoreregistry.registerPath({
+  method: 'get',
+  path: '/order/userorders',
+  description: 'Retrieve all user orders',
+  summary: 'Get orders of a user',
+  request: {
+    query: pagination,
+  },
+  responses: {
+    200: {
+      description: 'orders retrieved successfully',
+      content: {
+        'application/json': {
+          schema: z.object({
+            data: userordersresponse,
+            message: z
+              .string()
+              .openapi({ example: 'orders retrieved successfully' }),
+          }),
+        },
+      },
+    },
+    400: {
+      description: 'Error occurred in body, params, or query',
+      content: {
+        'application/json': {
+          schema: validationerrorSchema,
+        },
+      },
+    },
+    500: {
+      description: 'Internal server error',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Internal server error' }),
+          }),
+        },
+      },
+    },
+  },
+});
+
 function getOpenApiDocumentation() {
   const generator = new OpenApiGeneratorV3(mystoreregistry.definitions);
 
@@ -359,16 +842,12 @@ function getOpenApiDocumentation() {
 }
 
 function writeDocumentation() {
-  // Generate OpenAPI documentation
   const docs = getOpenApiDocumentation();
 
-  // Convert to YAML
   const fileContent = yaml.stringify(docs);
 
-  // Define the output file path
   const outputPath = path.join(__dirname, 'openapi-docs.yaml');
 
-  // Try writing the file
   fs.writeFile(outputPath, fileContent, { encoding: 'utf-8' }, (err) => {
     if (err) {
       console.error('Failed to write the OpenAPI documentation:', err);

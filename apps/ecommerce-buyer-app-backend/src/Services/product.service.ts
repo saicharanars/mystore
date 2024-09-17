@@ -7,51 +7,38 @@ import { Product } from '@ecommerce/db-postgres';
 import { Op, WhereOptions } from 'sequelize';
 
 async function createProduct(createproduct: createProductType, userid: string) {
-  try {
-    // const user = await finduserbyId(userid);
-    const productData = { ...createproduct, userId: userid };
+  const productData = { ...createproduct, userId: userid };
 
-    const res = await Product.create(productData);
-    return res;
-  } catch (error) {
-    throw new Error(`Error creating product: ${error.message}`);
-  }
+  const res = await Product.create(productData);
+  return res;
 }
 async function editProduct(
   editProdcut: editProductType,
   userid: string,
   productid: string
 ) {
-  try {
-    const product = await Product.findByPk(productid);
-    if (!product) {
-      return null;
-    }
+  const product = await Product.findByPk(productid);
+  if (!product) {
+    return null;
+  }
 
-    if (product.userId === userid) {
-      const updatedproduct = product.update(editProdcut);
-      return updatedproduct;
-    } else {
-      return 'notowner';
-    }
-  } catch (error) {
-    throw new Error(`Error creating product: ${error.message}`);
+  if (product.userId === userid) {
+    const updatedproduct = product.update(editProdcut);
+    return updatedproduct;
+  } else {
+    return 'notowner';
   }
 }
 async function deleteProduct(productid: string, userid: string) {
-  try {
-    const res = await findById(productid);
-    if (!res) {
-      return null;
-    }
-    if (res.userId === userid) {
-      const deleteproduct = res.destroy();
-      return deleteproduct;
-    } else {
-      return 'notowner';
-    }
-  } catch (error) {
-    throw new Error(`Error deleting product: ${error.message}`);
+  const res = await findById(productid);
+  if (!res) {
+    return null;
+  }
+  if (res.userId === userid) {
+    const deleteproduct = res.destroy();
+    return deleteproduct;
+  } else {
+    return 'notowner';
   }
 }
 
@@ -90,14 +77,10 @@ async function findAllProducts(filters: productFiltersServiceType) {
   return res;
 }
 async function findById(productId: string) {
-  try {
-    const res = await Product.findByPk(productId);
-    if (!res) {
-      return null;
-    }
-    return res;
-  } catch (error) {
-    throw new Error(`Error finding product: ${error.message}`);
+  const res = await Product.findByPk(productId);
+  if (!res) {
+    return null;
   }
+  return res;
 }
 export { createProduct, deleteProduct, editProduct, findById, findAllProducts };

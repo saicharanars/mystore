@@ -1,22 +1,6 @@
-
 services:
-  # nx-app:
-  #   build:
-  #     context: .
-  #   environment:
-  #     NODE_ENV: development
-  #   ports:
-  #     - '3000:3000'
-  #     - '3001:3001'
-  #   volumes:
-  #     - .:/usr/src/app  # Mount the current directory to /usr/src/app in the container
-  #     - /usr/src/app/node_modules  # Prevent overwriting node_modules with empty host directory
-  #   command: pnpm dev  # Use a dev command to enable live reloading
-  #   depends_on:
-  #     - postgresdb  # Ensure the database is started before the app
-
   postgresdb:
-    image: postgres:14-bookworm # Use the latest version of Postgres
+    image: postgres:14-bookworm
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
@@ -24,8 +8,15 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - pgdata:/var/lib/postgresql/data # Persist database data
+      - pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: mypassword  
+    ports:
+      - '3004:80'  
 
 volumes:
-  pgdata: # Define a named volume for persistent storage
-  # node_modules:  # Define a named volume for node_modules to avoid host-container conflicts
+  pgdata:

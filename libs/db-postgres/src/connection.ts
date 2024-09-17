@@ -22,7 +22,7 @@ const connection = new Sequelize({
   password: DB_PASSWORD,
   host: DB_HOST,
   port: parseInt(DB_PORT, 10),
-  models: [User, Location, UserLocation, OrderProduct, Order, Product], // Make sure all models are correctly imported
+  models: [User, Location, UserLocation, OrderProduct, Order, Product],
   logging: console.log,
   timezone: '+05:30',
 });

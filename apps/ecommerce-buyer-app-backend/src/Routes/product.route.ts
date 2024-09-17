@@ -14,6 +14,7 @@ import {
   findProduct,
 } from '../Controllers/product.controller';
 import { z } from 'zod';
+import { asyncHandler } from '../utils/asyncHandler';
 
 const product = Router();
 product.post(
@@ -41,14 +42,14 @@ product.patch(
     body: editProductDto,
   }),
   Authorization('seller'),
-  editproduct
+  asyncHandler(editproduct)
 );
 product.get(
   '/',
   validateRequest({
     query: productFiltersDto,
   }),
-  findallproducts
+  asyncHandler(findallproducts)
 );
 product.get(
   '/:productId',
@@ -57,7 +58,7 @@ product.get(
       productId: z.string().uuid(),
     }),
   }),
-  findProduct
+  asyncHandler(findProduct)
 );
 
 export default product;

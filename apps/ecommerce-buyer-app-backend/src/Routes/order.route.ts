@@ -8,6 +8,7 @@ import {
 import { validateRequest } from '../middleware/validation';
 import { z } from 'zod';
 import { pagination, verifypaymentbody } from '@ecommerce/types';
+import { asyncHandler } from '../utils/asyncHandler';
 
 const order = Router();
 order.post(
@@ -21,10 +22,11 @@ order.post(
           quantity: z.number().int().positive(),
         })
       ),
+      locationId: z.string().uuid(),
     }),
   }),
   Authorization('customer'),
-  createorder
+  asyncHandler(createorder)
 );
 
 order.post(
@@ -32,7 +34,7 @@ order.post(
   validateRequest({
     body: z.object({ verifypaymentbody }),
   }),
-  verify
+  asyncHandler(verify)
 );
 order.get(
   '/user-orders',
@@ -40,6 +42,6 @@ order.get(
     query: pagination,
   }),
   Authorization('customer'),
-  getuserorders
+  asyncHandler(getuserorders)
 );
 export default order;
