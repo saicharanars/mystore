@@ -16,7 +16,7 @@ import { SerializedError } from '@reduxjs/toolkit';
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 function isErrorSchemaType(data: unknown): data is errorschemaType {
-  return (data as errorschemaType).error !== undefined;
+  return (data as errorschemaType).message !== undefined;
 }
 function isValidationSchemaType(
   data: unknown
@@ -47,6 +47,7 @@ export const userApi = createApi({
         meta,
         arg
       ) {
+        console.log(baseQueryReturnValue);
         if (
           baseQueryReturnValue &&
           typeof baseQueryReturnValue === 'object' &&
@@ -55,9 +56,10 @@ export const userApi = createApi({
           const errorData = baseQueryReturnValue.data as
             | errorschemaType
             | validationerrorSchemaType;
-
+          console.log(errorData);
           if (isErrorSchemaType(errorData)) {
-            return errorData.error.message;
+            console.log(errorData.message, '>>>>>>');
+            return { message: errorData.message };
           } else if (isValidationSchemaType(errorData)) {
             return errorData.error;
           }
@@ -78,6 +80,7 @@ export const userApi = createApi({
         meta,
         arg
       ) {
+        console.log(baseQueryReturnValue);
         if (
           baseQueryReturnValue &&
           typeof baseQueryReturnValue === 'object' &&
@@ -86,9 +89,10 @@ export const userApi = createApi({
           const errorData = baseQueryReturnValue.data as
             | errorschemaType
             | validationerrorSchemaType;
-
+          console.log(errorData);
           if (isErrorSchemaType(errorData)) {
-            return errorData.error.message;
+            console.log(errorData.message, '>>>>>>');
+            return { message: errorData.message };
           } else if (isValidationSchemaType(errorData)) {
             return errorData.error;
           }

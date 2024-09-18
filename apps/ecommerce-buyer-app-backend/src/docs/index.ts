@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import * as yaml from 'yaml';
 import * as fs from 'fs';
 import {
@@ -7,6 +6,7 @@ import {
   OpenAPIRegistry,
 } from '@asteasolutions/zod-to-openapi';
 import path from 'path';
+import { z } from 'zod';
 
 import {
   createuserDto,
@@ -146,7 +146,7 @@ mystoreregistry.registerPath({
 
 mystoreregistry.registerPath({
   method: 'post',
-  path: '/products',
+  path: '/product',
   description: 'Create a new product',
   summary: 'Create product route for sellers',
   request: {
@@ -190,7 +190,7 @@ mystoreregistry.registerPath({
 
 mystoreregistry.registerPath({
   method: 'delete',
-  path: '/products/{productId}',
+  path: '/product/{productId}',
   description: 'Delete an existing product',
   summary: 'Delete product route for sellers',
 
@@ -247,7 +247,7 @@ mystoreregistry.registerPath({
 
 mystoreregistry.registerPath({
   method: 'patch',
-  path: '/products/{productId}',
+  path: '/product/{productId}',
   description: 'Update an existing product',
   summary: 'Update product route for sellers',
 
@@ -310,7 +310,7 @@ mystoreregistry.registerPath({
 
 mystoreregistry.registerPath({
   method: 'get',
-  path: '/products',
+  path: '/product',
   description: 'Retrieve all products',
   summary: 'Get products route for buyers and sellers',
   request: {
@@ -837,7 +837,7 @@ function getOpenApiDocumentation() {
       title: 'Mystore',
       description: 'This is the mystore API',
     },
-    servers: [{ url: 'http://localhost:3001' }],
+    servers: [{ url: process.env.BACKEND_URL }],
   });
 }
 

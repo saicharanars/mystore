@@ -5,7 +5,7 @@ const createLocationDto = z.object({
   address: z.string().min(3).max(100),
   city: z.string().min(3).max(50),
   state: z.string().min(3).max(50),
-  pincode: z.number(),
+  pincode: z.coerce.number(),
 });
 const editLocation = createLocationDto.partial();
 const locationDto = createLocationDto.extend({

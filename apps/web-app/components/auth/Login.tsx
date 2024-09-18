@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Card,
   CardHeader,
@@ -76,7 +76,7 @@ const LoginForm = () => {
     authctx.login(signinresult.data.access_token);
   }
   if (signinError) {
-    console.log(signinError);
+    console.log(signinError, '>>>>>>>>');
   }
   const handleSignup = async (values: createuser) => {
     try {
@@ -107,7 +107,7 @@ const LoginForm = () => {
         ms-data-valign="middle"
       />
       <Tabs defaultValue="signup">
-        <TabsList className="grid w-full max-w-sm relative w-auto grid-cols-2 p-1 mt-2 mx-2 bg-blue-50">
+        <TabsList className="grid  max-w-sm relative w-auto grid-cols-2 p-1 mt-2 mx-2 bg-blue-50">
           <TabsTrigger value="signup" className="text-blue-500">
             Signup
           </TabsTrigger>
@@ -186,7 +186,7 @@ const LoginForm = () => {
             {signupError && (
               <p className="text-red-500">
                 Signup failed.{' '}
-                {(signupError as string) || 'Please try again later.'}
+                {JSON.stringify(signupError) || 'Please try again later.'}
               </p>
             )}
           </CardContent>
@@ -241,7 +241,7 @@ const LoginForm = () => {
             {signinError && (
               <p className="text-red-500">
                 Signin failed.{' '}
-                {(signinError as string) || 'Please try again later.'}
+                {JSON.stringify(signinError) || 'Please try again later.'}
               </p>
             )}
           </CardContent>

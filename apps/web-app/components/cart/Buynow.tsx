@@ -18,6 +18,7 @@ import { useGetLocationsQuery } from '../../store/orders/api';
 import { locationType, userlocationsType } from '@ecommerce/types';
 import { useAuth } from '../../store/context/authhook';
 import Purchase from './Purchase';
+import Addlocation from '../locations/Addlocation';
 
 type LocationsQueryResult = ReturnType<typeof useGetLocationsQuery>;
 interface product {
@@ -53,7 +54,7 @@ const Buynow: React.FC<IbuyNow> = ({ ordervalue, products }) => {
           <DialogTitle>Add Location</DialogTitle>
           <DialogDescription>Add Location to your Order</DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className="grid  py-4  ">
           <Select onValueChange={(value) => setLocation(value)}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select your Location" />

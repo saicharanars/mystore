@@ -43,3 +43,10 @@ Thumbs.db
 
 # Next.js
 .next
+*/.env
+.env
+apps/web-app/.env
+apps/ecommerce-buyer-app-backend/.env
+apps/web-app/certificates/localhost-key.pem
+apps/web-app/certificates/localhost.pem
+.vscode/launch.json

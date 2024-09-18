@@ -14,7 +14,12 @@ const nextConfig = {
   },
   
   images: {
-    domains: ['www.mystore.in'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'www.mystore.in',
+      },
+    ],
   },
   
   

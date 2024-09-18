@@ -1,7 +1,5 @@
 import { z } from 'zod';
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
-import { error } from 'console';
-import { access } from 'fs';
 extendZodWithOpenApi(z);
 const userRole = z.enum(['customer', 'seller']);
 const createuserDto = z.object({
@@ -30,9 +28,9 @@ const createuserResponse = removepassword.extend({
 });
 
 const errorschema = z.object({
-  error: z.object({
-    message: z.string(),
-  }),
+  // error: z.object({
+  message: z.string(),
+  // }),
 });
 const validationerrorSchema = z
   .object({

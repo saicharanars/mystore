@@ -4,10 +4,13 @@ import {
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
 import {
+  createLocationDto,
   errorschemaType,
+  locationType,
   userlocationsType,
   userordersinputtype,
   userordersresponseType,
+  createLocationType,
   validationerrorSchemaType,
 } from '@ecommerce/types';
 import { SerializedError } from '@reduxjs/toolkit';
@@ -15,7 +18,7 @@ import { SerializedError } from '@reduxjs/toolkit';
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 function isErrorSchemaType(data: unknown): data is errorschemaType {
-  return (data as errorschemaType).error !== undefined;
+  return (data as errorschemaType).message !== undefined;
 }
 function isValidationSchemaType(
   data: unknown
@@ -62,7 +65,7 @@ export const orderApi = createApi({
             | validationerrorSchemaType;
 
           if (isErrorSchemaType(errorData)) {
-            return errorData.error.message;
+            return { message: errorData.message };
           } else if (isValidationSchemaType(errorData)) {
             return errorData.error;
           }
@@ -82,7 +85,25 @@ export const orderApi = createApi({
       transformResponse: (response: { data: userlocationsType }) =>
         response.data,
     }),
+    addLocation: build.mutation<
+      locationType,
+      { token: string; location: createLocationType }
+    >({
+      query: ({ token, location }) => ({
+        url: '/location/create',
+        method: 'POST',
+        body: location,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      transformResponse: (response: { data: locationType }) => response.data,
+    }),
   }),
 });
 
-export const { useGetOrdersQuery, useGetLocationsQuery } = orderApi;
+export const {
+  useGetOrdersQuery,
+  useGetLocationsQuery,
+  useAddLocationMutation,
+} = orderApi;

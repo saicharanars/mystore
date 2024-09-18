@@ -126,7 +126,7 @@ function Shop() {
                   <>
                     <Card key={item.id} className="w-full  ">
                       <CardContent className="  my-auto p-0 md:p-2 ">
-                        <CardDescription className="my-auto flex flex-row p-0 md:p-2 align-middle items-between justify-between gap-4 ">
+                        <CardDescription className="my-auto flex flex-col md:flex-row p-0 md:p-2 align-middle items-between justify-between gap-4 ">
                           <div className="p-0 md:p-2 m-2 flex flex-col justify-start gap-4">
                             <p className="text-md md:text-xl font-semibold my-auto m-2">
                               {item.products

@@ -15,7 +15,7 @@ import { SerializedError } from '@reduxjs/toolkit';
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 function isErrorSchemaType(data: unknown): data is errorschemaType {
-  return (data as errorschemaType).error !== undefined;
+  return (data as errorschemaType).message !== undefined;
 }
 function isValidationSchemaType(
   data: unknown
@@ -69,7 +69,7 @@ export const shopApi = createApi({
             | validationerrorSchemaType;
 
           if (isErrorSchemaType(errorData)) {
-            return errorData.error.message;
+            return errorData.message;
           } else if (isValidationSchemaType(errorData)) {
             return errorData.error;
           }
