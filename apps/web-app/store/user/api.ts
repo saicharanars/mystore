@@ -4,16 +4,26 @@ import {
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
 import {
+  createLocationType,
   createuser,
   createuserResponseType,
   errorschemaType,
+  locationType,
   signinresponseschemaType,
   signinuser,
+  userlocationsType,
   validationerrorSchemaType,
 } from '@ecommerce/types';
 import { SerializedError } from '@reduxjs/toolkit';
 
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
+interface ApiResponse {
+  addlocation: {
+    data: locationType;
+    userlocation: boolean;
+  };
+  message: string;
+}
 
 function isErrorSchemaType(data: unknown): data is errorschemaType {
   return (data as errorschemaType).message !== undefined;
@@ -101,7 +111,39 @@ export const userApi = createApi({
         }
       },
     }),
+    getLocations: build.query<userlocationsType, string>({
+      query: (token) => ({
+        url: '/location/user/locations',
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      transformResponse: (response: { data: userlocationsType }) =>
+        response.data,
+    }),
+    addLocation: build.mutation<
+      locationType,
+      { token: string; location: createLocationType }
+    >({
+      query: ({ token, location }) => ({
+        url: '/location/create',
+        method: 'POST',
+        body: location,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      transformResponse: (response: ApiResponse) => {
+        return response.addlocation.data;
+      },
+    }),
   }),
 });
 
-export const { useSignUpMutation, useSignInMutation } = userApi;
+export const {
+  useSignUpMutation,
+  useAddLocationMutation,
+  useGetLocationsQuery,
+  useSignInMutation,
+} = userApi;

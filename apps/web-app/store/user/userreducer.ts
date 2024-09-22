@@ -1,34 +1,32 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
+import { locationType } from '@ecommerce/types';
 
-export interface Token {
-  access_token: string;
-}
 interface User {
-  loggedin: boolean;
-  token: string;
+  locations: locationType[];
 }
 
 const initialState: User = {
-  loggedin: false,
-  token: '',
+  locations: [],
 };
 
 const UserSlice = createSlice({
   name: 'User',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<Token>) => {
-      if (action.payload && action.payload.access_token) {
-        state.token = action.payload.access_token;
-        state.loggedin = true;
+    setLocations: (state, action: PayloadAction<locationType[]>) => {
+      if (action.payload) {
+        state.locations.push(...action.payload);
       } else {
-        console.error('No access token found in payload', action.payload);
+        console.error('No locations found', action.payload);
       }
+    },
+    addlocation: (state, action: PayloadAction<locationType>) => {
+      state.locations.push(action.payload);
     },
   },
 });
 
-export const { setUser } = UserSlice.actions;
+export const { setLocations, addlocation } = UserSlice.actions;
 export const selectuser = (state: RootState) => state.userApi;
 export default UserSlice.reducer;

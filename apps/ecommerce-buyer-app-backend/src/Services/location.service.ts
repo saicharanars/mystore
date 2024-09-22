@@ -1,6 +1,5 @@
 import {
   createLocationType,
-  createuserResponse,
   editLocationType,
   locationDto,
   userlocations,
@@ -38,9 +37,9 @@ async function createLocation(
       'Failed to associate user with location'
     );
   }
-  const safelocation = locationDto.parse(location);
+  const data = locationDto.parse(location);
 
-  return { safelocation, userlocation: true };
+  return { data, userlocation: true };
 }
 
 async function editLocation(

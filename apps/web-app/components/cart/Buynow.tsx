@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   DialogHeader,
@@ -18,7 +18,6 @@ import { useGetLocationsQuery } from '../../store/orders/api';
 import { locationType, userlocationsType } from '@ecommerce/types';
 import { useAuth } from '../../store/context/authhook';
 import Purchase from './Purchase';
-import Addlocation from '../locations/Addlocation';
 
 type LocationsQueryResult = ReturnType<typeof useGetLocationsQuery>;
 interface product {
@@ -40,9 +39,6 @@ const Buynow: React.FC<IbuyNow> = ({ ordervalue, products }) => {
   ) as LocationsQueryResult;
 
   const locations = data as userlocationsType | undefined;
-  useEffect(() => {
-    console.log(location);
-  }, [location]);
 
   return (
     <Dialog>

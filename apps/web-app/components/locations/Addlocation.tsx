@@ -1,14 +1,13 @@
 'use client';
 import { createLocationDto, createLocationType } from '@ecommerce/types';
-import { useAddLocationMutation } from '../../store/orders/api';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { addlocation } from '../../store/user/userreducer';
 import {
   Button,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
   Form,
   FormControl,
   FormField,
@@ -16,43 +15,57 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTrigger,
+  DialogHeader,
+  DialogTitle,
 } from '@ecommerce/ui-kit/ui';
-import { LoaderCircle } from 'lucide-react';
+import { LoaderCircle, Plus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../../store/context/authhook';
+import { useUserDispatch } from '../../store/user/userhooks';
+import { useAddLocationMutation } from '../../store/user/api';
 
-const Addlocation = () => {
+const Location = () => {
   const auth = useAuth();
+  const locationdispatch = useUserDispatch();
   const { token } = auth;
   const [Location, { data: locationresult, isLoading, error: locationError }] =
     useAddLocationMutation();
   const locationform = useForm<createLocationType>({
     resolver: zodResolver(createLocationDto),
   });
+  useEffect(() => {
+    if (locationresult) {
+      locationdispatch(addlocation(locationresult));
+    }
+  }, [locationdispatch, locationresult]);
   const handleLocation = async (values: createLocationType) => {
     try {
-      await Location({ token: token, location: values });
+      const loc = await Location({ token: token, location: values });
+      console.log(locationresult, loc);
     } catch (error) {
       console.log('add location error:', error);
     }
   };
   return (
-    <div className="max-w-screen-sm ">
+    <div className="w-full ">
       <CardHeader>
-        <CardTitle className="text-2xl">Add Location</CardTitle>
         <CardDescription>Enter your location below</CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-4">
+      <CardContent className="grid grid-cols-1 justify-start w-full gap-4">
         <Form {...locationform}>
           <form
             onSubmit={locationform.handleSubmit(handleLocation)}
-            className="space-y-3"
+            className="space-y-3 w-full"
           >
             <FormField
               control={locationform.control}
               name="address"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel>adress</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter your adress" {...field} />
@@ -131,6 +144,30 @@ const Addlocation = () => {
         )}
       </CardContent>
     </div>
+  );
+};
+
+const Addlocation = () => {
+  return (
+    <>
+      <Dialog>
+        <DialogTrigger>
+          <Button>
+            {' '}
+            <Plus className="mr-4" />
+            Add Location
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add Location</DialogTitle>
+            <DialogDescription>
+              <Location />
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
