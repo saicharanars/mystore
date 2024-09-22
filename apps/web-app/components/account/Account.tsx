@@ -8,12 +8,11 @@ import {
   TabsTrigger,
 } from '@ecommerce/ui-kit/ui/lib/ui/tabs';
 import React from 'react';
-import Orders from '../orders/Orders';
-import { MapPin, TruckIcon, User2Icon } from 'lucide-react';
+import { MapPin, User2Icon } from 'lucide-react';
 import Locations from './../locations/Locations';
 import { Provider } from 'react-redux';
-import store from '../../store/orders/store';
 import { Profile } from './Profile';
+import store from '../../store/user/store';
 
 const Account = () => {
   return (
@@ -34,15 +33,6 @@ const Account = () => {
             <Separator className="my-2" />
 
             <TabsTrigger
-              value="orders"
-              className="w-full p-1 m-1 text-xs  md:m-2 md:p-2  md:w-42"
-            >
-              <TruckIcon className="mx-auto md:mr-4 md:ml-0" />
-              <p className="hidden md:block">Orders</p>
-            </TabsTrigger>
-            <Separator className="my-2" />
-
-            <TabsTrigger
               value="locations"
               className="w-full p-1 m-1 text-xs  md:m-2 md:p-2  md:w-42"
             >
@@ -55,12 +45,7 @@ const Account = () => {
               <Separator orientation="vertical" className="m-2" />
               <Profile />
             </TabsContent>
-            <TabsContent value="orders">
-              <Separator orientation="vertical" className="mx-4" />
-              <div className="p-1 m-1">
-                <Orders />
-              </div>
-            </TabsContent>
+
             <TabsContent value="locations">
               <Separator orientation="vertical" className="mx-4" />
               <div className="p-1 m-1">

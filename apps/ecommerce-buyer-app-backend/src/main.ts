@@ -40,7 +40,7 @@ app.use((err: ApiError, req: Request, res: Response, next: Function) => {
     message: err.message,
   });
 });
-const port = process.env.PORT || 3001;
+const port = process.env.BACKEND_PORT || 3001;
 
 const outputPath = path.join(__dirname, 'openapi-docs.yaml');
 app.get('/api-docs/swagger.json', async (req, res) => {

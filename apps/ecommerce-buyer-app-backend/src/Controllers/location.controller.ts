@@ -20,7 +20,7 @@ const addLocation = async (req: Request, res: Response) => {
   console.log(body, usertoken);
   const addlocation = await createLocation(body, usertoken.id);
   res.status(StatusCodes.CREATED).json({
-    data: addlocation,
+    addlocation,
     message: getReasonPhrase(StatusCodes.CREATED),
   });
 };

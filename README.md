@@ -1,66 +1,92 @@
-# nx-next-shadcn-ui-starter
+# MyStore Ecommerce Monorepo
 
-This is a starter repository for integrating [shadcn/ui](https://github.com/shadcn/ui) with [Next.js](https://nextjs.org/) in an [Nx](https://nx.dev/) monorepo.
+## Overview
 
-Detailed instructions for configuring and setting up this repository can be found in a tutorial on [Medium.com](https://medium.com/@patrickvaler/how-to-get-started-with-shadcn-ui-and-next-js-within-a-nx-monorepo-57908f48b4ef). Explore the tutorial for comprehensive insights into the repository's setup, ensuring a smooth and informed integration process.
+The monorepo contains a full ecommerce solution: an Express.js backend for APIs and a Next.js frontend for server-side rendering. Nx is used to organize the monorepo and speed up builds.
 
-## Features
+## Repository Structure
 
-- Shared library based on `shadcn/ui` components integrated in Next.js app
-- Monorepo structure using Nx for better organization and scalability
+mystore/
+├── apps/
+│ ├── ecommerce-buyer-app-backend/
+│ └── web-app/
+├── libs/
+│ ├── db-postgres/
+│ ├── types/
+│ └── ui-kit/
+│ └── ui/
+├── nx.json
+├── package.json
+└── tsconfig.base.json
 
-## Getting Started
+## Setup and Installation
 
-### Prerequisites
+1. Clone the repository:
+   git clone https://github.com/your-org/mystore-ecommerce.git
 
-Make sure you have Node.js and npm installed on your machine.
+2. Install dependencies:
+   pnpm install
 
-### Installation
+3. Configure environment variables:
+   BACKEND_URL=http://localhost:3001
+   DB_USER=myuser
+   DB_PASSWORD=mypassword
+   DB_NAME=mydatabase
+   DB_PORT=5432
+   DB_HOST=localhost
+   JWT_SECRET_KEY=yoir secret
+   RAZORPAY_KEY_ID=rzp_key_id
+   RAZORPAY_KEY_SECRET=2NUYed2kesecret_id
+   PORT=3001
+   NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
+   NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_test_key
+   NEXT_PUBLIC_RAZORPAY_KEY_SECRET=2NUYedrzptest_key_secret
 
-1. Clone this repository:
+## Development
 
-   ```bash
-   git clone https://github.com/patrickvaler/nx-next-shadcn-ui-starter.git
-   ```
+Start the development servers:
+nx run-many --target=serve --all=true --configuration=development
 
-2. Install npm dependencies
+## Building for Production
 
-   ```bash
-   npm install
-   ```
+1. Build all projects:
+   nx run-many --target=build --all=true --configuration=production
 
-### Run application
+2. Output will be in the `dist/` directory
 
-```bash
-npm start
-```
+## Testing
 
-## Add shadcn/ui components
+- Run all tests:
+  nx run-many --target=test --all=true
 
-`shadcn/ui` offers a cli to generate ui components.
+- Test specific project:
+  nx test <project-name>
 
-Use the `add` command to add components and dependencies to your project:
+## Linting
 
-```bash
-npx shadcn-ui@latest add [component]
-```
+- Lint all projects:
+  nx run-many --target=lint --all=true
 
-You will be presented with a list of components to choose from:
+- Lint specific project:
+  nx lint <project-name>
 
-```bash
-Which components would you like to add? › Space to select. A to toggle all.
-Enter to submit.
+## Deployment
 
-◯  accordion
-◯  alert
-◯  alert-dialog
-◯  aspect-ratio
-◯  avatar
-◯  badge
-◯  button
-◯  calendar
-◯  card
-◯  checkbox
-```
+1. Build the projects (see "Building for Production")
+2. Backend:
+   - Deploy `dist/apps/ecommerce-buyer-app-backend` to your Node.js hosting environment
+   - Set up a process manager (e.g., PM2) to manage the Node.js process
+3. Frontend:
+   - Deploy `dist/apps/web-app` to a static hosting service or SSR-capable environment
 
-Check the `shadcn/ui` [cli docs](https://ui.shadcn.com/docs/cli) for further information.
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch: git checkout -b feature/my-new-feature
+3. Commit changes: git commit -am 'Add some feature'
+4. Push to the branch: git push origin feature/my-new-feature
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
