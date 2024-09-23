@@ -40,7 +40,7 @@ const Header = () => {
         </Link>
       </div>
       <div className="relative p-2 my-auto right-0  md:order-last flex flex-row justify-end gap-4">
-        <Button className="  rounded-lg   hidden md:block ">
+        <Button className="  rounded-lg   hidden md:block my-auto ">
           Sell on Mystore
         </Button>
         <div className="p-2">

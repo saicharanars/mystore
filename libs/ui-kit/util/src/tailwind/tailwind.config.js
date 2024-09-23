@@ -8,6 +8,7 @@ module.exports = {
     './{app,pages,components}/**/*.{js,jsx,ts,tsx}',
     // path to ui-kit components (relative to current dir)
     join(__dirname, '../../../ui/**/*.{js,jsx,ts,tsx}'),
+    './src/**/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
     extend: {

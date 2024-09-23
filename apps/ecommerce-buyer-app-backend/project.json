@@ -16,7 +16,8 @@
         "main": "apps/ecommerce-buyer-app-backend/src/main.ts",
         "tsConfig": "apps/ecommerce-buyer-app-backend/tsconfig.app.json",
         "assets": ["apps/ecommerce-buyer-app-backend/src/assets"],
-        "webpackConfig": "apps/ecommerce-buyer-app-backend/webpack.config.js"
+        "webpackConfig": "apps/ecommerce-buyer-app-backend/webpack.config.js",
+        "generatePackageJson": true
       },
       "configurations": {
         "development": {},
