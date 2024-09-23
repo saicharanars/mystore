@@ -10,36 +10,18 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ecommerce/types": [
-        "libs/types/src/index.ts"
-      ],
-      "@ecommerce/db-postgres": [
-        "libs/db-postgres/src/index.ts"
-      ],
-      "@ecommerce/ui-kit/ui": [
-        "libs/ui-kit/ui/src/index.ts"
-      ],
-      "@ecommerce/ui-kit/ui/*": [
-        "libs/ui-kit/ui/src/*"
-      ],
-      "@ecommerce/ui-kit/util": [
-        "libs/ui-kit/util/src/index.ts"
-      ],
-      "@ecommerce/ui-kit/util/*": [
-        "libs/ui-kit/util/src/*"
-      ],
+      "@ecommerce/db-postgres": ["libs/db-postgres/src/index.ts"],
+      "@ecommerce/types": ["libs/types/src/index.ts"],
+      "@ecommerce/ui-kit/ui": ["libs/ui-kit/ui/src/index.ts"],
+      "@ecommerce/ui-kit/ui/*": ["libs/ui-kit/ui/src/*"],
+      "@ecommerce/ui-kit/util": ["libs/ui-kit/util/src/index.ts"],
+      "@ecommerce/ui-kit/util/*": ["libs/ui-kit/util/src/*"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }
