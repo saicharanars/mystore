@@ -1,14 +1,14 @@
 const { join } = require('path');
 
 const TailwindAnimate = require('tailwindcss-animate');
-
 module.exports = {
   content: [
     // relative path by consumer app
     './{app,pages,components}/**/*.{js,jsx,ts,tsx}',
+    './src/{app,pages,components}/**/*.{js,jsx,ts,tsx}',
     // path to ui-kit components (relative to current dir)
     join(__dirname, '../../../ui/**/*.{js,jsx,ts,tsx}'),
-    './src/**/**/*.{js,jsx,ts,tsx}',
+    join(__dirname, '../../../../../apps/seller-client/src/**/*.{js,jsx,ts,tsx}')
   ],
   theme: {
     extend: {

@@ -21,3 +21,4 @@ export * from './table';
 export * from './alert-dialog';
 export * from './alert';
 export * from './card';
+export * from './separator';
