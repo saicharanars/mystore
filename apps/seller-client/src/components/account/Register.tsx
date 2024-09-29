@@ -1,8 +1,19 @@
 import Registerform from './Registerform';
 import { Separator } from '@ecommerce/ui-kit/ui';
 import { CircleCheck } from 'lucide-react';
+import AuthContext from '../store/context/Authcontext';
+import { useNavigate } from '@tanstack/react-router';
+import { useContext, useEffect } from 'react';
 
 const Register = () => {
+  const authctx = useContext(AuthContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    console.log(authctx.isLoggedIn);
+    if (authctx.isLoggedIn) {
+      navigate({ to: '/login' });
+    }
+  }, [authctx.isLoggedIn, navigate]);
   return (
     <div className="container mx-auto px-4 py-3 sm:py-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full px-4">

@@ -13,23 +13,15 @@ import {
   FormMessage,
   Input,
 } from '@ecommerce/ui-kit/ui';
-import { Link, redirect } from '@tanstack/react-router';
-import { useContext, useEffect } from 'react';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { useSignUpMutation } from '../store/user/api';
 import { useForm } from 'react-hook-form';
 import { createuser, createuserDto } from '@ecommerce/types';
 import { LoaderCircle } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import AuthContext from '../store/context/Authcontext';
 
 const Registerform = () => {
-  const authctx = useContext(AuthContext);
-  useEffect(() => {
-    console.log(authctx.isLoggedIn);
-    if (authctx.isLoggedIn) {
-      redirect({ to: '/about' });
-    }
-  }, [authctx.isLoggedIn]);
+  const navigate = useNavigate();
   const [
     signup,
     { data: signupresult, isLoading: isSigningUp, error: signupError },
@@ -43,6 +35,9 @@ const Registerform = () => {
       role: 'seller',
     },
   });
+  if (signupresult) {
+    navigate({ to: '/login' });
+  }
   const handleSignup = async (values: createuser) => {
     try {
       await signup({ user: values });
