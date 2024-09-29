@@ -26,6 +26,7 @@ const Loginform = () => {
   const navigate = useNavigate();
   useEffect(() => {
     console.log(authctx.isLoggedIn);
+    console.log(import.meta.env.BACKEND_URL);
     if (authctx.isLoggedIn) {
       navigate({ to: '/about' });
     }
