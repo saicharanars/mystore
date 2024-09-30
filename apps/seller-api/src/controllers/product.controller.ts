@@ -1,6 +1,4 @@
-// controllers/ProductController.ts
 import {
-  editProduct,
   productFilterType,
   ProductSchemaZod,
   usertokentype,
@@ -8,15 +6,31 @@ import {
 import ProductService from '../services/product.service';
 import { Request, Response } from 'express';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
+import MediaService from '../services/storage.service';
 
 class ProductController {
-  async create(req: Request, res: Response): Promise<Response> {
+  private mediaService: MediaService;
+  constructor() {
+    this.mediaService = new MediaService();
+  }
+  create = async (req: Request, res: Response): Promise<Response> => {
     const usertoken: usertokentype = req['user'];
+    const userid = usertoken.id;
     const productbody = req.body;
-    const product = await ProductService.createProduct(
-      productbody,
-      usertoken.id
+
+    const files = req.files as Express.Multer.File[];
+    console.log(files, productbody, '>>>>>>>>');
+    const uploadedFiles = await Promise.all(
+      files.map(async (file) => {
+        const uploadResult = await this.mediaService.saveFile(file, userid);
+        console.log(uploadResult, 'fgjij');
+        return uploadResult.url;
+      })
     );
+    console.log(uploadedFiles, 'crrrrrr');
+
+    productbody.images = uploadedFiles;
+    const product = await ProductService.createProduct(productbody, userid);
     console.log('Product data:', product); // Log the product data
     console.log(ProductSchemaZod.partial().parse(product));
 
@@ -24,7 +38,7 @@ class ProductController {
       data: ProductSchemaZod.parse(product),
       message: getReasonPhrase(StatusCodes.CREATED),
     });
-  }
+  };
 
   async getById(req: Request, res: Response): Promise<Response> {
     const product = await ProductService.getProductById(req.params.productid);

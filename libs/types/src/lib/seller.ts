@@ -42,6 +42,7 @@ const ProductSchemaZod = z.object({
 
 const createProductSchema = ProductSchemaZod.omit({
   _id: true,
+  images: true,
   created_at: true,
   updated_at: true,
   userId: true,
