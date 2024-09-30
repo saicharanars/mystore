@@ -1,9 +1,6 @@
-// services/ProductService.ts
-
-import Product from '../models/product.model'; // Assume you have a Mongoose model
+import Product from '../models/product.model';
 import {
   CreateProductType,
-  productFiltersServiceType,
   productFilterType,
   ProductType,
 } from '@ecommerce/types';
@@ -20,17 +17,18 @@ class ProductService {
 
     const product = new Product(productData);
     const result = await product.save();
-    if (result === null) {
+    const savedProduct = result as ProductType;
+    if (savedProduct === null) {
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
         'Failed to create product'
       );
     }
-    return result;
+    return savedProduct;
   }
 
   async getProductById(productId: string): Promise<ProductType | null> {
-    const result = await Product.findOne({ _id: productId });
+    const result = (await Product.findOne({ _id: productId })) as ProductType;
     console.log(result, 'from product service');
     if (!result) {
       throw new ApiError(StatusCodes.NOT_FOUND, 'Product not found');
@@ -50,12 +48,13 @@ class ProductService {
       productData,
       { new: true }
     );
+    const updatedProduct = product as ProductType;
 
-    if (!product) {
+    if (!updatedProduct) {
       throw new ApiError(StatusCodes.NOT_FOUND, 'Product not found');
     }
 
-    return product;
+    return updatedProduct;
   }
 
   async deleteProduct(productId: string, userId: string) {

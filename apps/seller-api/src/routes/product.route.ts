@@ -9,16 +9,19 @@ import {
 } from '@ecommerce/types';
 import { Authorization } from '../middleware/authorization';
 import { z } from 'zod';
+import MediaService from '../services/storage.service';
 
 class ProductRoutes {
   public router: Router;
-
+  private mediaService: MediaService;
   constructor() {
     this.router = express.Router();
+    this.mediaService = new MediaService();
     this.initializeRoutes();
   }
 
   private initializeRoutes(): void {
+    const upload = this.mediaService.createMulterMiddleware();
     this.router.get(
       '/findproducts/',
       validateRequest({
@@ -29,11 +32,11 @@ class ProductRoutes {
     this.router.post(
       '/',
       Authorization('seller'),
-      validateRequest({
-        body: createProductSchema,
-      }),
+      upload.array('images', 10),
+      validateRequest({ body: createProductSchema }),
       asyncHandler(productController.create)
     );
+
     this.router.get(
       '/:productid',
       validateRequest({
