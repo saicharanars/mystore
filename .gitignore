@@ -50,3 +50,5 @@ apps/ecommerce-buyer-app-backend/.env
 apps/web-app/certificates/localhost-key.pem
 apps/web-app/certificates/localhost.pem
 .vscode/launch.json
+apps/web-app/certificates/localhost.pem
+apps/web-app/certificates/localhost-key.pem

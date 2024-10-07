@@ -15,16 +15,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  Input,
-} from '@ecommerce/ui-kit/ui';
-import { Provider } from 'react-redux';
-
-import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@ecommerce/ui-kit/ui/lib/ui/tabs';
+  Input,
+} from '@ecommerce/ui-kit/ui';
+import { Provider } from 'react-redux';
+
+
 import {
   createuser,
   createuserDto,

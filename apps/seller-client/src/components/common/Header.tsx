@@ -5,14 +5,10 @@ import logo from '../../assets/seller.svg';
 const Header = () => {
   return (
     <header className="bg-white shadow-md">
-      <div className="container mx-auto px-4 py-3 sm:py-4">
+      <div className="container mx-auto  py-3 md:py-4 ">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <img
-              src={logo}
-              alt="MyStore logo"
-              className="h-8 w-auto sm:h-10"
-            />
+            <img src={logo} alt="MyStore logo" className="h-8 w-auto sm:h-10" />
             <h1 className="text-xl sm:text-2xl font-bold text-primary">
               My Store
             </h1>
@@ -24,9 +20,7 @@ const Header = () => {
             >
               Register as Seller
             </Button>
-            <Button className="rounded-full">
-              Seller Login
-            </Button>
+            <Button className="rounded-full">Seller Login</Button>
           </nav>
         </div>
       </div>

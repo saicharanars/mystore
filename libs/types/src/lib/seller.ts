@@ -1,5 +1,13 @@
 import { z } from 'zod';
 
+const MAX_FILE_SIZE = 5000000;
+const ACCEPTED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+];
+
 const ProductSchemaZod = z.object({
   _id: z.string().uuid(),
   name: z
@@ -20,17 +28,21 @@ const ProductSchemaZod = z.object({
     .string()
     .min(10, 'Must be 10 or more characters long')
     .max(500, 'Must be 500 or fewer characters long'),
-  price: z.number().min(0, 'Price must be a positive number'),
-  compare_price: z.number().min(0, 'Regular price must be a positive number'),
-  sale_price: z
+  price: z.coerce.number().min(0, 'Price must be a positive number'),
+  compare_price: z.coerce
+    .number()
+    .min(0, 'Regular price must be a positive number'),
+  sale_price: z.coerce
     .number()
     .min(0, 'Sale price must be a positive number')
     .optional(),
   on_sale: z.boolean(),
-  stock_quantity: z.number().min(0, 'Stock quantity must be a positive number'),
+  stock_quantity: z.coerce
+    .number()
+    .min(0, 'Stock quantity must be a positive number'),
   stock_status: z.enum(['in_stock', 'out_of_stock']),
-  categories: z.array(z.string()),
-  tags: z.array(z.string()),
+  categories: z.array(z.string()).optional().default([]),
+  tags: z.array(z.string()).optional(),
   images: z.array(z.string()),
   attributes: z
     .record(z.string(), z.union([z.string(), z.number(), z.boolean()]))
@@ -42,10 +54,12 @@ const ProductSchemaZod = z.object({
 
 const createProductSchema = ProductSchemaZod.omit({
   _id: true,
-  images: true,
   created_at: true,
   updated_at: true,
   userId: true,
+});
+const createProductFormSchema = createProductSchema.omit({
+  images: true,
 });
 const productFilters = z.object({
   category: z.string(),
@@ -55,16 +69,51 @@ const productFilters = z.object({
   skip: z.string(),
   limit: z.string(),
 });
+const addproductresponseschema = z.object({
+  data: ProductSchemaZod,
+  message: z.string(),
+});
+const addimagesresponseschema = z.object({
+  data: z.array(z.string()),
+  message: z.string(),
+});
+const images = z.object({
+  images: z.array(
+    z
+      .any()
+      .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
+      .refine(
+        (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+        'Only .jpg, .jpeg, .png and .webp formats are supported.'
+      )
+  ),
+});
+type imagestype = z.infer<typeof images>;
+
 const editProduct = createProductSchema.partial();
 type ProductType = z.infer<typeof ProductSchemaZod>;
 type CreateProductType = z.infer<typeof createProductSchema>;
 type UpdateProductType = z.infer<typeof editProduct>;
 type productFilterType = z.infer<typeof productFilters>;
+type addProductResponseType = z.infer<typeof addproductresponseschema>;
+type addImageResponseType = z.infer<typeof addimagesresponseschema>;
 
-export { ProductSchemaZod, createProductSchema, editProduct, productFilters };
+export {
+  ProductSchemaZod,
+  createProductSchema,
+  createProductFormSchema,
+  addimagesresponseschema,
+  editProduct,
+  addproductresponseschema,
+  productFilters,
+  images,
+};
 export type {
   ProductType,
   CreateProductType,
   UpdateProductType,
+  addImageResponseType,
+  addProductResponseType,
   productFilterType,
+  imagestype,
 };
