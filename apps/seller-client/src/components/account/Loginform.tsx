@@ -28,7 +28,7 @@ const Loginform = () => {
     console.log(authctx.isLoggedIn);
     console.log(import.meta.env.BACKEND_URL);
     if (authctx.isLoggedIn) {
-      navigate({ to: '/about' });
+      navigate({ to: '/dashboard' });
     }
   }, [authctx.isLoggedIn, navigate]);
   const [

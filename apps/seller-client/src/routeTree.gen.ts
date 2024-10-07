@@ -13,14 +13,22 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as DashboardLayoutImport } from './routes/dashboard/_layout'
 
 // Create Virtual Routes
 
+const DashboardImport = createFileRoute('/dashboard')()
 const LoginLazyImport = createFileRoute('/login')()
 const AboutLazyImport = createFileRoute('/about')()
 const IndexLazyImport = createFileRoute('/')()
+const DashboardLayoutIndexLazyImport = createFileRoute('/dashboard/_layout/')()
 
 // Create/Update Routes
+
+const DashboardRoute = DashboardImport.update({
+  path: '/dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const LoginLazyRoute = LoginLazyImport.update({
   path: '/login',
@@ -36,6 +44,18 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const DashboardLayoutRoute = DashboardLayoutImport.update({
+  id: '/_layout',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardLayoutIndexLazyRoute = DashboardLayoutIndexLazyImport.update({
+  path: '/',
+  getParentRoute: () => DashboardLayoutRoute,
+} as any).lazy(() =>
+  import('./routes/dashboard/_layout.index.lazy').then((d) => d.Route),
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -62,21 +82,69 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginLazyImport
       parentRoute: typeof rootRoute
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/_layout': {
+      id: '/dashboard/_layout'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardLayoutImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/_layout/': {
+      id: '/dashboard/_layout/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardLayoutIndexLazyImport
+      parentRoute: typeof DashboardLayoutImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface DashboardLayoutRouteChildren {
+  DashboardLayoutIndexLazyRoute: typeof DashboardLayoutIndexLazyRoute
+}
+
+const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
+  DashboardLayoutIndexLazyRoute: DashboardLayoutIndexLazyRoute,
+}
+
+const DashboardLayoutRouteWithChildren = DashboardLayoutRoute._addFileChildren(
+  DashboardLayoutRouteChildren,
+)
+
+interface DashboardRouteChildren {
+  DashboardLayoutRoute: typeof DashboardLayoutRouteWithChildren
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardLayoutRoute: DashboardLayoutRouteWithChildren,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
   '/login': typeof LoginLazyRoute
+  '/dashboard': typeof DashboardLayoutRouteWithChildren
+  '/dashboard/': typeof DashboardLayoutIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
   '/login': typeof LoginLazyRoute
+  '/dashboard': typeof DashboardLayoutIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -84,14 +152,24 @@ export interface FileRoutesById {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
   '/login': typeof LoginLazyRoute
+  '/dashboard': typeof DashboardRouteWithChildren
+  '/dashboard/_layout': typeof DashboardLayoutRouteWithChildren
+  '/dashboard/_layout/': typeof DashboardLayoutIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/login'
+  fullPaths: '/' | '/about' | '/login' | '/dashboard' | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/login'
-  id: '__root__' | '/' | '/about' | '/login'
+  to: '/' | '/about' | '/login' | '/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/login'
+    | '/dashboard'
+    | '/dashboard/_layout'
+    | '/dashboard/_layout/'
   fileRoutesById: FileRoutesById
 }
 
@@ -99,12 +177,14 @@ export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   AboutLazyRoute: typeof AboutLazyRoute
   LoginLazyRoute: typeof LoginLazyRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   AboutLazyRoute: AboutLazyRoute,
   LoginLazyRoute: LoginLazyRoute,
+  DashboardRoute: DashboardRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -121,7 +201,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
-        "/login"
+        "/login",
+        "/dashboard"
       ]
     },
     "/": {
@@ -132,6 +213,23 @@ export const routeTree = rootRoute
     },
     "/login": {
       "filePath": "login.lazy.tsx"
+    },
+    "/dashboard": {
+      "filePath": "dashboard",
+      "children": [
+        "/dashboard/_layout"
+      ]
+    },
+    "/dashboard/_layout": {
+      "filePath": "dashboard/_layout.tsx",
+      "parent": "/dashboard",
+      "children": [
+        "/dashboard/_layout/"
+      ]
+    },
+    "/dashboard/_layout/": {
+      "filePath": "dashboard/_layout.index.lazy.tsx",
+      "parent": "/dashboard/_layout"
     }
   }
 }
