@@ -4,7 +4,6 @@ import { Link, Outlet } from '@tanstack/react-router';
 import {
   Badge,
   Home,
-  LineChart,
   Package,
   Settings2,
   ShoppingCart,
@@ -16,20 +15,20 @@ export const description =
 
 export function Sidenav() {
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] overflow-scroll">
       <div className="hidden border-r bg-muted/40 md:block">
         <div className="flex h-full max-h-screen flex-col gap-2 mt-2">
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm lg:text-lg font-medium lg:px-5">
               <Link
-                href="#"
+                to="/dashboard"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Home className="h-4 w-4" />
                 Dashboard
               </Link>
               <Link
-                href="#"
+                to="/"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <ShoppingCart className="h-4 w-4" />
@@ -39,28 +38,28 @@ export function Sidenav() {
                 </Badge>
               </Link>
               <Link
-                href="#"
+                to="/dashboard/products"
                 className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
               >
                 <Package className="h-4 w-4" />
                 Products
               </Link>
               <Link
-                href="#"
+                to="/dashboard"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Users className="h-4 w-4" />
                 Customers
               </Link>
               <Link
-                href="#"
+                to="/"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <PersonIcon className="h-4 w-4" />
                 account
               </Link>
               <Link
-                href="#"
+                to="/"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Settings2 className="h-4 w-4" />
@@ -86,7 +85,7 @@ export function Sidenav() {
             <SheetContent side="left" className="flex flex-col">
               <nav className="grid gap-2 text-lg font-medium">
                 <Link
-                  href="#"
+                  to="#"
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
                   <Package2 className="h-6 w-6" />

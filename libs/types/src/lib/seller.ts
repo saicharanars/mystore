@@ -61,14 +61,16 @@ const createProductSchema = ProductSchemaZod.omit({
 const createProductFormSchema = createProductSchema.omit({
   images: true,
 });
-const productFilters = z.object({
-  category: z.string(),
-  tags: z.string(),
-  minprice: z.string(),
-  maxprice: z.string(),
-  skip: z.string(),
-  limit: z.string(),
-});
+const productFilters = z
+  .object({
+    category: z.string(),
+    tags: z.string(),
+    minprice: z.string(),
+    maxprice: z.string(),
+    skip: z.string(),
+    limit: z.string(),
+  })
+  .partial();
 const addproductresponseschema = z.object({
   data: ProductSchemaZod,
   message: z.string(),
@@ -88,6 +90,10 @@ const images = z.object({
       )
   ),
 });
+const ProductsResponse = z.object({
+  rows: z.array(ProductSchemaZod),
+  count: z.number(),
+});
 type imagestype = z.infer<typeof images>;
 
 const editProduct = createProductSchema.partial();
@@ -97,6 +103,7 @@ type UpdateProductType = z.infer<typeof editProduct>;
 type productFilterType = z.infer<typeof productFilters>;
 type addProductResponseType = z.infer<typeof addproductresponseschema>;
 type addImageResponseType = z.infer<typeof addimagesresponseschema>;
+type ProductsResponseType = z.infer<typeof ProductsResponse>;
 
 export {
   ProductSchemaZod,
@@ -106,6 +113,7 @@ export {
   editProduct,
   addproductresponseschema,
   productFilters,
+  ProductsResponse,
   images,
 };
 export type {
@@ -114,6 +122,7 @@ export type {
   UpdateProductType,
   addImageResponseType,
   addProductResponseType,
+  ProductsResponseType,
   productFilterType,
   imagestype,
 };

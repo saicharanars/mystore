@@ -48,7 +48,7 @@ class ProductController {
     );
 
     return res.status(StatusCodes.CREATED).json({
-      data: product,
+      data: ProductSchemaZod.parse(product),
       message: getReasonPhrase(StatusCodes.CREATED),
     });
   }
@@ -62,7 +62,7 @@ class ProductController {
     );
     if (deletedproduct) {
       return res.status(StatusCodes.CREATED).json({
-        sucess: true,
+        success: true,
         message: getReasonPhrase(StatusCodes.CREATED),
       });
     } else {
@@ -76,6 +76,19 @@ class ProductController {
   async getAll(req: Request, res: Response): Promise<Response> {
     const filters: productFilterType = req.query;
     const products = await ProductService.findAllProducts(filters);
+    return res.status(StatusCodes.OK).json({
+      data: products,
+      message: getReasonPhrase(StatusCodes.OK),
+    });
+  }
+  async getAllProductsBySeller(req: Request, res: Response): Promise<Response> {
+    const usertoken: usertokentype = req['user'];
+    const filters: productFilterType = req.query;
+    console.log(usertoken);
+    const products = await ProductService.findAllProducts(
+      filters,
+      usertoken.id
+    );
     return res.status(StatusCodes.OK).json({
       data: products,
       message: getReasonPhrase(StatusCodes.OK),

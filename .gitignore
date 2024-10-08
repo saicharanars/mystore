@@ -1,5 +1,3 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
-
 # compiled output
 dist
 tmp
@@ -25,30 +23,26 @@ node_modules
 !.vscode/extensions.json
 
 # misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
+.sass-cache
+connect.lock
+coverage
+libpeerconnection.log
 npm-debug.log
 yarn-error.log
 testem.log
-/typings
+typings
 
 # System Files
 .DS_Store
 Thumbs.db
 
+# Nx
 .nx/cache
 .nx/workspace-data
 
 # Next.js
 .next
-*/.env
 .env
-apps/web-app/.env
-apps/ecommerce-buyer-app-backend/.env
+*.env
 apps/web-app/certificates/localhost-key.pem
 apps/web-app/certificates/localhost.pem
-.vscode/launch.json
-apps/web-app/certificates/localhost.pem
-apps/web-app/certificates/localhost-key.pem

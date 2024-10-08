@@ -12,7 +12,7 @@ class App {
   private uploadService = new UploadService();
   private corsOptions = {
     origin: ['http://localhost:3000', 'http://localhost:3002'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   };

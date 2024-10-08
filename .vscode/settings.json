@@ -3,11 +3,19 @@
   "editor.formatOnSave": true,
   // File Exclusions
   "files.exclude": {
-    "**/node_modules": true,
     "**/.git": true,
-    "**/dist": true,
+    "**/.idea": true,
+    "**/.next": true,
+    "**/.nx/cache": true,
+    "**/.nx/workspace-data": true,
+    "**/.sass-cache": true,
+    "**/.vscode": true,
     "**/build": true,
-    "**/.vscode": true
+    "**/coverage": true,
+    "**/dist": true,
+    "**/node_modules": true,
+    "**/tmp": true,
+    "**/typings": true
   },
   "search.exclude": {
     "**/node_modules": true,
@@ -16,4 +24,5 @@
     "**/build": true
   },
   "typescript.tsserver.log": "verbose",
+  "files.autoSaveWorkspaceFilesOnly": false,
 }
