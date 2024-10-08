@@ -50,10 +50,12 @@ class ProductRoutes {
   private initializeRoutes(): void {
     this.router.get(
       '/findproducts/',
+      Authorization('seller'),
+
       validateRequest({
         query: productFilters.partial(),
       }),
-      asyncHandler(productController.getAll)
+      asyncHandler(productController.getAllProductsBySeller)
     );
     this.router.post(
       '/',

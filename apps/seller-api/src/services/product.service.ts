@@ -74,7 +74,7 @@ class ProductService {
     return deleteproduct;
   }
 
-  async findAllProducts(filters: productFilterType) {
+  async findAllProducts(filters?: productFilterType, userid?: string) {
     const { category, tags, minprice, maxprice, skip, limit } = filters;
 
     const whereClause: FilterQuery<productFilterType> = {};
@@ -94,6 +94,9 @@ class ProductService {
       if (maxprice) {
         whereClause.price.$lte = parseInt(maxprice);
       }
+    }
+    if (userid) {
+      whereClause.userId = userid;
     }
 
     const [rows, count] = await Promise.all([
