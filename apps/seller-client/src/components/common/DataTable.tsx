@@ -1,4 +1,4 @@
-import React, { useState, useMemo, ReactElement } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -59,6 +59,10 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
+  useEffect(() => {
+    console.log('Column Filters:', columnFilters);
+  }, [columnFilters]);
+
   const table = useReactTable({
     data,
     columns,
@@ -78,12 +82,77 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  useEffect(() => {
+    console.log('Filtered Rows:', table.getRowModel().rows);
+  }, [table]);
+
+  const uniqueValues = useMemo(() => {
+    const values: { [key: string]: Set<any> } = {};
+    if (filters) {
+      filters.forEach((filter) => {
+        values[filter] = new Set(data.map((item: any) => item[filter]));
+      });
+    }
+    console.log('Unique Values:', values);
+    return values;
+  }, [data, filters]);
+
+  const CustomFilterInput = () => (
+    <Input
+      placeholder={`Filter ${customFilterColumn}...`}
+      value={
+        (table
+          .getColumn(customFilterColumn || '')
+          ?.getFilterValue() as string) ?? ''
+      }
+      onChange={(event) =>
+        table
+          .getColumn(customFilterColumn || '')
+          ?.setFilterValue(event.target.value)
+      }
+      className="max-w-sm"
+    />
+  );
+
   return (
     <div className="rounded-md border-2 p-1 space-y-3 shadow-xl ">
+      <div className="flex items-center justify-end py-4 space-x-2">
+        {customFilterColumn && <CustomFilterInput />}
+        {filters &&
+          filters.length > 0 &&
+          filters.map((filter) => (
+            <Select
+              key={filter}
+              onValueChange={(value) => {
+                console.log('Setting filter value for', filter, ':', value);
+                table.getColumn(filter)?.setFilterValue(value || undefined);
+              }}
+              value={
+                (table.getColumn(filter)?.getFilterValue() as string) ??
+                undefined
+              }
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder={`Select ${filter}`} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{filter}</SelectItem>
+                {Array.from(uniqueValues[filter] || []).map((value) => (
+                  <SelectItem key={value} value={value}>
+                    {value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ))}
+      </div>
       <Table>
         <TableHeader className="rounded-lg border-2">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="bg-primary p-1 md:p-4  ">
+            <TableRow
+              key={headerGroup.id}
+              className="bg-green-500 hover:bg-green-700 p-1 md:p-4  "
+            >
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead

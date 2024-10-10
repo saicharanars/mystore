@@ -1,15 +1,8 @@
 import { ProductType } from '@ecommerce/types';
 import { useProductDispatch } from '../store/product/producthooks';
 import AuthContext from '../store/context/Authcontext';
-import { useContext, useEffect, useState } from 'react';
-import {
-  Ellipsis,
-  X,
-  Pencil,
-  LoaderCircle,
-  Check,
-  CircleCheck,
-} from 'lucide-react';
+import { useContext } from 'react';
+import { Ellipsis, X, Pencil, LoaderCircle, CircleCheck } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -59,15 +52,18 @@ const TableActions: React.FC<ActionsProps> = ({ item }) => {
     <div className="flex flex-row items-center">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Ellipsis className="h-4 w-4" />
+          <Ellipsis className="h-3 w-" />
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="flex flex-col justify-center w-full">
+        <DropdownMenuContent className="flex flex-col justify-center w-full gap-2">
           <Dialog>
             <DialogTrigger asChild>
-              <button className="flex flex-row justify-center w-full gap-2">
+              <Button
+                variant={'secondary'}
+                className="flex flex-row justify-center w-full gap-2"
+              >
                 <X className="mr-2 h-4 w-4" />
-                <span>Delete</span>
-              </button>
+                <span className="cursor-pointer">Delete</span>
+              </Button>
             </DialogTrigger>
             <DialogContent className="p-4">
               <DialogTitle>Are you Sure</DialogTitle>
@@ -110,10 +106,13 @@ const TableActions: React.FC<ActionsProps> = ({ item }) => {
 
           <Dialog>
             <DialogTrigger asChild>
-              <button className="flex flex-row justify-center w-full gap-2">
-                <Pencil className="mr-2 h-4 w-4" />
+              <Button
+                variant={'secondary'}
+                className="flex flex-row justify-center w-full gap-2"
+              >
+                <Pencil className="mr-2 h-3 w-3" />
                 <span>Edit</span>
-              </button>
+              </Button>
             </DialogTrigger>
             <DialogContent className="p-4">
               <DialogTitle>Edit Product</DialogTitle>

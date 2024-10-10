@@ -1,44 +1,45 @@
 import { useContext, useEffect, useState } from 'react';
-import { LoaderCircle } from 'lucide-react';
-import AuthContext from '../store/context/Authcontext';
-import { useGetProductsQuery } from '../store/product/api';
+import { useGetOrdersQuery } from '../../store/orders/api';
+import AuthContext from '../../store/context/Authcontext';
 import {
-  useProductDispatch,
-  useProductSelector,
-} from '../store/product/producthooks';
-import { setProducts } from '../store/product/productreducer';
-import { DataTable } from '../common/DataTable';
-import { columns } from './ProductTableColumns';
+  useOrderDispatch,
+  useOrderSelector,
+} from '../../store/orders/orderhooks';
+import { setOrders } from '../../store/orders/orderreducer';
+import { LoaderCircle } from 'lucide-react';
+import { DataTable } from '../../common/DataTable';
+import { columns } from './OrderTableColumns';
 
-const ProductsPage = () => {
-  const products = useProductSelector((state) => state.product.products);
+const OrdersPage = () => {
+  const orders = useOrderSelector((state) => state.order.orders);
   const authctx = useContext(AuthContext);
   const token = `Bearer ${authctx.token}`;
-  const dispatch = useProductDispatch();
+  const dispatch = useOrderDispatch();
 
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
 
   const {
-    data: productsFromApi,
+    data: ordersFromApi,
     isLoading,
     error,
-  } = useGetProductsQuery({
+  } = useGetOrdersQuery({
     token,
-    filters: { skip: String(currentPage * pageSize), limit: String(pageSize) },
+    pagination: { offset: '0', limit: '10' },
   });
 
   useEffect(() => {
-    if (productsFromApi) {
-      dispatch(setProducts(productsFromApi));
-      setTotalPages(Math.ceil(productsFromApi.count / pageSize));
+    if (ordersFromApi) {
+      console.log(ordersFromApi);
+      dispatch(setOrders(ordersFromApi));
+      setTotalPages(Math.ceil(ordersFromApi.count / pageSize));
     }
-  }, [productsFromApi, dispatch, pageSize]);
+  }, [dispatch, ordersFromApi, pageSize]);
 
   useEffect(() => {
-    console.log(products);
-  }, [products]);
+    console.log(orders);
+  }, [orders]);
 
   if (isLoading) {
     return (
@@ -61,20 +62,20 @@ const ProductsPage = () => {
 
   return (
     <div className="container mx-auto py-1 md:py-10 px-2 overflow-scroll">
-      {products && (
+      {orders && (
         <DataTable
           columns={columns}
-          data={products}
+          data={orders}
           currentPage={currentPage}
           pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={setPageSize}
           totalPages={totalPages}
-          filters={['stock_quantity', 'status', 'price', 'stock_status']}
+          filters={['status']}
         />
       )}
     </div>
   );
 };
 
-export default ProductsPage;
+export default OrdersPage;
