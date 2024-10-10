@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { Authorization } from '../middleware/authorization';
 import {
   createorder,
+  getsellerorders,
   getuserorders,
   verify,
 } from '../Controllers/order.controller';
@@ -43,5 +44,13 @@ order.get(
   }),
   Authorization('customer'),
   asyncHandler(getuserorders)
+);
+order.get(
+  '/seller-orders',
+  validateRequest({
+    query: pagination,
+  }),
+  Authorization('seller'),
+  asyncHandler(getsellerorders)
 );
 export default order;

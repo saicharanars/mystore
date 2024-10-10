@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { productResponse } from './product';
+import { createLocationDto } from './location';
 
 const createOrderDto = z.object({
   rzp_orderId: z.string(),
@@ -58,6 +59,37 @@ const userordersresponse = z.object({
   ),
   count: z.number(),
 });
+
+const sellerorderproduct = productResponse
+  .pick({
+    id: true,
+    name: true,
+    price: true,
+  })
+  .extend({
+    OrderProduct: z.object({
+      quantity: z.number(),
+    }),
+  });
+const sellerorderproducts = z.object({
+  products: z.array(sellerorderproduct),
+});
+const sellerorderresponse = z.object({
+  items: z.array(
+    z.object({
+      status: z.enum(['PENDING', 'SUCCESS', 'FAILURE']),
+      id: z.string().uuid(),
+      creationDate: z.date(),
+      products: z.array(sellerorderproduct),
+      owner: z.object({
+        name: z.string(),
+      }),
+      location: createLocationDto,
+    })
+  ),
+  count: z.number(),
+});
+
 const pagination = z.object({
   offset: z.string(),
   limit: z.string(),
@@ -77,10 +109,14 @@ type orderresponseType = z.infer<typeof orderresponse>;
 type paginationType = z.infer<typeof pagination>;
 type authorizationType = z.infer<typeof authorization>;
 type userordersinputtype = z.infer<typeof userordersinput>;
+type sellerorderproductType = z.infer<typeof sellerorderproduct>;
+type sellerorderresponseType = z.infer<typeof sellerorderresponse>;
+type sellerorderproductsType = z.infer<typeof sellerorderproducts>;
 export {
   createOrderDto,
   authorization,
   userordersinput,
+  sellerorderresponse,
   createOrderResponse,
   editOrderdto,
   paymentResponse,
@@ -100,4 +136,7 @@ export type {
   createOrderResponseType,
   authorizationType,
   createorderType,
+  sellerorderproductType,
+  sellerorderresponseType,
+  sellerorderproductsType,
 };

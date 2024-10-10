@@ -1,5 +1,11 @@
 import { createorderType, editorderType } from '@ecommerce/types';
-import { Product, Order, OrderProduct } from '@ecommerce/db-postgres';
+import {
+  Product,
+  Order,
+  OrderProduct,
+  User,
+  Location,
+} from '@ecommerce/db-postgres';
 import { Transaction } from 'sequelize';
 import { ApiError } from '../utils/apierrorclass';
 import { StatusCodes } from 'http-status-codes';
@@ -126,4 +132,35 @@ async function userOrders(userId: string, offset: number, limit: number) {
   const items = rows;
   return { count, items };
 }
-export { createOrder, editOrder, userOrders };
+
+async function sellerOrders(userId: string, offset: number, limit: number) {
+  const { count, rows: items } = await Order.findAndCountAll({
+    attributes: ['id', 'status', 'creationDate'],
+    include: [
+      {
+        model: Product,
+        where: {
+          userId,
+        },
+        through: {
+          attributes: ['quantity'],
+        },
+        attributes: ['id', 'name', 'price', 'userId'],
+      },
+      {
+        model: User,
+        attributes: ['name'],
+      },
+      {
+        model: Location,
+        attributes: ['address', 'city', 'state', 'pincode'],
+      },
+    ],
+    order: [['creationDate', 'DESC']],
+    limit: limit,
+    offset: offset,
+  });
+
+  return { count, items };
+}
+export { createOrder, editOrder, userOrders, sellerOrders };

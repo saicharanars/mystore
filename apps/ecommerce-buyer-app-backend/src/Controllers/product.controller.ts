@@ -21,6 +21,7 @@ const createproduct = async (req: Request, res: Response) => {
   const product: createProductType = req.body;
   const usertoken: usertokentype = req['user'];
   const result = await createProduct(product, usertoken.id);
+  console.log(result)
   const safeUserData = productResponse.parse(result);
 
   res.status(StatusCodes.CREATED).json({

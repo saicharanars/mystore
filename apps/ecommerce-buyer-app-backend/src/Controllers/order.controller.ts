@@ -2,6 +2,7 @@ import {
   createOrderResponse,
   createorderType,
   orderresponse,
+  sellerorderresponse,
   userordersresponse,
   usertokentype,
   verifypaymentbodyType,
@@ -9,10 +10,15 @@ import {
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 import Razorpay from 'razorpay';
 import 'dotenv/config';
-import { createOrder, editOrder } from '../Services/order.service';
+import {
+  createOrder,
+  editOrder,
+  sellerOrders,
+} from '../Services/order.service';
 import { userOrders } from '../Services/order.service';
+import { Request, Response, NextFunction } from 'express';
 
-const createorder = async (req, res) => {
+const createorder = async (req: Request, res: Response, next: NextFunction) => {
   const usertoken: usertokentype = req['user'];
   console.log(usertoken, '>>', req.body);
   const options = req.body;
@@ -25,7 +31,7 @@ const createorder = async (req, res) => {
     currency: 'INR',
   });
 
-  console.log(req.user, order);
+  console.log(req['user'], order);
   const ordervalue: createorderType = {
     rzp_orderId: order.id,
     status: 'PENDING' as const,
@@ -48,7 +54,7 @@ const createorder = async (req, res) => {
     message: getReasonPhrase(StatusCodes.CREATED),
   });
 };
-const verify = async (req, res) => {
+const verify = async (req: Request, res: Response, next: NextFunction) => {
   const body: verifypaymentbodyType = req.body.verifypaymentbody;
   const instance = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -86,27 +92,39 @@ const verify = async (req, res) => {
     });
   }
 };
-const getuserorders = async (req, res) => {
-  const usertoken = req.user;
+const getuserorders = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const usertoken: usertokentype = req['user'];
   const { offset, limit } = req.query;
+  const parsedOffset = typeof offset === 'string' ? parseInt(offset, 10) : 0;
+  const parsedLimit = typeof limit === 'string' ? parseInt(limit, 10) : 5;
   console.log(offset, limit);
-  if (offset && limit) {
-    const result = await userOrders(
-      usertoken.id,
-      parseInt(offset),
-      parseInt(limit)
-    );
-    const data = userordersresponse.parse(result);
-    return res
-      .status(StatusCodes.OK)
-      .json({ data, message: getReasonPhrase(StatusCodes.OK) });
-  }
+  const result = await userOrders(usertoken.id, parsedOffset, parsedLimit);
 
-  const result = await userOrders(usertoken.id, 0, 5);
   const data = userordersresponse.parse(result);
   return res
     .status(StatusCodes.OK)
     .json({ data, message: getReasonPhrase(StatusCodes.OK) });
 };
 
-export { createorder, verify, getuserorders };
+const getsellerorders = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const usertoken: usertokentype = req['user'];
+  const { offset, limit } = req.query;
+  console.log(offset, limit);
+  const parsedOffset = typeof offset === 'string' ? parseInt(offset, 10) : 0;
+  const parsedLimit = typeof limit === 'string' ? parseInt(limit, 10) : 5;
+
+  const result = await sellerOrders(usertoken.id, parsedOffset, parsedLimit);
+  const data = sellerorderresponse.parse(result);
+  return res
+    .status(StatusCodes.OK)
+    .json({ data, message: getReasonPhrase(StatusCodes.OK) });
+};
+export { createorder, verify, getuserorders, getsellerorders };

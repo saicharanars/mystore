@@ -1,6 +1,8 @@
 import { ProductType } from '@ecommerce/types'; // Import the correct product type
 import { ColumnDef } from '@tanstack/react-table';
 import TableActions from './TableActions';
+import { Button } from '@ecommerce/ui-kit/ui';
+import { ArrowUpDown } from 'lucide-react';
 
 export const columns: ColumnDef<ProductType>[] = [
   {
@@ -16,7 +18,28 @@ export const columns: ColumnDef<ProductType>[] = [
   },
   {
     accessorKey: 'price',
-    header: () => <div className="text-center max-w-xs">Price</div>,
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        className="text-center max-w-xs"
+      >
+        Price
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    filterFn: (row, id, value) => {
+      if (typeof value === 'string') {
+        value = parseFloat(value);
+      }
+      return (row.getValue(id) as number) >= value;
+    },
+    sortingFn: (rowA, rowB, columnId) => {
+      const valueA = rowA.getValue(columnId) as number;
+      const valueB = rowB.getValue(columnId) as number;
+
+      return valueA - valueB;
+    },
     cell: ({ row }) => {
       return (
         <p className="text-center font-medium max-w-xs overflow-hidden">
@@ -38,7 +61,27 @@ export const columns: ColumnDef<ProductType>[] = [
   },
   {
     accessorKey: 'stock_quantity',
-    header: () => <div className="text-center max-w-xs">stock_quantity</div>,
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Stock Quantity
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    filterFn: (row, id, value) => {
+      if (typeof value === 'string') {
+        value = parseFloat(value);
+      }
+      return (row.getValue(id) as number) >= value;
+    },
+    sortingFn: (rowA, rowB, columnId) => {
+      const valueA = rowA.getValue(columnId) as number;
+      const valueB = rowB.getValue(columnId) as number;
+
+      return valueA - valueB;
+    },
     cell: ({ row }) => {
       return (
         <p className="text-center font-medium max-w-xs overflow-hidden">
@@ -60,7 +103,15 @@ export const columns: ColumnDef<ProductType>[] = [
   },
   {
     accessorKey: 'created_at',
-    header: () => <div className="text-center max-w-xs">created_at</div>,
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Created Date
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: ({ row }) => {
       const createdDate = row.getValue('created_at') as string;
       const date = new Date(createdDate);
@@ -75,6 +126,11 @@ export const columns: ColumnDef<ProductType>[] = [
           {formattedDate}
         </p>
       );
+    },
+    sortingFn: (rowA, rowB, columnId) => {
+      const dateA = new Date(rowA.getValue(columnId) as string);
+      const dateB = new Date(rowB.getValue(columnId) as string);
+      return dateA.getTime() - dateB.getTime();
     },
   },
   {
