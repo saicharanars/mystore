@@ -4,6 +4,7 @@ import productRoute from './routes/product.route';
 import { ApiError } from './utils/apierror';
 import UploadService from './services/media.service';
 import cors from 'cors';
+import shipmentRoute from './routes/shipment.route';
 
 class App {
   private app: express.Application;
@@ -54,6 +55,7 @@ class App {
       res.send('Hello, World!');
     });
     this.app.use('/product', productRoute);
+    this.app.use('/shipment', shipmentRoute);
   }
 
   private initializeerrorhandler(): void {

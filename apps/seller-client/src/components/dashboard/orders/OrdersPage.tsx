@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useGetOrdersQuery } from '../../store/orders/api';
 import AuthContext from '../../store/context/Authcontext';
+import { Skeleton, Table, TableBody, TableHeader } from '@ecommerce/ui-kit/ui';
 import {
   useOrderDispatch,
   useOrderSelector,
@@ -9,6 +10,7 @@ import { setOrders } from '../../store/orders/orderreducer';
 import { LoaderCircle } from 'lucide-react';
 import { DataTable } from '../../common/DataTable';
 import { columns } from './OrderTableColumns';
+import TableSkelton from '../../common/TableSkelton';
 
 const OrdersPage = () => {
   const orders = useOrderSelector((state) => state.order.orders);
@@ -42,14 +44,7 @@ const OrdersPage = () => {
   }, [orders]);
 
   if (isLoading) {
-    return (
-      <div className="h-full flex items-center justify-center">
-        <LoaderCircle
-          strokeWidth="3"
-          className="text-primary h-8 w-8 animate-spin"
-        />
-      </div>
-    );
+    return <TableSkelton />;
   }
 
   if (error) {

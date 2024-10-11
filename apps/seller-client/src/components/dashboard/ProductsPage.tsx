@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react';
-import { LoaderCircle } from 'lucide-react';
 import AuthContext from '../store/context/Authcontext';
 import { useGetProductsQuery } from '../store/product/api';
 import {
@@ -9,6 +8,7 @@ import {
 import { setProducts } from '../store/product/productreducer';
 import { DataTable } from '../common/DataTable';
 import { columns } from './ProductTableColumns';
+import TableSkelton from '../common/TableSkelton';
 
 const ProductsPage = () => {
   const products = useProductSelector((state) => state.product.products);
@@ -41,14 +41,7 @@ const ProductsPage = () => {
   }, [products]);
 
   if (isLoading) {
-    return (
-      <div className="h-full flex items-center justify-center">
-        <LoaderCircle
-          strokeWidth="3"
-          className="text-primary h-8 w-8 animate-spin"
-        />
-      </div>
-    );
+    return <TableSkelton />;
   }
 
   if (error) {
