@@ -28,9 +28,7 @@ const createuserResponse = removepassword.extend({
 });
 
 const errorschema = z.object({
-  // error: z.object({
   message: z.string(),
-  // }),
 });
 const validationerrorSchema = z
   .object({
@@ -42,6 +40,15 @@ const validationerrorSchema = z
     ),
   })
   .openapi({ description: 'Validation error response' });
+
+function isErrorSchemaType(data: unknown): data is errorschemaType {
+  return (data as errorschemaType).message !== undefined;
+}
+function isValidationSchemaType(
+  data: unknown
+): data is validationerrorSchemaType {
+  return (data as validationerrorSchemaType).error !== undefined;
+}
 
 const usertokendto = createuserResponse
   .omit({ name: true })
@@ -63,6 +70,8 @@ export {
   removepassword,
   signinDto,
   userRole,
+  isErrorSchemaType,
+  isValidationSchemaType,
 };
 export type {
   createuser,

@@ -8,19 +8,12 @@ import {
   paginationType,
   sellerorderresponseType,
   validationerrorSchemaType,
+  isErrorSchemaType,
+  isValidationSchemaType,
 } from '@ecommerce/types';
 import { SerializedError } from '@reduxjs/toolkit';
 
 const url = 'http://localhost:3001';
-
-function isErrorSchemaType(data: unknown): data is errorschemaType {
-  return (data as errorschemaType).message !== undefined;
-}
-function isValidationSchemaType(
-  data: unknown
-): data is validationerrorSchemaType {
-  return (data as validationerrorSchemaType).error !== undefined;
-}
 
 export const orderApi = createApi({
   reducerPath: 'orderApi',

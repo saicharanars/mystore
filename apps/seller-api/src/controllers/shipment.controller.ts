@@ -42,6 +42,15 @@ class ShipmentController {
       message: getReasonPhrase(StatusCodes.OK),
     });
   }
+  async getByOrderId(req: Request, res: Response): Promise<Response> {
+    const shipment = await shipmentService.getShipmenByOrderId(
+      req.params.orderid
+    );
+    return res.status(StatusCodes.OK).json({
+      data: shipmentschema.parse(shipment),
+      message: getReasonPhrase(StatusCodes.OK),
+    });
+  }
 
   async update(req: Request, res: Response): Promise<Response> {
     const usertoken: usertokentype = req['user'];

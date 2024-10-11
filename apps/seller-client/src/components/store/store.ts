@@ -5,6 +5,7 @@ import productreducer from './product/productreducer';
 import orderreducer from './orders/orderreducer';
 
 import { orderApi } from './orders/api';
+import { shipmentApi } from './shipments/api';
 
 const rootReducer = combineReducers({
   product: productreducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   [userApi.reducerPath]: userApi.reducer,
   [productApi.reducerPath]: productApi.reducer,
   [orderApi.reducerPath]: orderApi.reducer,
+  [shipmentApi.reducerPath]: shipmentApi.reducer,
 });
 
 const store = configureStore({
@@ -20,7 +22,8 @@ const store = configureStore({
     getDefaultMiddleware()
       .concat(userApi.middleware)
       .concat(productApi.middleware)
-      .concat(orderApi.middleware),
+      .concat(orderApi.middleware)
+      .concat(shipmentApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
