@@ -3,7 +3,7 @@ import {
   sellerorderproductType,
   createLocationType,
 } from '@ecommerce/types';
-import { Button, Card, CardContent } from '@ecommerce/ui-kit/ui';
+import { Button, Card, Skeleton,CardContent } from '@ecommerce/ui-kit/ui';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, Package } from 'lucide-react';
 
