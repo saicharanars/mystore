@@ -40,6 +40,15 @@ class ShipmentRoutes {
       }),
       asyncHandler(shipmentController.getById)
     );
+    this.router.get(
+      '/order/:orderid',
+      validateRequest({
+        params: z.object({
+          orderid: z.string().uuid(),
+        }),
+      }),
+      asyncHandler(shipmentController.getByOrderId)
+    );
     this.router.patch(
       '/:shipmentid',
       Authorization('seller'),

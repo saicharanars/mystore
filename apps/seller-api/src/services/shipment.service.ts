@@ -41,7 +41,16 @@ class ShipmentService {
     }
     return result;
   }
-
+  async getShipmenByOrderId(orderId: string): Promise<shipmentType | null> {
+    const result = (await Shipment.findOne({
+      orderId: orderId,
+    })) as shipmentType;
+    console.log(result, 'from shipment service');
+    if (!result) {
+      throw new ApiError(StatusCodes.NOT_FOUND, 'shipment not found');
+    }
+    return result;
+  }
   async updateShipment(
     shipmentId: string,
     shipmentData: Partial<shipmentType>,

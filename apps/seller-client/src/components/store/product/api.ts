@@ -13,20 +13,13 @@ import {
   ProductType,
   UpdateProductType,
   validationerrorSchemaType,
+  isErrorSchemaType,
+  isValidationSchemaType,
 } from '@ecommerce/types';
 import { SerializedError } from '@reduxjs/toolkit';
 import { boolean, string } from 'zod';
 
 const url = 'http://localhost:3003';
-
-function isErrorSchemaType(data: unknown): data is errorschemaType {
-  return (data as errorschemaType).message !== undefined;
-}
-function isValidationSchemaType(
-  data: unknown
-): data is validationerrorSchemaType {
-  return (data as validationerrorSchemaType).error !== undefined;
-}
 
 export const productApi = createApi({
   reducerPath: 'productApi',

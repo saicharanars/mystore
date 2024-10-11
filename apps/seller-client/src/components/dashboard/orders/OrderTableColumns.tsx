@@ -3,9 +3,10 @@ import {
   sellerorderproductType,
   createLocationType,
 } from '@ecommerce/types';
-import { Button, Card, Skeleton,CardContent } from '@ecommerce/ui-kit/ui';
+import { Button, Card, CardContent } from '@ecommerce/ui-kit/ui';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, Package } from 'lucide-react';
+import CreateShipment from '../shipments/CreateShipment';
 
 const OrderProductCard = ({
   product,
@@ -72,6 +73,7 @@ export const columns: ColumnDef<sellerorderresponseType['items'][number]>[] = [
       );
     },
   },
+
   {
     accessorKey: 'location',
     header: () => <div className="text-center">location</div>,
@@ -115,6 +117,23 @@ export const columns: ColumnDef<sellerorderresponseType['items'][number]>[] = [
       const dateA = new Date(rowA.getValue(columnId) as string);
       const dateB = new Date(rowB.getValue(columnId) as string);
       return dateA.getTime() - dateB.getTime();
+    },
+  },
+  {
+    accessorKey: 'shipment',
+    header: () => <div className="text-center max-w-xs">Create shipment</div>,
+    cell: ({ row }) => {
+      const id = row.original.id || 'notfound';
+      const location: createLocationType = row.getValue('location');
+      console.log('Owner:', id);
+      return (
+        <CreateShipment
+          orderId={id}
+          address={location}
+          trackingId={25622}
+          delivery_status="created"
+        />
+      );
     },
   },
 ];

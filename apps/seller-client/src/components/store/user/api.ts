@@ -13,6 +13,8 @@ import {
   signinuser,
   userlocationsType,
   validationerrorSchemaType,
+  isErrorSchemaType,
+  isValidationSchemaType,
 } from '@ecommerce/types';
 import { SerializedError } from '@reduxjs/toolkit';
 
@@ -23,15 +25,6 @@ interface ApiResponse {
     userlocation: boolean;
   };
   message: string;
-}
-
-function isErrorSchemaType(data: unknown): data is errorschemaType {
-  return (data as errorschemaType).message !== undefined;
-}
-function isValidationSchemaType(
-  data: unknown
-): data is validationerrorSchemaType {
-  return (data as validationerrorSchemaType).error !== undefined;
 }
 
 export const userApi = createApi({
