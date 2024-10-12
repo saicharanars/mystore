@@ -12,6 +12,7 @@ import {
   isValidationSchemaType,
 } from '@ecommerce/types';
 import { SerializedError } from '@reduxjs/toolkit';
+import { transformErrorResponse } from '../shipments/api';
 
 const url = 'http://localhost:3001';
 
@@ -44,32 +45,9 @@ export const orderApi = createApi({
       },
       transformResponse: (response: { data: sellerorderresponseType }) =>
         response.data,
-      transformErrorResponse(
-        baseQueryReturnValue: FetchBaseQueryError | SerializedError,
-        meta,
-        arg
-      ) {
-        console.log(baseQueryReturnValue);
-        if (
-          baseQueryReturnValue &&
-          typeof baseQueryReturnValue === 'object' &&
-          'data' in baseQueryReturnValue
-        ) {
-          const errorData = baseQueryReturnValue.data as
-            | errorschemaType
-            | validationerrorSchemaType;
-          console.log(errorData);
-          if (isErrorSchemaType(errorData)) {
-            console.log(errorData.message, '>>>>>>');
-            return { message: errorData.message };
-          } else if (isValidationSchemaType(errorData)) {
-            return errorData.error;
-          }
-        } else {
-          return { message: 'An unexpected error occurred' };
-        }
-      },
+      transformErrorResponse,
     }),
+    getOrderById: build.query<
   }),
 });
 

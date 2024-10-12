@@ -11,19 +11,58 @@ import {
   validationerrorSchemaType,
   isErrorSchemaType,
   isValidationSchemaType,
+  paginationType,
+  shipmentsResponseType,
 } from '@ecommerce/types';
 import { SerializedError } from '@reduxjs/toolkit';
 
 const url = 'http://localhost:3003';
 
+export const transformErrorResponse = (
+  baseQueryReturnValue: FetchBaseQueryError,
+  meta,
+  arg
+) => {
+  console.log(baseQueryReturnValue);
+  if (
+    'status' in baseQueryReturnValue &&
+    baseQueryReturnValue.status !== 'FETCH_ERROR'
+  ) {
+    const errorData = baseQueryReturnValue.data as
+      | errorschemaType
+      | validationerrorSchemaType;
+    console.log(errorData);
+    if (isErrorSchemaType(errorData)) {
+      console.log(errorData.message, '>>>>>>');
+      return {
+        status: baseQueryReturnValue.status,
+        message: errorData.message,
+      };
+    } else if (isValidationSchemaType(errorData)) {
+      return {
+        status: baseQueryReturnValue.status,
+        message: errorData.error
+          .map((e) => `${e.path}: ${e.message}`)
+          .join(', '),
+      };
+    }
+  } else {
+    return {
+      status: baseQueryReturnValue.status || 500,
+      message: baseQueryReturnValue.error || 'An unexpected error occurred',
+    };
+  }
+};
+
 export const shipmentApi = createApi({
   reducerPath: 'shipmentApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${url}/shipment/`,
+    baseUrl: `${url}/shipment`,
     prepareHeaders: (headers, { getState }) => {
       return headers;
     },
   }),
+
   tagTypes: ['shipment'],
   endpoints: (build) => ({
     addshipment: build.mutation<
@@ -118,42 +157,47 @@ export const shipmentApi = createApi({
         };
       },
       transformResponse: (response: { data: shipmentType }) => response.data,
-      transformErrorResponse(
-        baseQueryReturnValue: FetchBaseQueryError,
-        meta,
-        arg
-      ) {
-        console.log(baseQueryReturnValue);
-        if (
-          'status' in baseQueryReturnValue &&
-          baseQueryReturnValue.status !== 'FETCH_ERROR'
-        ) {
-          const errorData = baseQueryReturnValue.data as
-            | errorschemaType
-            | validationerrorSchemaType;
-          console.log(errorData);
-          if (isErrorSchemaType(errorData)) {
-            console.log(errorData.message, '>>>>>>');
-            return {
-              status: baseQueryReturnValue.status,
-              message: errorData.message,
-            };
-          } else if (isValidationSchemaType(errorData)) {
-            return {
-              status: baseQueryReturnValue.status,
-              message: errorData.error
-                .map((e) => `${e.path}: ${e.message}`)
-                .join(', '),
-            };
-          }
-        } else {
-          return {
-            status: baseQueryReturnValue.status || 500,
-            message:
-              baseQueryReturnValue.error || 'An unexpected error occurred',
-          };
-        }
+      transformErrorResponse,
+    }),
+    getShipments: build.query<
+      shipmentsResponseType,
+      { token: string; pagination: paginationType }
+    >({
+      query: ({ token, pagination }) => {
+        const queryParams = new URLSearchParams();
+        if (pagination?.limit) queryParams.append('limit', pagination.limit);
+
+        if (pagination?.offset) queryParams.append('offset', pagination.offset);
+
+        return {
+          url: `?${queryParams.toString()}`,
+          method: 'GET',
+          headers: {
+            Authorization: token,
+          },
+        };
       },
+      transformResponse: (response: { data: shipmentsResponseType }) =>
+        response.data,
+      transformErrorResponse,
+    }),
+    deleteShipment: build.mutation<
+      { success: boolean },
+      { id: string; token: string }
+    >({
+      query: ({ id, token }) => {
+        return {
+          url: `/${id}`,
+          method: 'DELETE',
+          headers: {
+            Authorization: token,
+          },
+        };
+      },
+      transformResponse: (response: { success: boolean; message: string }) => ({
+        success: response.success,
+      }),
+      transformErrorResponse,
     }),
   }),
 });
@@ -161,6 +205,7 @@ export const shipmentApi = createApi({
 export const {
   useAddshipmentMutation,
   useGetshipmentbyOrderidQuery,
-
+  useGetShipmentsQuery,
+  useDeleteShipmentMutation,
   useUpdateshipmentMutation,
 } = shipmentApi;

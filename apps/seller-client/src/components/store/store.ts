@@ -1,15 +1,17 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { userApi } from './user/api';
 import { productApi } from './product/api';
-import productreducer from './product/productreducer';
-import orderreducer from './orders/orderreducer';
 
 import { orderApi } from './orders/api';
 import { shipmentApi } from './shipments/api';
+import productreducer from './product/productreducer';
+import orderreducer from './orders/orderreducer';
+import shipmentreducer from './shipments/shipmentreducer';
 
 const rootReducer = combineReducers({
   product: productreducer,
   order: orderreducer,
+  shipment: shipmentreducer,
   [userApi.reducerPath]: userApi.reducer,
   [productApi.reducerPath]: productApi.reducer,
   [orderApi.reducerPath]: orderApi.reducer,
