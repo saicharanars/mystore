@@ -20,11 +20,22 @@ const shipmentschema = createshipment.extend({
   updated_at: z.date().optional(),
   userId: z.string().uuid(),
 });
+
+const shipmentsResponse = z.object({
+  items: z.array(shipmentschema),
+  count: z.number(),
+});
 const editshipment = createshipment.partial();
 
 type createshipmentType = z.infer<typeof createshipment>;
 type shipmentType = z.infer<typeof shipmentschema>;
 type editshipmentType = z.infer<typeof editshipment>;
+type shipmentsResponseType = z.infer<typeof shipmentsResponse>;
 
-export { createshipment, shipmentschema, editshipment };
-export type { createshipmentType, shipmentType, editshipmentType };
+export { createshipment, shipmentsResponse, shipmentschema, editshipment };
+export type {
+  createshipmentType,
+  shipmentsResponseType,
+  shipmentType,
+  editshipmentType,
+};

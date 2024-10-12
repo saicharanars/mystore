@@ -1,11 +1,9 @@
 import {
   paginationType,
-  productFilterType,
-  ProductSchemaZod,
   shipmentschema,
+  shipmentsResponse,
   usertokentype,
 } from '@ecommerce/types';
-import ProductService from '../services/product.service';
 import { Request, Response } from 'express';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 import MediaService from '../services/media.service';
@@ -102,7 +100,7 @@ class ShipmentController {
       usertoken.id
     );
     return res.status(StatusCodes.OK).json({
-      data: shipments,
+      data: shipmentsResponse.parse(shipments),
       message: getReasonPhrase(StatusCodes.OK),
     });
   }

@@ -62,7 +62,13 @@ const CreateShipment: FC<createshipmentType> = ({
     console.log(shipmentCheckError, 'check>>>>>>');
   }
   if (shipmentCheckErrorDetails) {
-    console.log(shipmentCheckErrorDetails, 'error >>>>>>');
+    const errordetails = shipmentCheckErrorDetails as {
+      status: number;
+      message: string;
+    };
+    if (errordetails.status !== 404) {
+      <p>{errordetails.message}</p>;
+    }
   }
 
   return (
