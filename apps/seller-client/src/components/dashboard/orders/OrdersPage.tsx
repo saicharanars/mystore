@@ -1,13 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 import { useGetOrdersQuery } from '../../store/orders/api';
 import AuthContext from '../../store/context/Authcontext';
-import { Skeleton, Table, TableBody, TableHeader } from '@ecommerce/ui-kit/ui';
 import {
   useOrderDispatch,
   useOrderSelector,
 } from '../../store/orders/orderhooks';
 import { setOrders } from '../../store/orders/orderreducer';
-import { LoaderCircle } from 'lucide-react';
 import { DataTable } from '../../common/DataTable';
 import { columns } from './OrderTableColumns';
 import TableSkelton from '../../common/TableSkelton';
@@ -21,6 +19,7 @@ const OrdersPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
 
   const {
     data: ordersFromApi,
@@ -28,20 +27,28 @@ const OrdersPage = () => {
     error,
   } = useGetOrdersQuery({
     token,
-    pagination: { offset: '0', limit: '10' },
+    pagination: {
+      offset: String(currentPage * pageSize),
+      limit: String(pageSize),
+    },
   });
 
   useEffect(() => {
     if (ordersFromApi) {
-      console.log(ordersFromApi);
       dispatch(setOrders(ordersFromApi));
+      setTotalCount(ordersFromApi.count);
       setTotalPages(Math.ceil(ordersFromApi.count / pageSize));
     }
   }, [dispatch, ordersFromApi, pageSize]);
 
-  useEffect(() => {
-    console.log(orders);
-  }, [orders]);
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  const handlePageSizeChange = (newPageSize: number) => {
+    setPageSize(newPageSize);
+    setCurrentPage(0);
+  };
 
   if (isLoading) {
     return <TableSkelton />;
@@ -63,10 +70,12 @@ const OrdersPage = () => {
           data={orders}
           currentPage={currentPage}
           pageSize={pageSize}
-          onPageChange={setCurrentPage}
-          onPageSizeChange={setPageSize}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
           totalPages={totalPages}
+          rowCount={totalCount}
           filters={['status']}
+          title="Orders"
         />
       )}
     </div>

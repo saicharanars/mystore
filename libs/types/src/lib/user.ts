@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
+import { locationsarray } from './location';
 extendZodWithOpenApi(z);
 const userRole = z.enum(['customer', 'seller']);
 const createuserDto = z.object({

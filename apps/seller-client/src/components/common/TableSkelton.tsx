@@ -3,23 +3,48 @@ import { Skeleton, Table, TableBody, TableHeader } from '@ecommerce/ui-kit/ui';
 
 const TableSkelton = () => {
   return (
-    <div className="rounded-md border-2 p-1 space-y-3 shadow-xl m-1 md:m-3 ">
-      <Table className="bg-white p-4 rounded-md shadow-md">
-        <TableHeader className="rounded-lg border-2">
-          <Skeleton className="h-16 w-full bg-gray-300 rounded" />
-        </TableHeader>
-        <TableBody>
-          <Skeleton className="h-10 w-full bg-gray-300 rounded mt-2" />
-          <Skeleton className="h-10 w-full bg-gray-300 rounded mt-2" />
-          <Skeleton className="h-10 w-full bg-gray-300 rounded mt-2" />
-          <Skeleton className="h-10 w-full bg-gray-300 rounded mt-2" />
-          <Skeleton className="h-10 w-full bg-gray-300 rounded mt-2" />
-          <Skeleton className="h-10 w-full bg-gray-300 rounded mt-2" />
-          <Skeleton className="h-10 w-full bg-gray-300 rounded mt-2" />
-          <Skeleton className="h-10 w-full bg-gray-300 rounded mt-2" />
-        </TableBody>
-      </Table>
-    </div>
+    <Table className="p-4 m-4 rounded-lg border shadow-xl">
+      <TableHeader className="rounded-md border-b-2">
+        <Skeleton className="h-12 w-full bg-gray-200 rounded-md" />
+      </TableHeader>
+      <TableBody className="flex mt-3 flex-col gap-4">
+        <div className="grid grid-cols-5 gap-4 w-full">
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+        </div>
+        <div className="grid grid-cols-5 gap-4 w-full">
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+        </div>
+        <div className="grid grid-cols-5 gap-4 w-full">
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+        </div>
+        <div className="grid grid-cols-5 gap-4 w-full">
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+        </div>
+        <div className="grid grid-cols-5 gap-4 w-full">
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+          <Skeleton className="h-10 w-full bg-gray-300 rounded-md" />
+        </div>
+      </TableBody>
+    </Table>
   );
 };
 

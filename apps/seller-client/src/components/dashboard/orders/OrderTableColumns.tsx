@@ -3,9 +3,9 @@ import {
   sellerorderproductType,
   createLocationType,
 } from '@ecommerce/types';
-import { Button, Card, CardContent } from '@ecommerce/ui-kit/ui';
+import { Button } from '@ecommerce/ui-kit/ui';
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, Package } from 'lucide-react';
+import { ArrowUpDown } from 'lucide-react';
 import CreateShipment from '../shipments/CreateShipment';
 
 const OrderProductCard = ({
@@ -13,29 +13,28 @@ const OrderProductCard = ({
 }: {
   product: sellerorderproductType[];
 }) => (
-  <Card className="mb-1 last:mb-0 max-w-[200px] mx-auto text-xs">
-    <CardContent className="p-2">
-      {product.map((product) => (
-        <div className="flex items-center justify-between">
-          <h3 className="font-semibold line-clamp-1 truncate flex-1">
-            {product.name}
-          </h3>
-          <span className="ml-2 whitespace-nowrap">
-            {product.OrderProduct.quantity}x
-          </span>
-        </div>
-      ))}
-    </CardContent>
-  </Card>
+  <div className="flex flex-col  items-start p-1 line-clamp-2 ">
+    {product.map((product) => (
+      <div key={product.id}>
+        <h3 className="font-semibold line-clamp-1 truncate text-md flex-1">
+          {product.name}
+        </h3>
+        <p className="text-sm">Qty: {product.OrderProduct.quantity}x</p>
+      </div>
+    ))}
+  </div>
 );
 
 export const columns: ColumnDef<sellerorderresponseType['items'][number]>[] = [
   {
     accessorKey: 'owner.name',
-    header: () => <div className="text-center max-w-xs">Order person</div>,
+    header: () => (
+      <div className="text-center max-w-xs">
+        <h1 className=" text-xl line-clamp-1">Owner</h1>
+      </div>
+    ),
     cell: ({ row }) => {
       const owner = row.original.owner || {};
-      console.log('Owner:', owner);
       return (
         <p className="text-center font-medium max-w-xs overflow-hidden">
           {owner.name || 'N/A'}
@@ -47,14 +46,12 @@ export const columns: ColumnDef<sellerorderresponseType['items'][number]>[] = [
   {
     accessorKey: 'products',
     header: () => (
-      <div className="text-center">
-        <Package className="inline-block mr-2" />
-        Order Products
+      <div className="text-center line-clamp-1">
+        <h1 className=" text-xl">Order Products</h1>
       </div>
     ),
     cell: ({ row }) => {
       const products: sellerorderproductType[] = row.getValue('products');
-      console.log(products);
       return (
         <div className="mx-auto">
           <OrderProductCard product={products} />
@@ -64,7 +61,11 @@ export const columns: ColumnDef<sellerorderresponseType['items'][number]>[] = [
   },
   {
     accessorKey: 'status',
-    header: () => <div className="text-center max-w-xs">Status</div>,
+    header: () => (
+      <div className="text-center max-w-xs">
+        <h1 className=" text-xl line-clamp-1">Status</h1>
+      </div>
+    ),
     cell: ({ row }) => {
       return (
         <p className="text-center font-medium max-w-xs overflow-hidden">
@@ -76,14 +77,17 @@ export const columns: ColumnDef<sellerorderresponseType['items'][number]>[] = [
 
   {
     accessorKey: 'location',
-    header: () => <div className="text-center">location</div>,
+    header: () => (
+      <div className="text-center max-w-xs">
+        <h1 className=" text-xl line-clamp-1">Location</h1>
+      </div>
+    ),
     cell: ({ row }) => {
       const location: createLocationType = row.getValue('location');
-      console.log('LOCATIOM', location);
       return (
-        <div className="mx-auto text-center">
-          <p>{`${location.address}, ${location.city}`}</p>
-          <p>{`${location.pincode}, ${location.state}`}</p>
+        <div className="mx-auto ">
+          <p className="line-clamp-1 text-sm ">{`${location.address}, ${location.city}`}</p>
+          <p className="line-clamp-1 text-sm ">{`${location.pincode}, ${location.state}`}</p>
         </div>
       );
     },
@@ -96,7 +100,10 @@ export const columns: ColumnDef<sellerorderresponseType['items'][number]>[] = [
         className="text-center"
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
-        Created Date
+        <div className="text-center max-w-xs">
+          <h1 className=" text-xl line-clamp-1">Created date</h1>
+        </div>
+
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
@@ -121,11 +128,14 @@ export const columns: ColumnDef<sellerorderresponseType['items'][number]>[] = [
   },
   {
     accessorKey: 'shipment',
-    header: () => <div className="text-center max-w-xs">Create shipment</div>,
+    header: () => (
+      <div className="text-center max-w-xs">
+        <h1 className=" text-xl line-clamp-1">create shipment</h1>
+      </div>
+    ),
     cell: ({ row }) => {
       const id = row.original.id || 'notfound';
       const location: createLocationType = row.getValue('location');
-      console.log('Owner:', id);
       return (
         <CreateShipment
           orderId={id}

@@ -1,4 +1,4 @@
-import { Product, User } from '@ecommerce/db-postgres';
+import { User, Location } from '@ecommerce/db-postgres';
 import { createuser } from '@ecommerce/types';
 
 async function findUserByEmail(email: string) {
@@ -9,12 +9,21 @@ async function findUserByEmail(email: string) {
   });
 }
 async function finduserbyId(id: string) {
-  return await User.findOne({
+  const user = await User.findOne({
     where: {
       id: id,
     },
-    include: [Product],
+    include: [
+      {
+        attributes: ['id', 'address', 'city', 'state', 'pincode'],
+        model: Location,
+      },
+    ],
   });
+  if (!user) {
+    return null;
+  }
+  return user;
 }
 
 async function createUser(createUser: createuser) {
