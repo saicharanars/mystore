@@ -30,7 +30,6 @@ const CreateShipment: FC<createshipmentType> = ({
   const {
     data: shipmentData,
     isLoading: shipmentCheckLoading,
-    isError: shipmentCheckError,
     error: shipmentCheckErrorDetails,
   } = useGetshipmentbyOrderidQuery({ orderId });
 
@@ -58,9 +57,6 @@ const CreateShipment: FC<createshipmentType> = ({
     return <div>Loading...</div>;
   }
 
-  if (shipmentCheckError) {
-    console.log(shipmentCheckError, 'check>>>>>>');
-  }
   if (shipmentCheckErrorDetails) {
     const errordetails = shipmentCheckErrorDetails as {
       status: number;
@@ -75,15 +71,15 @@ const CreateShipment: FC<createshipmentType> = ({
     <div>
       {shipmentExists ? (
         <div className="text-center">
-          <h2>Shipment Details</h2>
+          <h2 className="text-lg ">Shipment Details</h2>
           <ul>
-            <li>
+            <li className="line-clamp-1">
               <strong>Order ID:</strong> {shipmentData?.orderId}
             </li>
-            <li>
+            <li className="line-clamp-1">
               <strong>Tracking ID:</strong> {shipmentData?.trackingId}
             </li>
-            <li>
+            <li className="line-clamp-1">
               <strong>Delivery Status:</strong> {shipmentData?.delivery_status}
             </li>
           </ul>
@@ -94,7 +90,7 @@ const CreateShipment: FC<createshipmentType> = ({
             <DialogTrigger asChild>
               <Button
                 variant={'outline'}
-                className="flex flex-row justify-center w-full gap-2"
+                className="flex flex-row justify-center max-w-48 mx-auto gap-2"
               >
                 <Pencil className="mr-2 h-3 w-3" />
                 <span>Create Shipment</span>

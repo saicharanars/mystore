@@ -19,6 +19,7 @@ const ProductsPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
 
   const {
     data: productsFromApi,
@@ -32,13 +33,20 @@ const ProductsPage = () => {
   useEffect(() => {
     if (productsFromApi) {
       dispatch(setProducts(productsFromApi));
-      setTotalPages(Math.ceil(productsFromApi.count / pageSize));
+      setTotalCount(productsFromApi.count);
+      const newTotalPages = Math.ceil(productsFromApi.count / pageSize);
+      setTotalPages(newTotalPages);
     }
   }, [productsFromApi, dispatch, pageSize]);
 
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  const handlePageSizeChange = (newPageSize: number) => {
+    setPageSize(newPageSize);
+    setCurrentPage(0);
+  };
 
   if (isLoading) {
     return <TableSkelton />;
@@ -60,10 +68,12 @@ const ProductsPage = () => {
           data={products}
           currentPage={currentPage}
           pageSize={pageSize}
-          onPageChange={setCurrentPage}
-          onPageSizeChange={setPageSize}
           totalPages={totalPages}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+          rowCount={totalCount}
           filters={['stock_quantity', 'status', 'price', 'stock_status']}
+          title="Products"
         />
       )}
     </div>

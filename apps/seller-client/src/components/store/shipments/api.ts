@@ -23,7 +23,6 @@ export const transformErrorResponse = (
   meta,
   arg
 ) => {
-  console.log(baseQueryReturnValue);
   if (
     'status' in baseQueryReturnValue &&
     baseQueryReturnValue.status !== 'FETCH_ERROR'
@@ -31,9 +30,7 @@ export const transformErrorResponse = (
     const errorData = baseQueryReturnValue.data as
       | errorschemaType
       | validationerrorSchemaType;
-    console.log(errorData);
     if (isErrorSchemaType(errorData)) {
-      console.log(errorData.message, '>>>>>>');
       return {
         status: baseQueryReturnValue.status,
         message: errorData.message,

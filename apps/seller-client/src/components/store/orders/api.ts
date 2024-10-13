@@ -1,17 +1,5 @@
-import {
-  createApi,
-  fetchBaseQuery,
-  FetchBaseQueryError,
-} from '@reduxjs/toolkit/query/react';
-import {
-  errorschemaType,
-  paginationType,
-  sellerorderresponseType,
-  validationerrorSchemaType,
-  isErrorSchemaType,
-  isValidationSchemaType,
-} from '@ecommerce/types';
-import { SerializedError } from '@reduxjs/toolkit';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { paginationType, sellerorderresponseType } from '@ecommerce/types';
 import { transformErrorResponse } from '../shipments/api';
 
 const url = 'http://localhost:3001';
@@ -47,7 +35,6 @@ export const orderApi = createApi({
         response.data,
       transformErrorResponse,
     }),
-    getOrderById: build.query<
   }),
 });
 
