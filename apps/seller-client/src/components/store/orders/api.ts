@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { paginationType, sellerorderresponseType } from '@ecommerce/types';
 import { transformErrorResponse } from '../shipments/api';
 
-const url = 'http://localhost:3001';
+const url = import.meta.env.VITE_MYSTORE_URL;
 
 export const orderApi = createApi({
   reducerPath: 'orderApi',

@@ -116,7 +116,7 @@ export function DataTable<TData, TValue>({
   );
 
   return (
-    <Card className="rounded-md border-2 p-1 space-y-3 shadow-xl ">
+    <Card className="rounded-md border-2 p-1 space-y-3 shadow-xl overflow-scroll ">
       <CardHeader className="px-6 py-2">
         <CardTitle className="text-2xl font-bold">{title}</CardTitle>
       </CardHeader>

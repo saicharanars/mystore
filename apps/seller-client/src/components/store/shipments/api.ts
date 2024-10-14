@@ -16,12 +16,10 @@ import {
 } from '@ecommerce/types';
 import { SerializedError } from '@reduxjs/toolkit';
 
-const url = 'http://localhost:3003';
+const url = import.meta.env.VITE_SELLER_URL;
 
 export const transformErrorResponse = (
-  baseQueryReturnValue: FetchBaseQueryError,
-  meta,
-  arg
+  baseQueryReturnValue: FetchBaseQueryError
 ) => {
   if (
     'status' in baseQueryReturnValue &&

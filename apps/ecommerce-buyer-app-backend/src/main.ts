@@ -15,6 +15,7 @@ import order from './Routes/order.route';
 import locationroute from './Routes/location.route';
 import { Request, Response } from 'express';
 import { ApiError } from './utils/apierrorclass';
+import userroute from './Routes/user.route';
 
 const app = express();
 app.use(express.json());
@@ -32,6 +33,7 @@ app.use('/auth', authroute);
 app.use('/product', product);
 app.use('/order', order);
 app.use('/location', locationroute);
+app.use('/user', userroute);
 app.use((err: ApiError, req: Request, res: Response, next: Function) => {
   const statusCode = err.statusCode || 500;
 

@@ -14,7 +14,12 @@ const locationDto = createLocationDto.extend({
 const userlocations = createuserResponse.extend({
   locations: z.array(locationDto),
 });
+
 const locationsarray = userlocations.pick({ locations: true });
+const userResponse = createuserResponse.extend({
+  locations: z.array(locationDto),
+  creationDate: z.date(),
+});
 type locationsarrayType = z.infer<typeof locationsarray>;
 type locationType = z.infer<typeof locationDto>;
 type createLocationType = z.infer<typeof createLocationDto>;
@@ -22,16 +27,19 @@ type createLocationType = z.infer<typeof createLocationDto>;
 type userlocationsType = z.infer<typeof userlocations>;
 
 type editLocationType = z.infer<typeof editLocation>;
+type userResponseType = z.infer<typeof userResponse>;
 export {
   createLocationDto,
   locationDto,
   editLocation,
   userlocations,
   locationsarray,
+  userResponse,
 };
 
 export type {
   createLocationType,
+  userResponseType,
   locationType,
   editLocationType,
   userlocationsType,

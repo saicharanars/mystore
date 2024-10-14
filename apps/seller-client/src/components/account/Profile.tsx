@@ -1,4 +1,4 @@
-import { userlocationsType } from '@ecommerce/types';
+import { userlocationsType, userResponseType } from '@ecommerce/types';
 import {
   Card,
   Tabs,
@@ -14,29 +14,60 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Skeleton,
 } from '@ecommerce/ui-kit/ui';
-import { useContext, useEffect } from 'react';
-import { useGetLocationsQuery } from '../store/user/api';
+import { useContext } from 'react';
+import { useGetUserQuery } from '../store/user/api';
 import AuthContext from '../store/context/Authcontext';
 
-type LocationsQueryResult = ReturnType<typeof useGetLocationsQuery>;
+type UserQueryResult = ReturnType<typeof useGetUserQuery>;
 
 export default function Profile() {
   const authctx = useContext(AuthContext);
-
   const { token } = authctx;
+  const { data, isLoading, error } = useGetUserQuery(token) as UserQueryResult;
 
-  const { data, isLoading, error } = useGetLocationsQuery(
-    token
-  ) as LocationsQueryResult;
+  const user = data as userResponseType | undefined;
 
-  const user = data as userlocationsType | undefined;
-  useEffect(() => {
-    console.log(data, user);
-  }, [data, user]);
-  if (isLoading || error) {
-    console.log('err');
+  if (isLoading) {
+    return (
+      <div className="container mx-auto p-4">
+        <Card className="w-full max-w-3xl mx-auto">
+          <CardHeader>
+            <div className="flex items-center space-x-4">
+              <Skeleton className="w-20 h-20 rounded-full bg-gray-200" />
+              <div>
+                <Skeleton className="w-32 h-6 bg-gray-200 mb-2" />
+                <Skeleton className="w-48 h-4 bg-gray-200" />
+                <Skeleton className="w-16 h-6 bg-gray-200 mt-2" />
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <dt className="font-medium text-gray-500">Member Since</dt>
+                <Skeleton className="w-24 h-6 bg-gray-200" />
+              </div>
+              <div>
+                <dt className="font-medium text-gray-500">Locations</dt>
+                <Skeleton className="w-48 h-6 bg-gray-200" />
+              </div>
+            </dl>
+          </CardContent>
+          <CardFooter>
+            <Skeleton className="w-32 h-6 bg-gray-200" />
+          </CardFooter>
+        </Card>
+      </div>
+    );
   }
+
+  if (error) {
+    console.error(error);
+    return <div>Error loading user data {error.message}</div>;
+  }
+
   return (
     <div className="container mx-auto p-4">
       {user && (
@@ -44,7 +75,7 @@ export default function Profile() {
           <CardHeader>
             <div className="flex items-center space-x-4">
               <Avatar className="w-20 h-20">
-                <AvatarImage src={'kgjhoi'} alt={''} />
+                <AvatarImage src={'/path/to/avatar.png'} alt={user.name} />
                 <AvatarFallback>
                   {user.name
                     .split(' ')
@@ -65,15 +96,13 @@ export default function Profile() {
             <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <dt className="font-medium text-gray-500">Member Since</dt>
-                {/* <dd>{user.creationDate.toLocaleDateString()}</dd> */}
-              </div>
-              <div>
-                <dt className="font-medium text-gray-500">Last Updated</dt>
-                {/* <dd>{user.updatedOn.toLocaleDateString()}</dd> */}
+                <dd>
+                  {new Date(user.creationDate).toISOString().split('T')[0]}
+                </dd>
               </div>
               <div>
                 <dt className="font-medium text-gray-500">Locations</dt>
-                {/* <dd>{user.locations.map((loc) => loc.name).join(', ')}</dd> */}
+                <dd>{user.locations.map((loc) => loc.city).join(', ')}</dd>
               </div>
             </dl>
           </CardContent>

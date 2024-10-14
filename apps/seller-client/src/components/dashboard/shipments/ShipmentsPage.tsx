@@ -9,6 +9,13 @@ import {
 } from '../../store/shipments/shipmenthooks';
 import { useGetShipmentsQuery } from '../../store/shipments/api';
 import { setShipments } from '../../store/shipments/shipmentreducer';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from '@ecommerce/ui-kit/ui';
+import { Link } from '@tanstack/react-router';
 
 const ShipmentsPage = () => {
   const shipments = useShipmentSelector((state) => state.shipment.shipments);
@@ -64,22 +71,40 @@ const ShipmentsPage = () => {
   }
 
   return (
-    <div className="container mx-auto py-1 md:py-10 px-2 overflow-scroll">
-      {shipments && (
-        <DataTable
-          columns={columns}
-          data={shipments}
-          currentPage={currentPage}
-          pageSize={pageSize}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-          totalPages={totalPages}
-          rowCount={totalCount}
-          title="Shipments"
-          //   filters={['status']}
-        />
-      )}
-    </div>
+    <>
+      <div className="p-2 m-2">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <Link to="/">Home</Link>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <Link to="/dashboard">Dashboard</Link>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <Link to="/dashboard/shipments">Shipments</Link>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+      <div className="container mx-auto py-1 md:py-10 px-2 overflow-scroll">
+        {shipments && (
+          <DataTable
+            columns={columns}
+            data={shipments}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            onPageChange={handlePageChange}
+            onPageSizeChange={handlePageSizeChange}
+            totalPages={totalPages}
+            rowCount={totalCount}
+            title="Shipments"
+          />
+        )}
+      </div>
+    </>
   );
 };
 

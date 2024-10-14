@@ -9,6 +9,13 @@ import { setOrders } from '../../store/orders/orderreducer';
 import { DataTable } from '../../common/DataTable';
 import { columns } from './OrderTableColumns';
 import TableSkelton from '../../common/TableSkelton';
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbSeparator,
+} from '@ecommerce/ui-kit/ui';
+import { Link } from '@tanstack/react-router';
 
 const OrdersPage = () => {
   const orders = useOrderSelector((state) => state.order.orders);
@@ -63,22 +70,41 @@ const OrdersPage = () => {
   }
 
   return (
-    <div className="container mx-auto py-1 md:py-10 px-2 overflow-scroll">
-      {orders && (
-        <DataTable
-          columns={columns}
-          data={orders}
-          currentPage={currentPage}
-          pageSize={pageSize}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-          totalPages={totalPages}
-          rowCount={totalCount}
-          filters={['status']}
-          title="Orders"
-        />
-      )}
-    </div>
+    <>
+      <div className="p-2 m-2">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <Link to="/">Home</Link>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <Link to="/dashboard">Dashboard</Link>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <Link to="/dashboard/orders">Orders</Link>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+      <div className="container mx-auto py-1 md:py-10 px-2 overflow-scroll">
+        {orders && (
+          <DataTable
+            columns={columns}
+            data={orders}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            onPageChange={handlePageChange}
+            onPageSizeChange={handlePageSizeChange}
+            totalPages={totalPages}
+            rowCount={totalCount}
+            filters={['status']}
+            title="Orders"
+          />
+        )}
+      </div>
+    </>
   );
 };
 

@@ -12,7 +12,7 @@ class App {
   private MONGO_URL: string;
   private uploadService = new UploadService();
   private corsOptions = {
-    origin: ['http://localhost:3000', 'http://localhost:3002'],
+    origin: ['*', 'http://localhost:3000', 'http://localhost:3002'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
@@ -79,6 +79,6 @@ class App {
 }
 
 const PORT = 3003;
-const MONGO_URL = 'mongodb://localhost:27017/mydatabase';
+const MONGO_URL = process.env.MONGOURL;
 const appInstance = new App(PORT, MONGO_URL);
 appInstance.start();

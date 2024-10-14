@@ -1,5 +1,7 @@
 import { User, Location } from '@ecommerce/db-postgres';
-import { createuser } from '@ecommerce/types';
+import { createuser, userlocations, userResponse } from '@ecommerce/types';
+import { ApiError } from '../utils/apierrorclass';
+import { StatusCodes, getReasonPhrase } from 'http-status-codes';
 
 async function findUserByEmail(email: string) {
   return await User.findOne({
@@ -8,10 +10,10 @@ async function findUserByEmail(email: string) {
     },
   });
 }
-async function finduserbyId(id: string) {
-  const user = await User.findOne({
+async function finduserbyId(userId: string) {
+  const finduser = await User.findOne({
     where: {
-      id: id,
+      id: userId,
     },
     include: [
       {
@@ -19,10 +21,17 @@ async function finduserbyId(id: string) {
         model: Location,
       },
     ],
+    attributes: ['id', 'creationDate', 'name', 'email', 'role'],
   });
-  if (!user) {
-    return null;
+  if (!finduser) {
+    throw new ApiError(
+      StatusCodes.NOT_FOUND,
+      getReasonPhrase(StatusCodes.NOT_FOUND)
+    );
   }
+
+  const user = userResponse.parse(finduser);
+
   return user;
 }
 

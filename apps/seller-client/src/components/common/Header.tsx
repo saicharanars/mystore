@@ -8,11 +8,16 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
 } from '@ecommerce/ui-kit/ui';
 import logo from '../../assets/seller.svg';
 import AuthContext from '../store/context/Authcontext';
 import { Link, useNavigate } from '@tanstack/react-router';
-import { Power } from 'lucide-react';
+import { Menu, Power } from 'lucide-react';
+import { Sidenav } from '../dashboard/Sidenav';
 
 const AuthComponent = () => {
   return (
@@ -72,6 +77,26 @@ const Header = () => {
       <div className="container mx-auto  py-3 md:py-4 ">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
+            <Sheet>
+              <SheetTrigger>
+                <Menu className="md:hidden h-10 w-10 p-1" />
+              </SheetTrigger>
+              <SheetContent side={'left'}>
+                <div className="flex items-center space-x-2 ml-4">
+                  <img
+                    src={logo}
+                    alt="MyStore logo"
+                    className="h-8 w-auto sm:h-10"
+                  />
+
+                  <SheetTitle className="text-xl sm:text-2xl font-bold text-primary">
+                    My Store
+                  </SheetTitle>
+                </div>
+                <Sidenav />
+              </SheetContent>
+            </Sheet>
+
             <img src={logo} alt="MyStore logo" className="h-8 w-auto sm:h-10" />
             <h1 className="text-xl sm:text-2xl font-bold text-primary">
               My Store

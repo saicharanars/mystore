@@ -9,6 +9,13 @@ import { setProducts } from '../store/product/productreducer';
 import { DataTable } from '../common/DataTable';
 import { columns } from './ProductTableColumns';
 import TableSkelton from '../common/TableSkelton';
+import { Link } from '@tanstack/react-router';
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbSeparator,
+} from '@ecommerce/ui-kit/ui';
 
 const ProductsPage = () => {
   const products = useProductSelector((state) => state.product.products);
@@ -61,22 +68,41 @@ const ProductsPage = () => {
   }
 
   return (
-    <div className="container mx-auto py-1 md:py-10 px-2 overflow-scroll">
-      {products && (
-        <DataTable
-          columns={columns}
-          data={products}
-          currentPage={currentPage}
-          pageSize={pageSize}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-          rowCount={totalCount}
-          filters={['stock_quantity', 'status', 'price', 'stock_status']}
-          title="Products"
-        />
-      )}
-    </div>
+    <>
+      <div className="p-2 m-2">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <Link to="/">Home</Link>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <Link to="/dashboard">Dashboard</Link>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <Link to="/dashboard/products">Products</Link>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+      <div className="container mx-auto py-1 md:py-10 px-2 overflow-scroll">
+        {products && (
+          <DataTable
+            columns={columns}
+            data={products}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            onPageSizeChange={handlePageSizeChange}
+            rowCount={totalCount}
+            filters={['stock_quantity', 'status', 'price', 'stock_status']}
+            title="Products"
+          />
+        )}
+      </div>
+    </>
   );
 };
 
