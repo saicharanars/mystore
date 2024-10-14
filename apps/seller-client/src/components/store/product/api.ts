@@ -19,7 +19,7 @@ import {
 import { SerializedError } from '@reduxjs/toolkit';
 import { transformErrorResponse } from '../shipments/api';
 
-const url = 'http://localhost:3003';
+const url = import.meta.env.VITE_SELLER_URL;
 
 export const productApi = createApi({
   reducerPath: 'productApi',
