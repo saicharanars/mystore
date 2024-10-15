@@ -19,8 +19,9 @@ import userroute from './Routes/user.route';
 
 const app = express();
 app.use(express.json());
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [];
 const corsOptions = {
-  origin: '*',
+  origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -84,6 +85,7 @@ async function setupSwagger() {
     await setupSwagger();
 
     const server = app.listen(port, () => {
+      console.log(process.env);
       console.log(`Listening at http://localhost:${port}/api`);
     });
 

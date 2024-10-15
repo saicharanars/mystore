@@ -2,7 +2,6 @@ import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import productRoute from './routes/product.route';
 import { ApiError } from './utils/apierror';
-import UploadService from './services/media.service';
 import cors from 'cors';
 import shipmentRoute from './routes/shipment.route';
 
@@ -10,9 +9,10 @@ class App {
   private app: express.Application;
   private PORT: number;
   private MONGO_URL: string;
-  private uploadService = new UploadService();
+  private allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [];
+
   private corsOptions = {
-    origin: ['*', 'http://localhost:3000', 'http://localhost:3002'],
+    origin: this.allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
