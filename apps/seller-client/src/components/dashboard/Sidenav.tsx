@@ -1,6 +1,13 @@
 import { Link, useNavigate, useRouterState } from '@tanstack/react-router';
 
-import { Home, Package, Power, Shirt, ShoppingCart } from 'lucide-react';
+import {
+  Home,
+  Package,
+  PlusCircle,
+  Power,
+  Shirt,
+  ShoppingCart,
+} from 'lucide-react';
 import { useContext, useState } from 'react';
 import AuthContext from '../store/context/Authcontext';
 import { PersonIcon } from '@radix-ui/react-icons';
@@ -51,6 +58,18 @@ export function Sidenav() {
           >
             <ShoppingCart className="h-4 w-4" />
             Orders
+          </Link>
+          <Link
+            to="/dashboard/addproduct"
+            onClick={() => handleItemClick('/dashboard/addproduct')}
+            className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-secondary-foreground hover:bg-secondary ${
+              activeItem === '/dashboard/addproduct'
+                ? 'text-secondary-foreground bg-secondary hover:text-secondary-foreground'
+                : ''
+            }`}
+          >
+            <PlusCircle className="h-4 w-4" />
+            Add Product
           </Link>
           <Link
             to="/dashboard/products"

@@ -1,14 +1,13 @@
-import { userlocationsType, userResponseType } from '@ecommerce/types';
+import { userResponseType } from '@ecommerce/types';
 import {
   Card,
-  Tabs,
+  Alert,
+  AlertDescription,
+  AlertTitle,
   Badge,
-  TabsContent,
   Avatar,
   AvatarFallback,
   AvatarImage,
-  TabsList,
-  TabsTrigger,
   CardContent,
   CardDescription,
   CardFooter,
@@ -19,6 +18,7 @@ import {
 import { useContext } from 'react';
 import { useGetUserQuery } from '../store/user/api';
 import AuthContext from '../store/context/Authcontext';
+import { AlertCircle } from 'lucide-react';
 
 type UserQueryResult = ReturnType<typeof useGetUserQuery>;
 
@@ -64,8 +64,17 @@ export default function Profile() {
   }
 
   if (error) {
-    console.error(error);
-    return <div>Error loading user data {error.message}</div>;
+    return (
+      <Alert variant="destructive" className="max-w-sm m-4 mx-auto">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>
+          {`An error occurred: ${
+            (error as { message?: string }).message || 'Please try again later.'
+          }`}
+        </AlertDescription>
+      </Alert>
+    );
   }
 
   return (

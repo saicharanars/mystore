@@ -17,34 +17,44 @@ import {
 import { SerializedError } from '@reduxjs/toolkit';
 
 const url = import.meta.env.VITE_SELLER_URL;
-
 export const transformErrorResponse = (
   baseQueryReturnValue: FetchBaseQueryError
-) => {
+): { status: number; message: string } => {
   if (
     'status' in baseQueryReturnValue &&
     baseQueryReturnValue.status !== 'FETCH_ERROR'
   ) {
     const errorData = baseQueryReturnValue.data as
       | errorschemaType
-      | validationerrorSchemaType;
-    if (isErrorSchemaType(errorData)) {
-      return {
-        status: baseQueryReturnValue.status,
-        message: errorData.message,
-      };
-    } else if (isValidationSchemaType(errorData)) {
-      return {
-        status: baseQueryReturnValue.status,
-        message: errorData.error
-          .map((e) => `${e.path}: ${e.message}`)
-          .join(', '),
-      };
+      | validationerrorSchemaType
+      | undefined;
+
+    if (errorData) {
+      if (isErrorSchemaType(errorData) || isValidationSchemaType(errorData)) {
+        return {
+          status:
+            typeof baseQueryReturnValue.status === 'number'
+              ? baseQueryReturnValue.status
+              : 500,
+          message: errorData.message,
+        };
+      }
     }
+
+    return {
+      status:
+        typeof baseQueryReturnValue.status === 'number'
+          ? baseQueryReturnValue.status
+          : 500,
+      message: 'An unknown error occurred',
+    };
   } else {
     return {
-      status: baseQueryReturnValue.status || 500,
-      message: baseQueryReturnValue.error || 'An unexpected error occurred',
+      status: 500,
+      message:
+        typeof baseQueryReturnValue.error === 'string'
+          ? baseQueryReturnValue.error
+          : 'An unexpected error occurred',
     };
   }
 };

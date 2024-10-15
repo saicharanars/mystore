@@ -29,3 +29,5 @@ export * from './tabs';
 export * from './label';
 export * from './toaster';
 export * from './toast';
+export * from './alert';
+export * from './alert-dialog';

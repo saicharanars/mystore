@@ -11,12 +11,16 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   Button,
+  AlertDescription,
+  AlertTitle,
+  Alert,
   DropdownMenuTrigger,
 } from '@ecommerce/ui-kit/ui';
 import { useDeleteProductMutation } from '../store/product/api';
 import { removeProduct } from '../store/product/productreducer';
 import { DialogClose } from '@radix-ui/react-dialog';
 import EditProductForm from '../products/EditProductForm';
+import { AlertCircle } from 'lucide-react';
 
 interface ActionsProps {
   item: ProductType;
@@ -26,7 +30,7 @@ const TableActions: React.FC<ActionsProps> = ({ item }) => {
   const dispatch = useProductDispatch();
   const authctx = useContext(AuthContext);
   const token = `Bearer ${authctx.token}`;
-  const [deleteProduct, { isLoading, isError, isSuccess }] =
+  const [deleteProduct, { isLoading, error, isSuccess }] =
     useDeleteProductMutation();
 
   const handleDelete = async () => {
@@ -35,11 +39,11 @@ const TableActions: React.FC<ActionsProps> = ({ item }) => {
       console.log('Deleted item:', item._id);
       dispatch(removeProduct({ id: item._id }));
     } catch (err) {
-      console.error('Error deleting item:', err);
+      console.log(err);
     }
   };
 
-  const successMessage = () => (
+  const SuccessMessage = () => (
     <div>
       <CircleCheck className="h-20 w-20 text-primary mx-auto rounded-full" />
       <h1 className="mx-auto text-xl text-center md:text-2xl">
@@ -75,11 +79,22 @@ const TableActions: React.FC<ActionsProps> = ({ item }) => {
                   />
                 )}
 
-                {isError && <h1> sumething went wrong</h1>}
+                {error && (
+                  <Alert variant="destructive" className="max-w-sm m-4 mx-auto">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Error</AlertTitle>
+                    <AlertDescription>
+                      {`An error occurred: ${
+                        (error as { message?: string }).message ||
+                        'Please try again later.'
+                      }`}
+                    </AlertDescription>
+                  </Alert>
+                )}
               </div>
 
               {isSuccess ? (
-                successMessage()
+                <SuccessMessage />
               ) : (
                 <div className="grid grid-cols-2 gap-3">
                   <Button

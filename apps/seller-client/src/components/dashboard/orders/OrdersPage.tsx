@@ -14,8 +14,12 @@ import {
   BreadcrumbList,
   BreadcrumbItem,
   BreadcrumbSeparator,
+  AlertDescription,
+  Alert,
+  AlertTitle,
 } from '@ecommerce/ui-kit/ui';
 import { Link } from '@tanstack/react-router';
+import { AlertCircle } from 'lucide-react';
 
 const OrdersPage = () => {
   const orders = useOrderSelector((state) => state.order.orders);
@@ -63,9 +67,15 @@ const OrdersPage = () => {
 
   if (error) {
     return (
-      <div className="text-red-500">
-        An error occurred: {JSON.stringify(error)}
-      </div>
+      <Alert variant="destructive" className="max-w-sm m-4 mx-auto">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>
+          {`An error occurred: ${
+            (error as { message?: string }).message || 'Please try again later.'
+          }`}
+        </AlertDescription>
+      </Alert>
     );
   }
 

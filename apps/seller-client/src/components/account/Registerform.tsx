@@ -11,6 +11,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  Alert,
+  AlertDescription,
+  AlertTitle,
   Input,
 } from '@ecommerce/ui-kit/ui';
 import { Link, useNavigate } from '@tanstack/react-router';
@@ -19,6 +22,7 @@ import { useForm } from 'react-hook-form';
 import { createuser, createuserDto } from '@ecommerce/types';
 import { LoaderCircle } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AlertCircle } from 'lucide-react';
 
 const Registerform = () => {
   const navigate = useNavigate();
@@ -40,6 +44,7 @@ const Registerform = () => {
   }
   const handleSignup = async (values: createuser) => {
     try {
+      console.log(values);
       await signup({ user: values });
     } catch (error) {
       console.log('Signup error:', error);
@@ -124,10 +129,16 @@ const Registerform = () => {
           </Form>
           {signupresult && <p className="text-green-500">Signup successful!</p>}
           {signupError && (
-            <p className="text-red-500">
-              Signup failed.{' '}
-              {JSON.stringify(signupError) || 'Please try again later.'}
-            </p>
+            <Alert variant="destructive" className="max-w-sm m-4 mx-auto">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>
+                {`An error occurred: ${
+                  (signupError as { message?: string }).message ||
+                  'Please try again later.'
+                }`}
+              </AlertDescription>
+            </Alert>
           )}
           <div className="mt-4 text-center text-sm">
             Already had an account?
