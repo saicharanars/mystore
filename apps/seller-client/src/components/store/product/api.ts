@@ -1,22 +1,13 @@
-import {
-  createApi,
-  fetchBaseQuery,
-  FetchBaseQueryError,
-} from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
   addImageResponseType,
   addProductResponseType,
   CreateProductType,
-  errorschemaType,
   productFilterType,
   ProductsResponseType,
   ProductType,
   UpdateProductType,
-  validationerrorSchemaType,
-  isErrorSchemaType,
-  isValidationSchemaType,
 } from '@ecommerce/types';
-import { SerializedError } from '@reduxjs/toolkit';
 import { transformErrorResponse } from '../shipments/api';
 
 const url = import.meta.env.VITE_SELLER_URL;
@@ -46,31 +37,7 @@ export const productApi = createApi({
       },
       transformResponse: (response: addImageResponseType) => response.data,
 
-      transformErrorResponse(
-        baseQueryReturnValue: FetchBaseQueryError | SerializedError,
-        meta,
-        arg
-      ) {
-        console.log(baseQueryReturnValue);
-        if (
-          baseQueryReturnValue &&
-          typeof baseQueryReturnValue === 'object' &&
-          'data' in baseQueryReturnValue
-        ) {
-          const errorData = baseQueryReturnValue.data as
-            | errorschemaType
-            | validationerrorSchemaType;
-          console.log(errorData);
-          if (isErrorSchemaType(errorData)) {
-            console.log(errorData.message, '>>>>>>');
-            return { message: errorData.message };
-          } else if (isValidationSchemaType(errorData)) {
-            return errorData.error;
-          }
-        } else {
-          return { message: 'An unexpected error occurred' };
-        }
-      },
+      transformErrorResponse,
     }),
     addProduct: build.mutation<
       ProductType,
