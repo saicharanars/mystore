@@ -14,7 +14,6 @@ import {
   paginationType,
   shipmentsResponseType,
 } from '@ecommerce/types';
-import { SerializedError } from '@reduxjs/toolkit';
 
 const url = import.meta.env.VITE_SELLER_URL;
 export const transformErrorResponse = (
@@ -86,31 +85,7 @@ export const shipmentApi = createApi({
       },
       transformResponse: (response: { data: shipmentType }) => response.data,
 
-      transformErrorResponse(
-        baseQueryReturnValue: FetchBaseQueryError | SerializedError,
-        meta,
-        arg
-      ) {
-        console.log(baseQueryReturnValue);
-        if (
-          baseQueryReturnValue &&
-          typeof baseQueryReturnValue === 'object' &&
-          'data' in baseQueryReturnValue
-        ) {
-          const errorData = baseQueryReturnValue.data as
-            | errorschemaType
-            | validationerrorSchemaType;
-          console.log(errorData);
-          if (isErrorSchemaType(errorData)) {
-            console.log(errorData.message, '>>>>>>');
-            return { message: errorData.message };
-          } else if (isValidationSchemaType(errorData)) {
-            return errorData.error;
-          }
-        } else {
-          return { message: 'An unexpected error occurred' };
-        }
-      },
+      transformErrorResponse,
     }),
     updateshipment: build.mutation<
       shipmentType,
@@ -128,31 +103,7 @@ export const shipmentApi = createApi({
       },
       transformResponse: (response: { data: shipmentType }) => response.data,
 
-      transformErrorResponse(
-        baseQueryReturnValue: FetchBaseQueryError | SerializedError,
-        meta,
-        arg
-      ) {
-        console.log(baseQueryReturnValue);
-        if (
-          baseQueryReturnValue &&
-          typeof baseQueryReturnValue === 'object' &&
-          'data' in baseQueryReturnValue
-        ) {
-          const errorData = baseQueryReturnValue.data as
-            | errorschemaType
-            | validationerrorSchemaType;
-          console.log(errorData);
-          if (isErrorSchemaType(errorData)) {
-            console.log(errorData.message, '>>>>>>');
-            return { message: errorData.message };
-          } else if (isValidationSchemaType(errorData)) {
-            return errorData.error;
-          }
-        } else {
-          return { message: 'An unexpected error occurred' };
-        }
-      },
+      transformErrorResponse,
     }),
     getshipmentbyOrderid: build.query<shipmentType, { orderId: string }>({
       query: ({ orderId }) => {

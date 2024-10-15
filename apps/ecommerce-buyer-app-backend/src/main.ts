@@ -1,6 +1,6 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import 'reflect-metadata';
-import express from 'express';
+import express, { NextFunction } from 'express';
 import path from 'path';
 import 'dotenv/config';
 import { connection } from '@ecommerce/db-postgres';
@@ -34,7 +34,7 @@ app.use('/product', product);
 app.use('/order', order);
 app.use('/location', locationroute);
 app.use('/user', userroute);
-app.use((err: ApiError, req: Request, res: Response, next: Function) => {
+app.use((err: ApiError, req: Request, res: Response, next: NextFunction) => {
   const statusCode = err.statusCode || 500;
 
   res.status(statusCode).send({
