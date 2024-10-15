@@ -1,5 +1,5 @@
 import { createshipmentType } from '@ecommerce/types';
-import React, { FC, useContext, useEffect } from 'react';
+import { FC, useContext, useEffect } from 'react';
 import AuthContext from '../../store/context/Authcontext';
 import {
   useAddshipmentMutation,
@@ -43,7 +43,7 @@ const CreateShipment: FC<createshipmentType> = ({
       }).unwrap();
       console.log(res);
     } catch (err) {
-      console.error('Error adding shipment:', err);
+      console.log(err);
     }
   };
 

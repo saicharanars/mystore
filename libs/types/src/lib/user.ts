@@ -33,12 +33,7 @@ const errorschema = z.object({
 });
 const validationerrorSchema = z
   .object({
-    error: z.array(
-      z.object({
-        message: z.string().openapi({ example: 'Invalid property' }),
-        path: z.string().openapi({ example: 'property' }),
-      })
-    ),
+    message: z.string(),
   })
   .openapi({ description: 'Validation error response' });
 
@@ -48,7 +43,7 @@ function isErrorSchemaType(data: unknown): data is errorschemaType {
 function isValidationSchemaType(
   data: unknown
 ): data is validationerrorSchemaType {
-  return (data as validationerrorSchemaType).error !== undefined;
+  return (data as validationerrorSchemaType).message !== undefined;
 }
 
 const usertokendto = createuserResponse

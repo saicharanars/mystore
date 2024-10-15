@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { ZodError, ZodObject, ZodRawShape } from 'zod';
+import { ApiError } from '../utils/apierror';
+import { StatusCodes } from 'http-status-codes';
 
 type ValidationSchemas = {
   body?: ZodObject<ZodRawShape>;
@@ -11,7 +13,6 @@ const validateRequest = (schemas: ValidationSchemas) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
       if (schemas.body) {
-        console.log(req.body);
         schemas.body.parse(req.body);
       }
       if (schemas.query) {
@@ -23,13 +24,19 @@ const validateRequest = (schemas: ValidationSchemas) => {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const simplifiedErrors = error.errors.map((err) => ({
-          message: err.message,
-          path: err.path.join('.'),
-        }));
-        return res.status(400).json({ errors: simplifiedErrors });
+        const errorMessage = error.errors
+          .map((err) => `${err.path.join('.')}: ${err.message}`)
+          .join('; ');
+
+        next(
+          new ApiError(
+            StatusCodes.BAD_REQUEST,
+            `Validation Error: ${errorMessage}`
+          )
+        );
+      } else {
+        next(error);
       }
-      next(error);
     }
   };
 };

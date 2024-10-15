@@ -16,6 +16,9 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
+  Alert,
+  AlertDescription,
+  AlertTitle,
   SelectValue,
   Checkbox,
 } from '@ecommerce/ui-kit/ui';
@@ -28,7 +31,7 @@ import {
 } from '../store/product/api';
 import { useProductDispatch } from '../store/product/producthooks';
 import { editproduct } from '../store/product/productreducer';
-
+import { AlertCircle } from 'lucide-react';
 type FormValues = z.infer<typeof createProductFormSchema> & {
   categories: string[];
   tags: string[];
@@ -189,7 +192,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product }) => {
         productid: product._id,
       });
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -629,7 +632,18 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product }) => {
         </Form>
       )}
       {imageError && <h1> Image upload failed try again</h1>}
-      {productError && <h1> update failed try again</h1>}
+      {productError && (
+        <Alert variant="destructive" className="max-w-sm m-4 mx-auto">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            {`An error occurred: ${
+              (productError as { message?: string }).message ||
+              'Please try again later.'
+            }`}
+          </AlertDescription>
+        </Alert>
+      )}
     </div>
   );
 };

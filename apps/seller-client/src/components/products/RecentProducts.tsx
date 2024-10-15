@@ -12,7 +12,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Alert,
+  AlertTitle,
+  AlertDescription,
 } from '@ecommerce/ui-kit/ui';
+import { AlertCircle } from 'lucide-react';
 
 const RecentProducts = () => {
   const products = useProductSelector((state) => state.product.products);
@@ -41,9 +45,15 @@ const RecentProducts = () => {
 
   if (error) {
     return (
-      <div className="text-red-500">
-        An error occurred: {JSON.stringify(error)}
-      </div>
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>
+          {`An error occurred: ${
+            (error as { message?: string }).message || 'Please try again later.'
+          }`}
+        </AlertDescription>
+      </Alert>
     );
   }
   const formattedDate = (date: Date) => {
