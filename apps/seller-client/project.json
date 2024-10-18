@@ -31,11 +31,11 @@
         "development": {
           "buildTarget": "seller-client:build:development",
           "hmr": true,
-          "port":3002
+          "port": 3002
         },
         "production": {
           "buildTarget": "seller-client:build:production",
-          "port":3002,
+          "port": 3002,
           "hmr": false
         }
       }
@@ -49,13 +49,11 @@
       "configurations": {
         "development": {
           "buildTarget": "seller-client:build:development",
-          "port":3002
-
+          "port": 3002
         },
         "production": {
           "buildTarget": "seller-client:build:production",
-          "port":3002
-
+          "port": 3002
         }
       }
     },
@@ -69,5 +67,6 @@
         "jestConfig": "apps/seller-client/jest.config.ts"
       }
     }
+   
   }
 }

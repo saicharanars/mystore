@@ -108,7 +108,7 @@ class ProductService {
     if (!rows || !count) {
       throw new ApiError(
         StatusCodes.NOT_FOUND,
-        'products with these cpnditions not found'
+        'products with these conditions not found'
       );
     }
 

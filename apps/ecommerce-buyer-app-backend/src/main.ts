@@ -85,7 +85,6 @@ async function setupSwagger() {
     await setupSwagger();
 
     const server = app.listen(port, () => {
-      console.log(process.env);
       console.log(`Listening at http://localhost:${port}/api`);
     });
 

@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^7.1.1",
-    "@aws-sdk/client-s3": "^3.658.1",
+    "@aws-sdk/client-s3": "^3.670.0",
     "@aws-sdk/lib-storage": "^3.664.0",
     "@hookform/resolvers": "^3.9.0",
     "@nx/next": "19.2.0",
@@ -99,6 +99,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.0.0",
+    "@nx-tools/nx-container": "^6.0.4",
     "@nx/devkit": "19.5.6",
     "@nx/esbuild": "19.5.6",
     "@nx/eslint": "19.2.0",

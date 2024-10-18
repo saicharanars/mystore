@@ -1,9 +1,6 @@
-import Product from '../models/product.model';
 import {
-  CreateProductType,
   createshipmentType,
   paginationType,
-  productFilterType,
   ProductType,
   shipmentType,
 } from '@ecommerce/types';

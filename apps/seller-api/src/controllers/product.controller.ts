@@ -1,6 +1,7 @@
 import {
   productFilterType,
   ProductSchemaZod,
+  ProductsResponse,
   usertokentype,
 } from '@ecommerce/types';
 import ProductService from '../services/product.service';
@@ -67,7 +68,7 @@ class ProductController {
       });
     } else {
       return res.status(StatusCodes.NOT_FOUND).json({
-        sucess: false,
+        success: false,
         message: getReasonPhrase(StatusCodes.NOT_FOUND),
       });
     }
@@ -90,7 +91,7 @@ class ProductController {
       usertoken.id
     );
     return res.status(StatusCodes.OK).json({
-      data: products,
+      data: ProductsResponse.parse(products),
       message: getReasonPhrase(StatusCodes.OK),
     });
   }
