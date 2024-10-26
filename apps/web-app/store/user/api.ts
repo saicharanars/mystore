@@ -1,20 +1,14 @@
-import {
-  createApi,
-  fetchBaseQuery,
-  FetchBaseQueryError,
-} from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
   createLocationType,
   createuser,
   createuserResponseType,
-  errorschemaType,
   locationType,
   signinresponseschemaType,
   signinuser,
   userlocationsType,
-  validationerrorSchemaType,
 } from '@ecommerce/types';
-import { SerializedError } from '@reduxjs/toolkit';
+import { transformErrorResponse } from '../orders/api';
 
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 interface ApiResponse {
@@ -23,15 +17,6 @@ interface ApiResponse {
     userlocation: boolean;
   };
   message: string;
-}
-
-function isErrorSchemaType(data: unknown): data is errorschemaType {
-  return (data as errorschemaType).message !== undefined;
-}
-function isValidationSchemaType(
-  data: unknown
-): data is validationerrorSchemaType {
-  return (data as validationerrorSchemaType).error !== undefined;
 }
 
 export const userApi = createApi({
@@ -52,31 +37,7 @@ export const userApi = createApi({
       }),
       transformResponse: (response: { data: createuserResponseType }) =>
         response.data,
-      transformErrorResponse(
-        baseQueryReturnValue: FetchBaseQueryError | SerializedError,
-        meta,
-        arg
-      ) {
-        console.log(baseQueryReturnValue);
-        if (
-          baseQueryReturnValue &&
-          typeof baseQueryReturnValue === 'object' &&
-          'data' in baseQueryReturnValue
-        ) {
-          const errorData = baseQueryReturnValue.data as
-            | errorschemaType
-            | validationerrorSchemaType;
-          console.log(errorData);
-          if (isErrorSchemaType(errorData)) {
-            console.log(errorData.message, '>>>>>>');
-            return { message: errorData.message };
-          } else if (isValidationSchemaType(errorData)) {
-            return errorData.error;
-          }
-        } else {
-          return { message: 'An unexpected error occurred' };
-        }
-      },
+      transformErrorResponse,
     }),
     signIn: build.mutation<signinresponseschemaType, { user: signinuser }>({
       query: ({ user }) => ({
@@ -85,31 +46,7 @@ export const userApi = createApi({
         body: user,
       }),
 
-      transformErrorResponse(
-        baseQueryReturnValue: FetchBaseQueryError | SerializedError,
-        meta,
-        arg
-      ) {
-        console.log(baseQueryReturnValue);
-        if (
-          baseQueryReturnValue &&
-          typeof baseQueryReturnValue === 'object' &&
-          'data' in baseQueryReturnValue
-        ) {
-          const errorData = baseQueryReturnValue.data as
-            | errorschemaType
-            | validationerrorSchemaType;
-          console.log(errorData);
-          if (isErrorSchemaType(errorData)) {
-            console.log(errorData.message, '>>>>>>');
-            return { message: errorData.message };
-          } else if (isValidationSchemaType(errorData)) {
-            return errorData.error;
-          }
-        } else {
-          return { message: 'An unexpected error occurred' };
-        }
-      },
+      transformErrorResponse,
     }),
     getLocations: build.query<userlocationsType, string>({
       query: (token) => ({
@@ -121,6 +58,7 @@ export const userApi = createApi({
       }),
       transformResponse: (response: { data: userlocationsType }) =>
         response.data,
+      transformErrorResponse,
     }),
     addLocation: build.mutation<
       locationType,
@@ -137,6 +75,7 @@ export const userApi = createApi({
       transformResponse: (response: ApiResponse) => {
         return response.addlocation.data;
       },
+      transformErrorResponse,
     }),
   }),
 });

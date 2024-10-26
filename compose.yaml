@@ -1,4 +1,65 @@
 services:
+  deps-base:
+    image: deps-base:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.base
+
+  buyer-api:
+    build:
+      context: .
+      dockerfile: apps/ecommerce-buyer-app-backend/Dockerfile
+    depends_on:
+      - deps-base
+      - postgresdb
+    ports:
+      - '3001:3001'
+
+    env_file: ./.env
+
+    environment:
+      - DB_HOST=postgresdb
+      - DB_USER=myuser
+      - DB_PASSWORD=mypassword
+      - DB_NAME=mydatabase
+
+  seller-api:
+    build:
+      context: .
+      dockerfile: apps/seller-api/Dockerfile
+    depends_on:
+      - deps-base
+      - mongodb
+    ports:
+      - '3003:3003'
+    env_file: ./apps/seller-api/.env
+    environment:
+      - MONGOURL=mongodb://mongodb:27017/mydatabase
+
+  storefront:
+    build:
+      context: .
+      dockerfile: apps/web-app/Dockerfile
+    depends_on:
+      - deps-base
+      - seller-api
+      - buyer-api
+    ports:
+      - '3000:3000'
+    env_file: ./.env
+
+  seller-client:
+    build:
+      context: .
+      dockerfile: apps/seller-client/Dockerfile
+    depends_on:
+      - deps-base
+      - seller-api
+      - buyer-api
+    ports:
+      - '3002:80'
+    env_file: ./apps/seller-client/.env.production
+
   postgresdb:
     image: postgres:14-bookworm
     environment:
@@ -10,13 +71,15 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: mypassword  
+  mongodb:
+    image: bitnami/mongodb:latest
     ports:
-      - '3004:80'  
+      - '27017:27017'
+    environment:
+      MONGODB_DATABASE: mydatabase
+    volumes:
+      - mongodb_data:/bitnami/mongodb
 
 volumes:
   pgdata:
+  mongodb_data:

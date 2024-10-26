@@ -56,7 +56,7 @@ class App {
   }
 
   private initializeRoutes(): void {
-    this.app.get('/health-check', (req: Request, res: Response) => {
+    this.app.get('/health', (req: Request, res: Response) => {
       res.status(StatusCodes.OK).json({
         message: 'Health check successfull, api is online',
       });

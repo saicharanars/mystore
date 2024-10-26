@@ -41,21 +41,25 @@ const DashboardLayoutAccountLazyImport = createFileRoute(
 // Create/Update Routes
 
 const DashboardRoute = DashboardImport.update({
+  id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => rootRoute,
 } as any)
 
 const LoginLazyRoute = LoginLazyImport.update({
+  id: '/login',
   path: '/login',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
 
 const AboutLazyRoute = AboutLazyImport.update({
+  id: '/about',
   path: '/about',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
+  id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
@@ -66,6 +70,7 @@ const DashboardLayoutRoute = DashboardLayoutImport.update({
 } as any)
 
 const DashboardLayoutIndexLazyRoute = DashboardLayoutIndexLazyImport.update({
+  id: '/',
   path: '/',
   getParentRoute: () => DashboardLayoutRoute,
 } as any).lazy(() =>
@@ -74,6 +79,7 @@ const DashboardLayoutIndexLazyRoute = DashboardLayoutIndexLazyImport.update({
 
 const DashboardLayoutShipmentsLazyRoute =
   DashboardLayoutShipmentsLazyImport.update({
+    id: '/shipments',
     path: '/shipments',
     getParentRoute: () => DashboardLayoutRoute,
   } as any).lazy(() =>
@@ -82,6 +88,7 @@ const DashboardLayoutShipmentsLazyRoute =
 
 const DashboardLayoutProductsLazyRoute =
   DashboardLayoutProductsLazyImport.update({
+    id: '/products',
     path: '/products',
     getParentRoute: () => DashboardLayoutRoute,
   } as any).lazy(() =>
@@ -89,6 +96,7 @@ const DashboardLayoutProductsLazyRoute =
   )
 
 const DashboardLayoutOrdersLazyRoute = DashboardLayoutOrdersLazyImport.update({
+  id: '/orders',
   path: '/orders',
   getParentRoute: () => DashboardLayoutRoute,
 } as any).lazy(() =>
@@ -97,6 +105,7 @@ const DashboardLayoutOrdersLazyRoute = DashboardLayoutOrdersLazyImport.update({
 
 const DashboardLayoutAddproductLazyRoute =
   DashboardLayoutAddproductLazyImport.update({
+    id: '/addproduct',
     path: '/addproduct',
     getParentRoute: () => DashboardLayoutRoute,
   } as any).lazy(() =>
@@ -105,6 +114,7 @@ const DashboardLayoutAddproductLazyRoute =
 
 const DashboardLayoutAccountLazyRoute = DashboardLayoutAccountLazyImport.update(
   {
+    id: '/account',
     path: '/account',
     getParentRoute: () => DashboardLayoutRoute,
   } as any,

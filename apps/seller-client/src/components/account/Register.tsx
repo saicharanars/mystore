@@ -4,16 +4,24 @@ import { CircleCheck } from 'lucide-react';
 import AuthContext from '../store/context/Authcontext';
 import { useNavigate } from '@tanstack/react-router';
 import { useContext, useEffect } from 'react';
+import { useToast } from '@ecommerce/ui-kit/ui/lib/ui/use-toast';
 
 const Register = () => {
   const authctx = useContext(AuthContext);
   const navigate = useNavigate();
+  const { toast } = useToast();
   useEffect(() => {
     console.log(authctx.isLoggedIn);
     if (authctx.isLoggedIn) {
-      navigate({ to: '/login' });
+      // navigate({ to: '/login' });
+      console.log('fkj');
     }
-  }, [authctx.isLoggedIn, navigate]);
+    toast({
+      title: 'Scheduled: Catch up',
+      variant: 'destructive',
+      description: 'Friday, February 10, 2023 at 5:57 PM',
+    });
+  }, [authctx.isLoggedIn, navigate, toast]);
   return (
     <div className="container mx-auto px-4 py-3 sm:py-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full px-4">

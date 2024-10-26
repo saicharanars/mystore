@@ -10,7 +10,8 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/seller-client"
+        "outputPath": "dist/apps/seller-client",
+        "configFile": "apps/seller-client/vite.config.ts"
       },
       "configurations": {
         "development": {
@@ -55,7 +56,8 @@
           "buildTarget": "seller-client:build:production",
           "port": 3002
         }
-      }
+      },
+      "dependsOn": ["build"]
     },
     "lint": {
       "executor": "@nx/eslint:lint"
@@ -67,6 +69,5 @@
         "jestConfig": "apps/seller-client/jest.config.ts"
       }
     }
-   
   }
 }

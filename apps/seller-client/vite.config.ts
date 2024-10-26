@@ -2,7 +2,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
-import viteReact from '@vitejs/plugin-react';
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 export default defineConfig({
   root: __dirname,
@@ -21,7 +20,7 @@ export default defineConfig({
   },
 
   preview: {
-    port: 4300,
+    port: 3002,
     host: 'localhost',
   },
 

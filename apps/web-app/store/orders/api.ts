@@ -4,7 +4,6 @@ import {
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
 import {
-  createLocationDto,
   errorschemaType,
   locationType,
   userlocationsType,
@@ -13,7 +12,6 @@ import {
   createLocationType,
   validationerrorSchemaType,
 } from '@ecommerce/types';
-import { SerializedError } from '@reduxjs/toolkit';
 
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -23,8 +21,50 @@ function isErrorSchemaType(data: unknown): data is errorschemaType {
 function isValidationSchemaType(
   data: unknown
 ): data is validationerrorSchemaType {
-  return (data as validationerrorSchemaType).error !== undefined;
+  return (data as validationerrorSchemaType).message !== undefined;
 }
+
+export const transformErrorResponse = (
+  baseQueryReturnValue: FetchBaseQueryError
+): { status: number; message: string } => {
+  if (
+    'status' in baseQueryReturnValue &&
+    baseQueryReturnValue.status !== 'FETCH_ERROR'
+  ) {
+    const errorData = baseQueryReturnValue.data as
+      | errorschemaType
+      | validationerrorSchemaType
+      | undefined;
+
+    if (errorData) {
+      if (isErrorSchemaType(errorData) || isValidationSchemaType(errorData)) {
+        return {
+          status:
+            typeof baseQueryReturnValue.status === 'number'
+              ? baseQueryReturnValue.status
+              : 500,
+          message: errorData.message,
+        };
+      }
+    }
+
+    return {
+      status:
+        typeof baseQueryReturnValue.status === 'number'
+          ? baseQueryReturnValue.status
+          : 500,
+      message: 'An unknown error occurred',
+    };
+  } else {
+    return {
+      status: 500,
+      message:
+        typeof baseQueryReturnValue.error === 'string'
+          ? baseQueryReturnValue.error
+          : 'An unexpected error occurred',
+    };
+  }
+};
 
 export const orderApi = createApi({
   reducerPath: 'orderApi',
@@ -50,29 +90,7 @@ export const orderApi = createApi({
       keepUnusedDataFor: 0,
       transformResponse: (response: { data: userordersresponseType }) =>
         response.data,
-      transformErrorResponse(
-        baseQueryReturnValue: FetchBaseQueryError | SerializedError,
-        meta,
-        arg
-      ) {
-        if (
-          baseQueryReturnValue &&
-          typeof baseQueryReturnValue === 'object' &&
-          'data' in baseQueryReturnValue
-        ) {
-          const errorData = baseQueryReturnValue.data as
-            | errorschemaType
-            | validationerrorSchemaType;
-
-          if (isErrorSchemaType(errorData)) {
-            return { message: errorData.message };
-          } else if (isValidationSchemaType(errorData)) {
-            return errorData.error;
-          }
-        } else {
-          return { message: 'An unexpected error occurred' };
-        }
-      },
+      transformErrorResponse,
     }),
     getLocations: build.query<userlocationsType, string>({
       query: (token) => ({
@@ -84,6 +102,7 @@ export const orderApi = createApi({
       }),
       transformResponse: (response: { data: userlocationsType }) =>
         response.data,
+      transformErrorResponse,
     }),
     addLocation: build.mutation<
       locationType,
@@ -98,6 +117,7 @@ export const orderApi = createApi({
         },
       }),
       transformResponse: (response: { data: locationType }) => response.data,
+      transformErrorResponse,
     }),
   }),
 });

@@ -7,7 +7,9 @@
   "targets": {
     "build": {
       "executor": "@nx/next:build",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/web-app"
@@ -16,8 +18,11 @@
         "development": {
           "outputPath": "apps/web-app"
         },
-        "production": {}
+        "production": {
+          "generateLockfile": true
+        }
       }
+      
     },
     "serve": {
       "executor": "@nx/next:server",
@@ -46,7 +51,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/web-app/jest.config.ts"
       }
@@ -54,11 +61,30 @@
     "lint": {
       "executor": "@nx/eslint:lint"
     },
-    "gen": {
-        "executor": "nx:run-script",
-        "options": {
-            "script": " @rtk-query/codegen-openapi open-api.config.ts"
+    "container": {
+      "executor": "@nx-tools/nx-container:build",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "engine": "docker",
+        "context": "dist/apps/web-app",
+        "file": "apps/web-app/Dockerfile",
+        "metadata": {
+          "images": [
+            "web-app"
+          ],
+          "load": true,
+          "tags": [
+            "type=schedule",
+            "type=ref,event=branch",
+            "type=ref,event=tag",
+            "type=ref,event=pr",
+            "type=sha,prefix=sha-"
+          ]
         }
+      }
     }
+    
   }
 }

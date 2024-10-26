@@ -46,3 +46,4 @@ Thumbs.db
 *.env
 apps/web-app/certificates/localhost-key.pem
 apps/web-app/certificates/localhost.pem
+volume

@@ -1,33 +1,17 @@
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
-  createApi,
-  fetchBaseQuery,
-  FetchBaseQueryError,
-} from '@reduxjs/toolkit/query/react';
-import {
-  errorschemaType,
   productscardsResponseType,
   productsFiltersType,
-  productsResponseType,
-  validationerrorSchemaType,
 } from '@ecommerce/types';
-import { SerializedError } from '@reduxjs/toolkit';
+import { transformErrorResponse } from '../orders/api';
 
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-function isErrorSchemaType(data: unknown): data is errorschemaType {
-  return (data as errorschemaType).message !== undefined;
-}
-function isValidationSchemaType(
-  data: unknown
-): data is validationerrorSchemaType {
-  return (data as validationerrorSchemaType).error !== undefined;
-}
 
 export const shopApi = createApi({
   reducerPath: 'shopApi',
   baseQuery: fetchBaseQuery({
     baseUrl: `${url}`,
-    prepareHeaders: (headers, { getState }) => {
+    prepareHeaders: (headers) => {
       return headers;
     },
   }),
@@ -54,29 +38,7 @@ export const shopApi = createApi({
       keepUnusedDataFor: 0,
       transformResponse: (response: { data: productscardsResponseType }) =>
         response.data,
-      transformErrorResponse(
-        baseQueryReturnValue: FetchBaseQueryError | SerializedError,
-        meta,
-        arg
-      ) {
-        if (
-          baseQueryReturnValue &&
-          typeof baseQueryReturnValue === 'object' &&
-          'data' in baseQueryReturnValue
-        ) {
-          const errorData = baseQueryReturnValue.data as
-            | errorschemaType
-            | validationerrorSchemaType;
-
-          if (isErrorSchemaType(errorData)) {
-            return errorData.message;
-          } else if (isValidationSchemaType(errorData)) {
-            return errorData.error;
-          }
-        } else {
-          return { message: 'An unexpected error occurred' };
-        }
-      },
+      transformErrorResponse,
     }),
   }),
 });

@@ -9,7 +9,7 @@
       "executor": "@nx/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/types",
+        "outputPath": "dist",
         "main": "libs/types/src/index.ts",
         "tsConfig": "libs/types/tsconfig.lib.json",
         "assets": ["libs/types/*.md"],
