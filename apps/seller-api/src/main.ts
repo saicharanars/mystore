@@ -22,6 +22,7 @@ class App {
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
+    preflightContinue: true,
   };
 
   constructor(PORT: number, MONGO_URL: string) {
@@ -51,7 +52,9 @@ class App {
         console.log('Connected to MongoDB');
       })
       .catch((error) => {
-        console.error('Error connecting to MongoDB:', error);
+        console.error(`Error connecting to MongoDB:${this.MONGO_URL}`, error);
+        console.log(this.MONGO_URL, '????');
+        process.exit(1);
       });
   }
 
@@ -133,7 +136,7 @@ class App {
 }
 
 const PORT = 3003;
-const MONGO_URL = process.env.MONGOURL || '';
+const MONGO_URL = process.env.MONGO_URL;
 
 const appInstance = new App(PORT, MONGO_URL);
 appInstance.start().catch((error) => {

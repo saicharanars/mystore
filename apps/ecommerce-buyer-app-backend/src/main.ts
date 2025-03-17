@@ -25,6 +25,7 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
+  preflightContinue: true,
 };
 
 app.use(cors(corsOptions));
@@ -35,6 +36,7 @@ app.use('/product', product);
 app.use('/order', order);
 app.use('/location', locationroute);
 app.use('/user', userroute);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: ApiError, req: Request, res: Response, next: NextFunction) => {
   const statusCode = err.statusCode || 500;
 
@@ -76,6 +78,8 @@ async function setupSwagger() {
 
 (async () => {
   try {
+    const { DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = process.env;
+    console.log(DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT);
     await connection.authenticate();
     console.log('Connection has been established successfully.');
 
